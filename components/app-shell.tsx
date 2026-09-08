@@ -17,12 +17,12 @@ export function AppShell({
   return (
     <div className="min-h-svh bg-background">
       <SiteHeader locale={locale} theme={theme} email={email} />
-      <nav className="mx-auto flex max-w-5xl gap-6 px-6 pb-2 text-sm md:hidden">
+      <nav className="mx-auto flex max-w-6xl gap-6 px-6 pb-2 text-sm md:hidden">
         <Link href="/dashboard">{t.dashboard}</Link>
         <Link href="/dashboard#gallery">{t.articles}</Link>
         <Link href="/about">{t.about}</Link>
       </nav>
-      <main className="mx-auto w-full max-w-5xl px-6 pb-24">{children}</main>
+      <main className="mx-auto w-full max-w-6xl px-6 pb-24">{children}</main>
     </div>
   );
 }

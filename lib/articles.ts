@@ -6,6 +6,8 @@ export type ArticleSection = {
   heading: LocaleText;
   body: LocaleText;
   formula?: string;
+  playground?: boolean;
+  id?: string;
 };
 
 export type Article = {
@@ -20,6 +22,77 @@ export type Article = {
 };
 
 export const articles: Article[] = [
+  {
+    slug: "train-test-validation",
+    category: "evaluation",
+    minutes: 9,
+    accent: "#2D3142",
+    sourcePath: "train-test-validation",
+    title: { zh: "训练、验证与测试集", en: "Train, Test, and Validation Sets" },
+    summary: {
+      zh: "监督学习里，数据通常要切成三份互不重叠的集合：训练集用来学，验证集用来选模型，测试集用来估在真实世界里会怎样。下面用猫和狗、体重和毛量，配一个活的逻辑回归。",
+      en: "In supervised learning, data is usually split into three independent sets: train to learn, validation to choose, test to estimate performance in the wild. Below, cats and dogs, weight and fluffiness, and a live logistic model.",
+    },
+    sections: [
+      {
+        id: "intro",
+        heading: { zh: "为什么要把数据切开", en: "The Importance of Data Splitting" },
+        body: {
+          zh: "多数监督学习任务里，稳妥的做法是把数据分成三份互不重叠的集合：训练集、验证集、测试集。\n为了看清为什么要这样切，假设我们有一批宠物，只有两类：猫和狗。每只宠物只有两个特征：体重、毛量。目标是选出一个合适的模型，根据这两个特征判断它是猫还是狗。",
+          en: "In most supervised tasks, best practice is to split data into three independent sets: training, validation, and testing.\nTo see why, pretend we have a dataset of two kinds of pets: cats and dogs. Each pet has two features: weight and fluffiness. The job is to choose and evaluate a model that classifies a pet as cat or dog.",
+        },
+      },
+      {
+        id: "split",
+        heading: { zh: "训练、验证与测试", en: "Train, Test, and Validation Splits" },
+        body: {
+          zh: "第一步是把宠物随机分进三份。\n训练集：喂给模型，让它学习可能的规律。\n验证集：比较不同模型、不同超参数，看谁在未见过的数据上更稳。\n测试集：用来近似模型在真实世界里的表现。随机划分是为了让每一份都尽量代表总体。",
+          en: "First, randomly split the pets into three independent sets.\nTraining set: the data the model learns from.\nValidation set: an unbiased look at how different models and hyperparameters compare.\nTest set: an estimate of accuracy in the wild. Random assignment keeps each split as representative as possible.",
+        },
+      },
+      {
+        id: "train",
+        heading: { zh: "训练集", en: "The Training Set" },
+        body: {
+          zh: "训练集是模型真正「上课」的地方。它要从这里抓住以后做预测所需要的模式。因此训练集应当尽量代表我们想建模的总体，并且尽量不要带进偏差——这一阶段的偏差会一路传到推断。为了给模型足够的信息，通常把大部分数据（大约 60%–80%）分给训练。",
+          en: "The training set is what the model learns from. It should be as representative as possible of the population we care about, and as unbiased as possible — bias here travels downstream. To give the model enough to learn from, we typically assign the majority of the data (about 60–80%) to training.",
+        },
+      },
+      {
+        id: "model",
+        heading: { zh: "建立模型", en: "Building Our Model" },
+        body: {
+          zh: "判断猫还是狗是二分类。这里用逻辑回归：在所选特征上（无 / 体重 / 毛量 / 两者）学一条分界线，线的一侧是猫，另一侧是狗。\n点选特征，看分界线怎么画。把训练集里的动物拖到新位置，分界线会跟着更新。",
+          en: "Cat versus dog is binary classification, so we use logistic regression. Given a feature choice (none, weight, fluffiness, or both), it draws a decision boundary: one side cats, the other dogs.\nSelect a feature to see the boundary. Drag animals in the training set and watch it update.",
+        },
+        playground: true,
+      },
+      {
+        id: "validation",
+        heading: { zh: "验证集", en: "The Validation Set" },
+        body: {
+          zh: "四种特征组合就是四个模型。如果用训练集上的准确率来选，等于用同一份数据既训练又调参，容易过拟合，泛化会差。验证集是一份独立、尽量无偏的数据，专门用来比较这些选择。\n在表里看验证准确率。把动物拖过分界线，数字会变。",
+          en: "Four feature choices mean four models. Comparing them on training accuracy uses the same data for learning and tuning, so the model overfits. The validation set is an independent, unbiased set for that comparison.\nRead validation accuracy in the table. Drag pets across the line and the numbers move.",
+        },
+      },
+      {
+        id: "test",
+        heading: { zh: "测试集", en: "The Testing Set" },
+        body: {
+          zh: "验证集选定模型和超参数之后，才用测试集去近似上线后的表现。测试集是最后一步，用来评估在未见数据上的表现。\n选定模型之前，绝不该看测试集的分数。偷看测试集也是一种过拟合，会让你对上线表现过于乐观。它只该在验证集已经挑好模型之后，作为最终检查打开一次。",
+          en: "After validation has chosen the algorithm and parameters, the test set approximates performance in the wild. It is the last look at unseen data.\nNever inspect test performance before selecting a model. Peeking is a form of overfitting and makes production numbers unreliable. Open it once, after validation has already named the winner.",
+        },
+      },
+      {
+        id: "summary",
+        heading: { zh: "小结", en: "Summary" },
+        body: {
+          zh: "你可能会看到：只看毛量的模型在测试集上比「两个特征都用」更高，尽管验证集选的是后者。验证和测试不完全一致，这并不坏。测试分数不是拿来优化的数字，而是对未来表现的估计。\n记住三份数据的分工。训练集：学。验证集：无偏地比较。测试集：最终评估。这样我们对模型有更现实的预期，也更有机会做出能泛化的模型。🐾",
+          en: "You may notice the fluffiness-only model scoring higher on test than the both-features model, even if validation picked both. That mismatch can happen, and it is not a failure. Test accuracy is not a number to optimize — it estimates future performance.\nKeep the three roles: train to learn, validate to compare without bias, test to evaluate at the end. That is how we get a realistic picture, and a model that might actually generalize. 🐾",
+        },
+      },
+    ],
+  },
   {
     slug: "neural-networks",
     category: "deep",
@@ -268,41 +341,6 @@ export const articles: Article[] = [
         body: {
           zh: "如果用交叉验证挑超参数，再把同一份 CV 分数当最终表现，你会乐观。外层 CV 估泛化，内层 CV 做选择。无论怎样，测试集只看一次。",
           en: "If you use CV to pick hyperparameters and then report that same CV score, you will be optimistic. Outer CV estimates generalization; inner CV selects. Either way, look at the test set once.",
-        },
-      },
-    ],
-  },
-  {
-    slug: "train-test-validation",
-    category: "evaluation",
-    minutes: 9,
-    accent: "#b08900",
-    sourcePath: "train-test-validation",
-    title: { zh: "训练、验证与测试集", en: "Train, Test, and Validation Sets" },
-    summary: {
-      zh: "为什么要把数据切成三份：训练学参数，验证选模型，测试只汇报一次。偷看测试集就是一种过拟合。",
-      en: "Why data is cut three ways: train to learn parameters, validation to choose a model, test to report once. Peeking at the test set is overfitting with extra steps.",
-    },
-    sections: [
-      {
-        heading: { zh: "三种角色", en: "Three jobs" },
-        body: {
-          zh: "训练集喂给学习算法，用来更新参数。验证集比较不同模型、不同超参数，像一场内部选拔。测试集模拟上线后的新数据，只能在最终选定之后看一次。",
-          en: "The training set feeds the learner and updates parameters. The validation set compares models and hyperparameters — an internal tryout. The test set stands in for production data and is opened once, after the choice is locked.",
-        },
-      },
-      {
-        heading: { zh: "只用训练集会说谎", en: "Training error lies" },
-        body: {
-          zh: "模型可以把训练点记得很死，训练误差接近零，到新样本却崩溃。验证集的存在就是为了在「还没见到测试」时抓住这种过拟合。下面可以调整三份比例，看训练误差和验证误差如何分道扬镳。",
-          en: "A model can memorize the training points, drive training error to zero, and collapse on new rows. Validation exists to catch that split before you ever see the test set. Adjust the three shares below and watch train and validation error walk apart.",
-        },
-      },
-      {
-        heading: { zh: "泄漏比算法更常见", en: "Leakage beats clever models" },
-        body: {
-          zh: "时间序列按时间切，不要随机打乱未来。同一用户的多条记录不要同时出现在训练和测试。标准化、缺失值填充的统计量只能来自训练折。流程错了，指标再好看也是假的。",
-          en: "Time series splits in time; do not shuffle the future into the past. Multiple rows from one user should not straddle train and test. Scaling and imputation statistics must come from the training fold. A broken pipeline makes a beautiful metric a lie.",
         },
       },
     ],

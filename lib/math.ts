@@ -33,6 +33,36 @@ export function sigmoid(z: number) {
   return 1 / (1 + Math.exp(-z));
 }
 
+export function fitLogistic(
+  X: number[][],
+  y: number[],
+  opts?: { lr?: number; iters?: number },
+) {
+  const lr = opts?.lr ?? 0.35;
+  const iters = opts?.iters ?? 900;
+  if (X.length === 0) return [];
+  const n = X.length;
+  const d = X[0].length;
+  const w = Array(d).fill(0);
+  for (let t = 0; t < iters; t++) {
+    const grad = Array(d).fill(0);
+    for (let i = 0; i < n; i++) {
+      let z = 0;
+      for (let j = 0; j < d; j++) z += w[j] * X[i][j];
+      const err = sigmoid(z) - y[i];
+      for (let j = 0; j < d; j++) grad[j] += err * X[i][j];
+    }
+    for (let j = 0; j < d; j++) w[j] -= (lr * grad[j]) / n;
+  }
+  return w;
+}
+
+export function logisticProb(w: number[], x: number[]) {
+  let z = 0;
+  for (let i = 0; i < w.length; i++) z += w[i] * x[i];
+  return sigmoid(z);
+}
+
 export function entropy(p: number) {
   const q = 1 - p;
   if (p <= 0 || p >= 1) return 0;

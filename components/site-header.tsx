@@ -15,7 +15,7 @@ export function SiteHeader({
 }) {
   const t = messages[locale];
   return (
-    <header className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-6 py-6">
+    <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-6 py-6">
       <Link href={email ? "/dashboard" : "/login"} className="font-heading text-2xl">
         {t.brand}
       </Link>

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { PlaygroundFrame } from "@/components/playground-frame";
+import { PetClassifier } from "@/components/pet-classifier";
 import { useI18n } from "@/lib/i18n";
 import {
   binomialMajority,
@@ -544,66 +545,6 @@ export function ForestPlayground() {
   );
 }
 
-export function SplitPlayground() {
-  const { locale } = useI18n();
-  const [train, setTrain] = useState(60);
-  const [val, setVal] = useState(20);
-  const test = Math.max(0, 100 - train - val);
-  const complexity = 1 - train / 100;
-  const trainErr = 0.04 + (1 - train / 100) * 0.08;
-  const valErr = 0.08 + Math.abs(train - 70) / 220 + complexity * 0.12;
-
-  return (
-    <PlaygroundFrame
-      title={locale === "zh" ? "三份数据怎么切" : "How to cut three sets"}
-    >
-      <div className="grid gap-3 sm:grid-cols-2">
-        <SliderRow
-          label={locale === "zh" ? "训练集 %" : "Train %"}
-          value={train}
-          min={40}
-          max={80}
-          onChange={(v) => {
-            setTrain(v);
-            if (v + val > 95) setVal(95 - v);
-          }}
-        />
-        <SliderRow
-          label={locale === "zh" ? "验证集 %" : "Validation %"}
-          value={val}
-          min={5}
-          max={40}
-          onChange={(v) => {
-            setVal(v);
-            if (train + v > 95) setTrain(95 - v);
-          }}
-        />
-      </div>
-      <div className="mt-4 flex h-10 overflow-hidden rounded-full text-[11px] font-medium text-primary-foreground">
-        <div className="flex items-center justify-center bg-chart-1" style={{ width: `${train}%` }}>
-          {locale === "zh" ? "训练" : "Train"} {train}%
-        </div>
-        <div className="flex items-center justify-center bg-chart-2" style={{ width: `${val}%` }}>
-          {locale === "zh" ? "验证" : "Val"} {val}%
-        </div>
-        <div className="flex items-center justify-center bg-chart-3" style={{ width: `${test}%` }}>
-          {locale === "zh" ? "测试" : "Test"} {test}%
-        </div>
-      </div>
-      <div className="mt-3 grid grid-cols-2 gap-2">
-        <Stat
-          label={locale === "zh" ? "训练误差（示意）" : "Train error (toy)"}
-          value={trainErr.toFixed(3)}
-        />
-        <Stat
-          label={locale === "zh" ? "验证误差（示意）" : "Val error (toy)"}
-          value={valErr.toFixed(3)}
-        />
-      </div>
-    </PlaygroundFrame>
-  );
-}
-
 export function CvPlayground() {
   const { locale } = useI18n();
   const [k, setK] = useState(5);
@@ -1102,7 +1043,7 @@ const registry: Record<string, () => React.ReactNode> = {
   "precision-recall": () => <PrecisionRecallPlayground />,
   "decision-tree": () => <EntropyPlayground />,
   "random-forest": () => <ForestPlayground />,
-  "train-test-validation": () => <SplitPlayground />,
+  "train-test-validation": () => <PetClassifier />,
   "cross-validation": () => <CvPlayground />,
   "bias-variance": () => <BiasVariancePlayground />,
   "double-descent": () => <DoubleDescentPlayground />,

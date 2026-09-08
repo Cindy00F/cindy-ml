@@ -146,14 +146,22 @@
 }
 
 .article-prose p + p {
-  margin-top: 0.9rem;
+  margin-top: 0.95rem;
 }
 
 .article-prose h2 {
-  margin-top: 2.4rem;
-  margin-bottom: 0.7rem;
-  font-size: 1.6rem;
+  margin-top: 2.6rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.7rem;
   line-height: 1.25;
+}
+
+.article-prose h2:first-child {
+  margin-top: 0;
+}
+
+.article-prose p {
+  font-size: 1.02rem;
 }
 
 .article-prose h3 {
