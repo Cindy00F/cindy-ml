@@ -1,39 +1,49 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/brand-mark";
 import { LocaleToggle } from "@/components/locale-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEMO_ACCOUNT, useAuth } from "@/lib/auth";
 import { useI18n } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 
-function LoginForm() {
+function nextPath() {
+  if (typeof window === "undefined") return "/dashboard";
+  const next = new URLSearchParams(window.location.search).get("next");
+  if (!next || !next.startsWith("/") || next.startsWith("//")) return "/dashboard";
+  return next;
+}
+
+export default function LoginPage() {
   const { t, locale } = useI18n();
-  const { login, loginAsGuest, session, ready } = useAuth();
+  const { login, loginAsGuest, session } = useAuth();
   const router = useRouter();
-  const params = useSearchParams();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(DEMO_ACCOUNT.email);
+  const [password, setPassword] = useState(DEMO_ACCOUNT.password);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (ready && session) {
-      router.replace(params.get("next") || "/dashboard");
-    }
-  }, [ready, session, router, params]);
+    if (session) router.replace(nextPath());
+  }, [session, router]);
 
-  function onSubmit(e: React.FormEvent) {
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const ok = login(email, password);
     if (!ok) {
       setError(t("invalidCreds"));
       return;
     }
-    router.replace(params.get("next") || "/dashboard");
+    router.replace(nextPath());
+  }
+
+  function enterAsGuest() {
+    loginAsGuest();
+    router.replace(nextPath());
   }
 
   return (
@@ -99,7 +109,7 @@ function LoginForm() {
           </div>
         </div>
         <div className="flex flex-1 items-center justify-center px-6 pb-16">
-          <form onSubmit={onSubmit} className="w-full max-w-sm space-y-5">
+          <form noValidate onSubmit={onSubmit} className="w-full max-w-sm space-y-5">
             <div>
               <h1 className="font-heading text-3xl">{t("loginTitle")}</h1>
               <p className="mt-2 text-sm text-muted-foreground">{t("loginSubtitle")}</p>
@@ -108,37 +118,37 @@ function LoginForm() {
               <Label htmlFor="email">{t("email")}</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 autoComplete="username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={DEMO_ACCOUNT.email}
                 className="h-10"
-                required
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">{t("password")}</Label>
               <Input
                 id="password"
+                name="password"
                 type="password"
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
                 className="h-10"
-                required
               />
             </div>
             {error ? <p className="text-sm text-destructive">{error}</p> : null}
-            <Button type="submit" className="h-10 w-full">
+            <button
+              type="submit"
+              className={cn(buttonVariants({ variant: "default" }), "h-10 w-full")}
+            >
               {t("signIn")}
-            </Button>
+            </button>
             <div className="flex gap-2">
-              <Button
+              <button
                 type="button"
-                variant="outline"
-                className="h-10 flex-1"
+                className={cn(buttonVariants({ variant: "outline" }), "h-10 flex-1")}
                 onClick={() => {
                   setEmail(DEMO_ACCOUNT.email);
                   setPassword(DEMO_ACCOUNT.password);
@@ -146,35 +156,19 @@ function LoginForm() {
                 }}
               >
                 {t("fillDemo")}
-              </Button>
-              <Button
+              </button>
+              <button
                 type="button"
-                variant="secondary"
-                className="h-10 flex-1"
-                onClick={() => {
-                  loginAsGuest();
-                  router.replace(params.get("next") || "/dashboard");
-                }}
+                className={cn(buttonVariants({ variant: "secondary" }), "h-10 flex-1")}
+                onClick={enterAsGuest}
               >
                 {t("guest")}
-              </Button>
+              </button>
             </div>
             <p className="text-xs text-muted-foreground">{t("demoHint")}</p>
           </form>
         </div>
       </section>
     </div>
-  );
-}
-
-export default function LoginPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-svh items-center justify-center">…</div>
-      }
-    >
-      <LoginForm />
-    </Suspense>
   );
 }

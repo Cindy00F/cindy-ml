@@ -5,6 +5,10 @@ export type ProgressMap = Record<
 
 const STORAGE_KEY = "wangchen-progress";
 const listeners = new Set<() => void>();
+const EMPTY: ProgressMap = {};
+
+let cache: ProgressMap = EMPTY;
+let cacheRaw: string | null | undefined;
 
 function emit() {
   listeners.forEach((fn) => fn());
@@ -16,26 +20,34 @@ export function subscribeProgress(fn: () => void) {
 }
 
 export function loadProgress(): ProgressMap {
-  if (typeof window === "undefined") return {};
+  if (typeof window === "undefined") return EMPTY;
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as ProgressMap) : {};
+    if (raw === cacheRaw) return cache;
+    cacheRaw = raw;
+    cache = raw ? (JSON.parse(raw) as ProgressMap) : EMPTY;
+    return cache;
   } catch {
-    return {};
+    cacheRaw = null;
+    cache = EMPTY;
+    return EMPTY;
   }
 }
 
 export function emptyProgress(): ProgressMap {
-  return {};
+  return EMPTY;
 }
 
 export function saveProgress(map: ProgressMap) {
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
+  const raw = JSON.stringify(map);
+  cache = map;
+  cacheRaw = raw;
+  window.localStorage.setItem(STORAGE_KEY, raw);
   emit();
 }
 
 export function markOpened(slug: string) {
-  const map = loadProgress();
+  const map = { ...loadProgress() };
   const prev = map[slug];
   map[slug] = {
     openedAt: Date.now(),
@@ -46,7 +58,7 @@ export function markOpened(slug: string) {
 }
 
 export function markCompleted(slug: string) {
-  const map = loadProgress();
+  const map = { ...loadProgress() };
   map[slug] = {
     openedAt: map[slug]?.openedAt ?? Date.now(),
     completed: true,
