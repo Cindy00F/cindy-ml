@@ -1,6 +1,8 @@
 # Cindy 在学习机器学习
 
-14 篇机器学习可视化文章。能接到原作的篇目（包括第一篇 Train / Test / Validation）直接使用 [MLU-Explain](https://mlu-explain.github.io/) 发布稿（CC BY-SA 4.0），版式和交互与原站相同。
+14 篇机器学习可视化文章，全部使用 [MLU-Explain](https://mlu-explain.github.io/) 发布稿（CC BY-SA 4.0）。交互和版式与原作相同。
+
+语言切换、亮/暗主题、退出始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。
 
 ## 本地运行
 
