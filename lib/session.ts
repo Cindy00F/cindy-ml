@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
 import { DEMO_ACCOUNT, type Locale, type Session, type ThemeName } from "@/lib/messages";
 
-export const SESSION_COOKIE = "wangchen-session";
-export const LOCALE_COOKIE = "wangchen-locale";
-export const THEME_COOKIE = "wangchen-theme";
+export const SESSION_COOKIE = "cindy-session";
+export const LOCALE_COOKIE = "cindy-locale";
+export const THEME_COOKIE = "cindy-theme";
 
 export async function getSession(): Promise<Session | null> {
   const raw = (await cookies()).get(SESSION_COOKIE)?.value;

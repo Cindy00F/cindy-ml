@@ -2,9 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { setThemeAction } from "@/app/actions";
-import { buttonVariants } from "@/components/ui/button";
 import type { ThemeName } from "@/lib/messages";
-import { cn } from "@/lib/utils";
 
 export function ThemeToggle({ theme }: { theme: ThemeName }) {
   const next = theme === "dark" ? "light" : "dark";
@@ -14,7 +12,7 @@ export function ThemeToggle({ theme }: { theme: ThemeName }) {
       <button
         type="submit"
         aria-label={next}
-        className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
+        className="inline-flex size-8 items-center justify-center text-muted-foreground hover:text-foreground"
       >
         {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
       </button>

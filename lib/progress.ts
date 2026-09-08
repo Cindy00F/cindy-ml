@@ -3,7 +3,7 @@ export type ProgressMap = Record<
   { openedAt: number; completed: boolean }
 >;
 
-const STORAGE_KEY = "wangchen-progress";
+const STORAGE_KEY = "cindy-progress";
 const listeners = new Set<() => void>();
 const EMPTY: ProgressMap = {};
 

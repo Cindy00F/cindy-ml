@@ -1,9 +1,8 @@
 "use client";
 
+import { Globe } from "lucide-react";
 import { setLocaleAction } from "@/app/actions";
-import { buttonVariants } from "@/components/ui/button";
 import type { Locale } from "@/lib/messages";
-import { cn } from "@/lib/utils";
 
 export function LocaleToggle({ locale }: { locale: Locale }) {
   const next = locale === "zh" ? "en" : "zh";
@@ -12,9 +11,10 @@ export function LocaleToggle({ locale }: { locale: Locale }) {
       <input type="hidden" name="locale" value={next} />
       <button
         type="submit"
-        className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "font-medium")}
+        className="inline-flex items-center gap-1 px-1.5 py-1 text-xs tracking-wide text-muted-foreground hover:text-foreground"
       >
-        {locale === "zh" ? "EN" : "中文"}
+        <Globe className="size-3.5" />
+        {locale === "zh" ? "en" : "中文"}
       </button>
     </form>
   );

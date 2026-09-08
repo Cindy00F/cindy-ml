@@ -1,12 +1,9 @@
 import Link from "next/link";
 import { ArticleThumb } from "@/components/article-thumb";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { DeskDoodle } from "@/components/desk-doodle";
 import { articles, categories, type Category } from "@/lib/articles";
 import { messages } from "@/lib/messages";
 import { getLocale } from "@/lib/session";
-import { cn } from "@/lib/utils";
 
 export default async function DashboardPage({
   searchParams,
@@ -27,36 +24,34 @@ export default async function DashboardPage({
   });
 
   return (
-    <div className="space-y-8">
-      <div>
-        <p className="text-sm text-muted-foreground">{t.welcomeBack}</p>
-        <h1 className="font-heading mt-1 text-3xl sm:text-4xl">{t.dashboard}</h1>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-          {t.dashboardLead}
-        </p>
-      </div>
+    <div>
+      <section className="grid items-center gap-10 py-10 md:grid-cols-[1.2fr_0.8fr]">
+        <div>
+          <h1 className="font-heading text-4xl leading-tight sm:text-5xl">
+            {t.welcomeBack}
+          </h1>
+          <p className="mt-3 text-sm text-muted-foreground">{t.heroKicker}</p>
+          <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
+            {t.dashboardLead}
+          </p>
+        </div>
+        <DeskDoodle className="mx-auto max-w-xs text-foreground" />
+      </section>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Kpi label={t.articlesCount} value={String(articles.length)} />
-        <Kpi label={t.models} value="5" />
-        <Kpi label={t.evaluation} value="4" />
-        <Kpi label={t.minutes} value={String(articles.reduce((s, a) => s + a.minutes, 0))} />
-      </div>
-
-      <div id="articles" className="space-y-4 scroll-mt-20">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-heading text-2xl">{t.articles}</h2>
-          <form className="sm:max-w-xs">
+      <section id="gallery" className="scroll-mt-8">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-y py-6">
+          <h2 className="font-heading text-3xl">{t.articles}</h2>
+          <form>
             {cat !== "all" ? <input type="hidden" name="cat" value={cat} /> : null}
-            <Input
+            <input
               name="q"
               defaultValue={q}
               placeholder={t.search}
-              className="h-9"
+              className="h-9 w-48 border-b border-foreground/30 bg-transparent text-sm outline-none"
             />
           </form>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-5 py-6 text-xs tracking-wide">
           {categories.map((c) => {
             const href =
               c.id === "all"
@@ -68,12 +63,9 @@ export default async function DashboardPage({
               <Link
                 key={c.id}
                 href={href}
-                className={cn(
-                  buttonVariants({
-                    size: "sm",
-                    variant: cat === c.id ? "default" : "outline",
-                  }),
-                )}
+                className={
+                  cat === c.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }
               >
                 {c.label[locale]}
               </Link>
@@ -82,50 +74,45 @@ export default async function DashboardPage({
         </div>
 
         {filtered.length === 0 ? (
-          <p className="py-16 text-center text-sm text-muted-foreground">
-            {t.emptySearch}
-          </p>
+          <p className="py-20 text-sm text-muted-foreground">{t.emptySearch}</p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {filtered.map((article) => (
+          <div>
+            {filtered.map((article, i) => (
               <Link
                 key={article.slug}
                 href={`/articles/${article.slug}`}
-                className="group overflow-hidden rounded-2xl border bg-card ring-1 ring-foreground/10 transition hover:-translate-y-0.5 hover:shadow-md"
+                className={`grid items-center gap-8 border-t py-12 md:grid-cols-2 ${
+                  i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
+                }`}
               >
-                <ArticleThumb slug={article.slug} className="h-36 w-full" />
-                <div className="space-y-2 p-4">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="secondary">
-                      {categories.find((c) => c.id === article.category)?.label[locale]}
-                    </Badge>
-                    <span className="text-xs text-muted-foreground">
-                      {article.minutes} {t.minutes}
-                    </span>
-                  </div>
-                  <h3 className="font-heading text-xl leading-snug group-hover:text-primary">
-                    {article.title[locale]}
-                  </h3>
-                  <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
+                <div>
+                  <p className="text-xs text-muted-foreground">
+                    {categories.find((c) => c.id === article.category)?.label[locale]}
+                    {" · "}
+                    {article.minutes} {t.minutes}
+                  </p>
+                  <h3 className="font-heading mt-2 text-3xl">{article.title[locale]}</h3>
+                  <p className="mt-4 text-sm leading-7 text-muted-foreground">
                     {article.summary[locale]}
                   </p>
+                  <span className="mt-6 inline-block text-sm underline underline-offset-4">
+                    {t.diveIn}
+                  </span>
                 </div>
+                <ArticleThumb slug={article.slug} className="h-auto w-full border border-foreground/15" />
               </Link>
             ))}
           </div>
         )}
-      </div>
-    </div>
-  );
-}
+      </section>
 
-function Kpi({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-2xl border bg-card p-4 ring-1 ring-foreground/10">
-      <div className="text-xs tracking-wide text-muted-foreground uppercase">
-        {label}
-      </div>
-      <div className="font-heading mt-1 text-3xl">{value}</div>
+      <section className="mt-10 grid grid-cols-3 gap-2 border-t pt-10 sm:grid-cols-4 md:grid-cols-7">
+        {articles.map((article) => (
+          <Link key={article.slug} href={`/articles/${article.slug}`} title={article.title[locale]}>
+            <ArticleThumb slug={article.slug} className="h-auto w-full border border-foreground/10" />
+          </Link>
+        ))}
+      </section>
     </div>
   );
 }

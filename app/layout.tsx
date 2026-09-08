@@ -21,8 +21,8 @@ const instrument = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "望尘 Explain",
-  description: "Visual essays on core machine learning — a personal studio.",
+  title: "Cindy's Digital Garden",
+  description: "Visual notes while learning machine learning.",
   icons: { icon: "/favicon.svg" },
 };
 
