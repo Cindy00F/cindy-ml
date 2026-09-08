@@ -3,13 +3,21 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EssayScale } from "@/components/essay-scale";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
+import { originalEssayTicks } from "@/lib/original-essays";
+
+const EMPTY_TICKS: EssayTick[] = [];
 
 const HIDE_CHROME = `
-  body > header { display: none !important; }
+  body > header, header { display: none !important; }
   #toc { display: none !important; }
-  header nav ul, header #toc { display: none !important; }
   figure { top: 0 !important; }
-  #scrolly > figure, .sticky-figure, figure[style] { top: 0 !important; }
+  @media (min-width: 640px) {
+    #intro-mobile { display: none !important; }
+    #intro { display: block !important; }
+    #scrolly { display: flex !important; flex-direction: row-reverse !important; }
+    #scrolly > * { flex: 1; }
+    figure { position: sticky !important; top: 0 !important; height: 100vh !important; }
+  }
 `;
 
 function uniqueTicks(ticks: EssayTick[]) {
@@ -78,30 +86,51 @@ function selectedIdFromToc(doc: Document) {
   return (selected.getAttribute("href") ?? "").replace("#", "") || selected.dataset.page || null;
 }
 
+function hideOriginalChrome(doc: Document) {
+  if (!doc.getElementById("cindy-chrome-style")) {
+    const style = doc.createElement("style");
+    style.id = "cindy-chrome-style";
+    style.textContent = HIDE_CHROME;
+    doc.head?.appendChild(style);
+  }
+  if (!doc.querySelector('link[href="/essays/cindy-shell.css"]')) {
+    const link = doc.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "/essays/cindy-shell.css";
+    doc.head?.appendChild(link);
+  }
+}
+
 export function OriginalEssay({ folder }: { folder: string }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [ticks, setTicks] = useState<EssayTick[]>([]);
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const boundDoc = useRef<Document | null>(null);
+  const known = originalEssayTicks[folder] ?? EMPTY_TICKS;
+  const [ticks, setTicks] = useState<EssayTick[]>(known);
+  const [activeId, setActiveId] = useState<string | null>(known[0]?.id ?? null);
   const observers = useRef<Array<{ disconnect: () => void }>>([]);
 
   const teardown = useCallback(() => {
     for (const observer of observers.current) observer.disconnect();
     observers.current = [];
+    boundDoc.current = null;
   }, []);
 
   const bindIframe = useCallback(() => {
     const iframe = iframeRef.current;
-    const doc = iframe?.contentDocument;
-    if (!doc?.body) return;
-
-    teardown();
-
-    if (!doc.getElementById("cindy-chrome-style")) {
-      const style = doc.createElement("style");
-      style.id = "cindy-chrome-style";
-      style.textContent = HIDE_CHROME;
-      doc.head.appendChild(style);
+    let doc: Document | null = null;
+    try {
+      doc = iframe?.contentDocument ?? null;
+    } catch {
+      return;
     }
+    if (!doc?.body || !doc.head) return;
+
+    hideOriginalChrome(doc);
+
+    if (boundDoc.current === doc) return;
+    teardown();
+    boundDoc.current = doc;
+    hideOriginalChrome(doc);
 
     const onClick = (event: Event) => {
       const target = event.target as HTMLElement | null;
@@ -122,15 +151,15 @@ export function OriginalEssay({ folder }: { folder: string }) {
       disconnect: () => doc.removeEventListener("click", onClick),
     });
 
-    const poll = window.setInterval(() => collect(), 300);
-    window.setTimeout(() => window.clearInterval(poll), 5000);
-
     const collect = () => {
+      hideOriginalChrome(doc);
       const next = ticksFromDom(doc);
-      setTicks(next);
-      const fromToc = selectedIdFromToc(doc);
-      setActiveId((current) => fromToc ?? current ?? next[0]?.id ?? null);
-      return next;
+      if (next.length >= 2) {
+        setTicks(next);
+        const fromToc = selectedIdFromToc(doc);
+        setActiveId((current) => fromToc ?? current ?? next[0]?.id ?? null);
+      }
+      return next.length >= 2 ? next : known;
     };
 
     let found = collect();
@@ -138,10 +167,15 @@ export function OriginalEssay({ folder }: { folder: string }) {
     const mutation = new MutationObserver(() => {
       found = collect();
     });
-    mutation.observe(doc.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+    mutation.observe(doc.documentElement, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class"],
+    });
     observers.current.push(mutation);
 
-    const win = iframe.contentWindow;
+    const win = iframe?.contentWindow;
     if (win) {
       const onScroll = () => {
         const fromToc = selectedIdFromToc(doc);
@@ -149,11 +183,9 @@ export function OriginalEssay({ folder }: { folder: string }) {
           setActiveId(fromToc);
           return;
         }
-        const nodes = found.length
-          ? found
-              .map((tick) => doc.getElementById(tick.id))
-              .filter((node): node is HTMLElement => Boolean(node))
-          : [];
+        const nodes = found
+          .map((tick) => doc.getElementById(tick.id))
+          .filter((node): node is HTMLElement => Boolean(node));
         if (!nodes.length) return;
         const mid = win.innerHeight * 0.28;
         let best = nodes[0];
@@ -174,17 +206,31 @@ export function OriginalEssay({ folder }: { folder: string }) {
       });
       onScroll();
     }
-  }, [teardown]);
+  }, [known, teardown]);
 
   useEffect(() => {
-    return () => teardown();
-  }, [teardown]);
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    const tryBind = () => bindIframe();
+    iframe.addEventListener("load", tryBind);
+    tryBind();
+    const poll = window.setInterval(tryBind, 250);
+    const stop = window.setTimeout(() => window.clearInterval(poll), 8000);
+
+    return () => {
+      iframe.removeEventListener("load", tryBind);
+      window.clearInterval(poll);
+      window.clearTimeout(stop);
+      teardown();
+    };
+  }, [bindIframe, teardown]);
 
   const onSelect = (id: string) => {
     const doc = iframeRef.current?.contentDocument;
     const node = doc?.getElementById(id);
-    if (!node) return;
     setActiveId(id);
+    if (!node) return;
     node.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
@@ -195,7 +241,6 @@ export function OriginalEssay({ folder }: { folder: string }) {
         title="MLU-Explain essay"
         src={`/essays/${folder}/index.html`}
         className="h-full min-w-0 flex-1 border-0 bg-[#fcf4e8]"
-        onLoad={bindIframe}
       />
       <EssayScale ticks={ticks} activeId={activeId} onSelect={onSelect} />
     </div>
