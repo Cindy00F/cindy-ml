@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ArticlePlayground } from "@/components/playgrounds";
-import { PetClassifier } from "@/components/pet-classifier";
+import { SplitEssay } from "@/components/split-essay";
 import { MarkReadButton } from "@/components/mark-read-button";
 import { getArticle, neighbors } from "@/lib/articles";
 import { messages } from "@/lib/messages";
@@ -20,10 +20,29 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   const { prev, next } = neighbors(article.slug);
-  const isSplit = article.slug === "train-test-validation";
+
+  if (article.slug === "train-test-validation") {
+    return (
+      <SplitEssay
+        article={article}
+        locale={locale}
+        labels={{
+          back: t.back,
+          next: t.next,
+          prev: t.prev,
+          markDone: t.markDone,
+          marked: t.marked,
+          sourceNote: t.sourceNote,
+          reset: t.reset,
+        }}
+        prev={prev ? { slug: prev.slug, title: prev.title } : null}
+        next={next ? { slug: next.slug, title: next.title } : null}
+      />
+    );
+  }
 
   return (
-    <article className={isSplit ? "mx-auto max-w-6xl" : "mx-auto max-w-2xl"}>
+    <article className="mlu-essay mx-auto max-w-2xl">
       <Link
         href="/dashboard"
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
@@ -32,71 +51,27 @@ export default async function ArticlePage({
         {t.back}
       </Link>
 
-      <p className="mt-8 text-xs tracking-wide text-muted-foreground">
-        {article.category}
-        {" · "}
-        {t.readingTime} {article.minutes} {t.minutes}
-      </p>
-      <h1 className="font-heading mt-3 text-4xl leading-tight sm:text-5xl">
+      <h1 className="font-heading mt-10 text-4xl leading-tight sm:text-5xl">
         {article.title[locale]}
       </h1>
-      <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground">
-        {article.summary[locale]}
-      </p>
+      <p className="mt-5 text-base leading-8 text-muted-foreground">{article.summary[locale]}</p>
 
-      {isSplit ? (
-        <nav className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
-          {article.sections.map((section) =>
-            section.id ? (
-              <a key={section.id} href={`#${section.id}`} className="hover:text-foreground">
-                {section.heading[locale]}
-              </a>
-            ) : null,
-          )}
-        </nav>
-      ) : null}
-
-      {isSplit ? (
-        <div className="mt-10 grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-          <div className="article-prose">
-            {article.sections.map((section) => (
-              <section key={section.heading.en} id={section.id} className="scroll-mt-8">
-                <h2>{section.heading[locale]}</h2>
-                {section.body[locale].split("\n").map((para) => (
-                  <p key={para.slice(0, 40)} className="leading-8">
-                    {para}
-                  </p>
-                ))}
-              </section>
+      <div className="article-prose mt-8">
+        {article.sections.map((section, i) => (
+          <section key={section.heading.en} id={section.id} className="scroll-mt-8">
+            <h2>{section.heading[locale]}</h2>
+            {section.body[locale].split("\n").map((para) => (
+              <p key={para.slice(0, 40)} className="leading-8">
+                {para}
+              </p>
             ))}
-          </div>
-          <div className="lg:sticky lg:top-8">
-            <PetClassifier />
-            <p className="mt-3 text-xs text-muted-foreground">
-              {locale === "zh"
-                ? "猫狗数据与三种切分改编自 MLU-Explain（CC BY-SA 4.0）。"
-                : "Pet data and the three-way split adapted from MLU-Explain (CC BY-SA 4.0)."}
-            </p>
-          </div>
-        </div>
-      ) : (
-        <div className="article-prose mt-8">
-          {article.sections.map((section, i) => (
-            <section key={section.heading.en} id={section.id} className="scroll-mt-8">
-              <h2>{section.heading[locale]}</h2>
-              {section.body[locale].split("\n").map((para) => (
-                <p key={para.slice(0, 40)} className="leading-8">
-                  {para}
-                </p>
-              ))}
-              {section.formula ? <pre className="formula">{section.formula}</pre> : null}
-              {section.playground || (section.playground === undefined && i === 1) ? (
-                <ArticlePlayground slug={article.slug} />
-              ) : null}
-            </section>
-          ))}
-        </div>
-      )}
+            {section.formula ? <pre className="formula">{section.formula}</pre> : null}
+            {section.playground || (section.playground === undefined && i === 1) ? (
+              <ArticlePlayground slug={article.slug} />
+            ) : null}
+          </section>
+        ))}
+      </div>
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t pt-6">
         <MarkReadButton slug={article.slug} markLabel={t.markDone} doneLabel={t.marked} />

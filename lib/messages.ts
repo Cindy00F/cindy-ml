@@ -72,7 +72,6 @@ export const messages = {
     welcomeBack: "Cindy 在学习机器学习",
     dashboardLead: "这里放 14 篇机器学习可视化文章，边学边看图。",
     noPhilips: "",
-    heroKicker: "An interdisciplinary data enthusiast from Dalian.",
   },
   en: {
     brand: "Cindy",
@@ -135,7 +134,6 @@ export const messages = {
     dashboardLead:
       "Fourteen visual essays on machine learning — read them with the chart in view.",
     noPhilips: "",
-    heroKicker: "An interdisciplinary data enthusiast from Dalian.",
   },
 } as const;
 

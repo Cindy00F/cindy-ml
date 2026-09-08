@@ -30,7 +30,6 @@ export default async function DashboardPage({
           <h1 className="font-heading text-4xl leading-tight sm:text-5xl">
             {t.welcomeBack}
           </h1>
-          <p className="mt-3 text-sm text-muted-foreground">{t.heroKicker}</p>
           <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
             {t.dashboardLead}
           </p>

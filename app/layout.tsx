@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif, Outfit } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { getLocale, getTheme } from "@/lib/session";
 import "./globals.css";
@@ -20,6 +20,12 @@ const instrument = Instrument_Serif({
   weight: "400",
 });
 
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["500", "700", "800"],
+});
+
 export const metadata: Metadata = {
   title: "Cindy 在学习机器学习",
   description: "Fourteen visual essays on machine learning.",
@@ -33,7 +39,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang={locale === "zh" ? "zh-CN" : "en"}
-      className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} h-full antialiased ${theme === "dark" ? "dark" : ""}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} ${outfit.variable} h-full antialiased ${theme === "dark" ? "dark" : ""}`}
     >
       <body
         className="min-h-full flex flex-col"

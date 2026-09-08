@@ -26,7 +26,6 @@ export default async function LoginPage({
       <SiteHeader locale={locale} theme={theme} />
       <main className="mx-auto grid w-full max-w-6xl items-center gap-16 px-6 py-16 md:grid-cols-2">
         <div>
-          <p className="text-sm text-muted-foreground">{t.heroKicker}</p>
           <h1 className="font-heading mt-3 text-4xl leading-tight sm:text-5xl">
             {t.welcomeBack}
           </h1>
