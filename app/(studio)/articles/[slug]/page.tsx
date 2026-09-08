@@ -2,9 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ArticlePlayground } from "@/components/playgrounds";
-import { SplitEssay } from "@/components/split-essay";
+import { OriginalEssay } from "@/components/original-essay";
 import { MarkReadButton } from "@/components/mark-read-button";
 import { getArticle, neighbors } from "@/lib/articles";
+import { originalEssayFolder } from "@/lib/original-essays";
 import { messages } from "@/lib/messages";
 import { getLocale } from "@/lib/session";
 
@@ -21,24 +22,9 @@ export default async function ArticlePage({
 
   const { prev, next } = neighbors(article.slug);
 
-  if (article.slug === "train-test-validation") {
-    return (
-      <SplitEssay
-        article={article}
-        locale={locale}
-        labels={{
-          back: t.back,
-          next: t.next,
-          prev: t.prev,
-          markDone: t.markDone,
-          marked: t.marked,
-          sourceNote: t.sourceNote,
-          reset: t.reset,
-        }}
-        prev={prev ? { slug: prev.slug, title: prev.title } : null}
-        next={next ? { slug: next.slug, title: next.title } : null}
-      />
-    );
+  const folder = originalEssayFolder(article.slug);
+  if (folder) {
+    return <OriginalEssay folder={folder} />;
   }
 
   return (
