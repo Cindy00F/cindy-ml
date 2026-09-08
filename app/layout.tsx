@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { getLocale, getTheme } from "@/lib/session";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,12 +26,14 @@ export const metadata: Metadata = {
   icons: { icon: "/favicon.svg" },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const locale = await getLocale();
+  const theme = await getTheme();
+
   return (
     <html
-      lang="zh-CN"
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} h-full antialiased`}
+      lang={locale === "zh" ? "zh-CN" : "en"}
+      className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} h-full antialiased ${theme === "dark" ? "dark" : ""}`}
     >
       <body
         className="min-h-full flex flex-col"
@@ -43,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             'var(--font-instrument), "Songti SC", "Noto Serif SC", serif',
         }}
       >
-        <Providers>{children}</Providers>
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   );

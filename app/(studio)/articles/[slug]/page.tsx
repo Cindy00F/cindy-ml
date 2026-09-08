@@ -1,55 +1,24 @@
-"use client";
-
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useSyncExternalStore } from "react";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
-import { AppShell } from "@/components/app-shell";
+import { notFound } from "next/navigation";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ArticleThumb } from "@/components/article-thumb";
-import { AuthGuard } from "@/components/auth-guard";
 import { ArticlePlayground } from "@/components/playgrounds";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { MarkReadButton } from "@/components/mark-read-button";
 import { getArticle, neighbors } from "@/lib/articles";
-import { useI18n } from "@/lib/i18n";
-import {
-  emptyProgress,
-  loadProgress,
-  markCompleted,
-  subscribeProgress,
-} from "@/lib/progress";
+import { messages } from "@/lib/messages";
+import { getLocale } from "@/lib/session";
 
-export default function ArticlePage() {
-  return (
-    <AuthGuard>
-      <AppShell>
-        <ArticleInner />
-      </AppShell>
-    </AuthGuard>
-  );
-}
-
-function ArticleInner() {
-  const params = useParams<{ slug: string }>();
-  const { locale, t } = useI18n();
-  const article = getArticle(params.slug);
-  const progress = useSyncExternalStore(
-    subscribeProgress,
-    loadProgress,
-    emptyProgress,
-  );
-  const done = article ? Boolean(progress[article.slug]?.completed) : false;
-
-  if (!article) {
-    return (
-      <div className="py-20 text-center">
-        <p className="text-muted-foreground">{t("emptySearch")}</p>
-        <Link href="/dashboard" className="mt-4 inline-flex text-sm underline">
-          {t("back")}
-        </Link>
-      </div>
-    );
-  }
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const locale = await getLocale();
+  const t = messages[locale];
+  const article = getArticle(slug);
+  if (!article) notFound();
 
   const { prev, next } = neighbors(article.slug);
 
@@ -60,7 +29,7 @@ function ArticleInner() {
         className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="size-4" />
-        {t("back")}
+        {t.back}
       </Link>
       <div className="mt-4 overflow-hidden rounded-2xl border ring-1 ring-foreground/10">
         <ArticleThumb slug={article.slug} className="h-48 w-full sm:h-56" />
@@ -68,7 +37,7 @@ function ArticleInner() {
       <div className="mt-6 flex flex-wrap items-center gap-2">
         <Badge variant="secondary">{article.category}</Badge>
         <span className="text-xs text-muted-foreground">
-          {t("readingTime")} {article.minutes} {t("minutes")}
+          {t.readingTime} {article.minutes} {t.minutes}
         </span>
       </div>
       <h1 className="font-heading mt-3 text-4xl leading-tight">{article.title[locale]}</h1>
@@ -77,10 +46,10 @@ function ArticleInner() {
       </p>
       <div className="article-prose mt-8">
         {article.sections.map((section, i) => (
-          <section key={i}>
+          <section key={section.heading.en}>
             <h2>{section.heading[locale]}</h2>
-            {section.body[locale].split("\n").map((para, j) => (
-              <p key={j} className="leading-7">
+            {section.body[locale].split("\n").map((para) => (
+              <p key={para.slice(0, 24)} className="leading-7">
                 {para}
               </p>
             ))}
@@ -90,17 +59,9 @@ function ArticleInner() {
         ))}
       </div>
       <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t pt-6">
-        <Button
-          variant={done ? "secondary" : "default"}
-          onClick={() => {
-            markCompleted(article.slug);
-          }}
-        >
-          <Check className="size-4" />
-          {done ? t("marked") : t("markDone")}
-        </Button>
+        <MarkReadButton slug={article.slug} markLabel={t.markDone} doneLabel={t.marked} />
         <p className="text-xs text-muted-foreground">
-          {t("sourceNote")}{" "}
+          {t.sourceNote}{" "}
           <a
             className="underline"
             href={`https://mlu-explain.github.io/${article.sourcePath}/`}
@@ -119,7 +80,7 @@ function ArticleInner() {
           >
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <ArrowLeft className="size-3" />
-              {t("prev")}
+              {t.prev}
             </div>
             <div className="font-heading mt-1">{prev.title[locale]}</div>
           </Link>
@@ -132,7 +93,7 @@ function ArticleInner() {
             className="rounded-xl border p-4 text-right hover:bg-muted/50"
           >
             <div className="flex items-center justify-end gap-1 text-xs text-muted-foreground">
-              {t("next")}
+              {t.next}
               <ArrowRight className="size-3" />
             </div>
             <div className="font-heading mt-1">{next.title[locale]}</div>

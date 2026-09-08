@@ -1,18 +1,21 @@
 "use client";
 
+import { setLocaleAction } from "@/app/actions";
 import { buttonVariants } from "@/components/ui/button";
-import { useI18n } from "@/lib/i18n";
+import type { Locale } from "@/lib/messages";
 import { cn } from "@/lib/utils";
 
-export function LocaleToggle() {
-  const { locale, setLocale } = useI18n();
+export function LocaleToggle({ locale }: { locale: Locale }) {
+  const next = locale === "zh" ? "en" : "zh";
   return (
-    <button
-      type="button"
-      className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "font-medium")}
-      onClick={() => setLocale(locale === "zh" ? "en" : "zh")}
-    >
-      {locale === "zh" ? "EN" : "中文"}
-    </button>
+    <form action={setLocaleAction}>
+      <input type="hidden" name="locale" value={next} />
+      <button
+        type="submit"
+        className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "font-medium")}
+      >
+        {locale === "zh" ? "EN" : "中文"}
+      </button>
+    </form>
   );
 }

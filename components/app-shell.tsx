@@ -1,29 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import {
-  BookOpen,
-  Compass,
-  Info,
-  LogOut,
-  Menu,
-  X,
-} from "lucide-react";
+import { usePathname } from "next/navigation";
+import { BookOpen, Compass, Info, LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { logoutAction } from "@/app/actions";
 import { BrandMark } from "@/components/brand-mark";
 import { LocaleToggle } from "@/components/locale-toggle";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/auth";
+import { buttonVariants } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
+import type { Locale, ThemeName } from "@/lib/messages";
 import { cn } from "@/lib/utils";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  email,
+  locale,
+  theme,
+  children,
+}: {
+  email: string;
+  locale: Locale;
+  theme: ThemeName;
+  children: React.ReactNode;
+}) {
   const { t } = useI18n();
-  const { session, logout } = useAuth();
   const pathname = usePathname();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const nav = [
@@ -31,11 +33,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     { href: "/dashboard#articles", label: t("articles"), icon: BookOpen },
     { href: "/about", label: t("about"), icon: Info },
   ];
-
-  function signOut() {
-    logout();
-    router.replace("/login");
-  }
 
   return (
     <div className="min-h-svh bg-background">
@@ -75,21 +72,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
         <div className="rounded-xl bg-sidebar-accent p-3 text-xs text-muted-foreground">
           <div>{t("signedInAs")}</div>
-          <div className="mt-1 truncate text-foreground">{session?.email}</div>
+          <div className="mt-1 truncate text-foreground">{email}</div>
         </div>
       </aside>
 
       <div className="md:pl-60">
         <header className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b bg-background/80 px-4 backdrop-blur">
           <div className="flex items-center gap-2 md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
+              type="button"
+              className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
               onClick={() => setOpen((v) => !v)}
               aria-label="menu"
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
-            </Button>
+            </button>
             <Link href="/dashboard" className="flex items-center gap-2">
               <BrandMark className="size-7" />
               <span className="font-heading">{t("brand")}</span>
@@ -99,12 +96,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {t("tagline")}
           </p>
           <div className="flex items-center gap-1">
-            <LocaleToggle />
-            <ThemeToggle />
-            <Button variant="ghost" size="sm" onClick={signOut}>
-              <LogOut className="size-4" />
-              <span className="hidden sm:inline">{t("logout")}</span>
-            </Button>
+            <LocaleToggle locale={locale} />
+            <ThemeToggle theme={theme} />
+            <form action={logoutAction}>
+              <button
+                type="submit"
+                className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}
+              >
+                <LogOut className="size-4" />
+                <span className="hidden sm:inline">{t("logout")}</span>
+              </button>
+            </form>
           </div>
         </header>
         {open && (

@@ -1,23 +1,23 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
+import { setThemeAction } from "@/app/actions";
 import { buttonVariants } from "@/components/ui/button";
+import type { ThemeName } from "@/lib/messages";
 import { cn } from "@/lib/utils";
 
-export function ThemeToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const dark = resolvedTheme === "dark";
-
+export function ThemeToggle({ theme }: { theme: ThemeName }) {
+  const next = theme === "dark" ? "light" : "dark";
   return (
-    <button
-      type="button"
-      aria-label={dark ? "light" : "dark"}
-      className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
-      onClick={() => setTheme(dark ? "light" : "dark")}
-    >
-      <Sun className="size-4 dark:hidden" />
-      <Moon className="hidden size-4 dark:block" />
-    </button>
+    <form action={setThemeAction}>
+      <input type="hidden" name="theme" value={next} />
+      <button
+        type="submit"
+        aria-label={next}
+        className={cn(buttonVariants({ variant: "ghost", size: "icon" }))}
+      >
+        {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      </button>
+    </form>
   );
 }
