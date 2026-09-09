@@ -3,7 +3,6 @@ import type { NextRequest } from "next/server";
 
 function isProtected(pathname: string) {
   return (
-    pathname.startsWith("/essays/") ||
     pathname.startsWith("/articles/") ||
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/about")
@@ -24,5 +23,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/essays/:path*", "/articles/:path*", "/dashboard", "/dashboard/:path*", "/about"],
+  matcher: ["/articles/:path*", "/dashboard", "/dashboard/:path*", "/about"],
 };
