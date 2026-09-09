@@ -129,6 +129,8 @@ function scrollIframeToId(doc: Document, win: Window, id: string) {
   win.scrollTo(0, top);
   return true;
 }
+
+function hideOriginalChrome(doc: Document) {
   if (!doc.getElementById("cindy-chrome-style")) {
     const style = doc.createElement("style");
     style.id = "cindy-chrome-style";
