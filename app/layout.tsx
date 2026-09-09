@@ -40,9 +40,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang={locale === "zh" ? "zh-CN" : "en"}
       className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} ${outfit.variable} h-full antialiased ${theme === "dark" ? "dark" : ""}`}
+      suppressHydrationWarning
     >
       <body
         className="flex h-full min-h-full flex-col"
+        suppressHydrationWarning
         style={{
           fontFamily:
             'var(--font-geist-sans), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif',
