@@ -31,56 +31,56 @@ function blinkStyle(delay: number, duration: number, extra = 0): CSSProperties {
   };
 }
 
-function CatMark({ fill, blink }: { fill: string; blink?: Blink }) {
+function CatMark({ coat, ink, blink }: { coat: string; ink: string; blink?: Blink }) {
   const delay = blink?.delay ?? 0;
   const duration = blink?.duration ?? 2.6;
   return (
     <g>
-      <path d={CAT_EAR} fill={fill} />
+      <path d={CAT_EAR} fill={coat} />
       <path d={CAT_HEAD} fill={CREAM} />
-      <path d={CAT_NOSE} fill={fill} />
+      <path d={CAT_NOSE} fill={ink} />
       <path
         d="M16 56 H7 M18 62 H8 M18 50 H9 M86 56 H95 M84 62 H94 M84 50 H93"
         fill="none"
-        stroke={fill}
+        stroke={ink}
         strokeWidth="1.35"
         strokeLinecap="round"
       />
-      <circle className="pet-eye" cx="38" cy="54" r="3.2" fill={fill} style={blinkStyle(delay, duration)} />
+      <circle className="pet-eye" cx="38" cy="54" r="3.2" fill={ink} style={blinkStyle(delay, duration)} />
       <circle
         className="pet-eye"
         cx="62"
         cy="54"
         r="3.2"
-        fill={fill}
+        fill={ink}
         style={blinkStyle(delay, duration, 0.04)}
       />
     </g>
   );
 }
 
-function DogMark({ fill, blink }: { fill: string; blink?: Blink }) {
+function DogMark({ coat, ink, blink }: { coat: string; ink: string; blink?: Blink }) {
   const delay = blink?.delay ?? 0;
   const duration = blink?.duration ?? 2.8;
   return (
     <g>
-      <path d={DOG_EAR} fill={fill} />
+      <path d={DOG_EAR} fill={coat} />
       <path d={DOG_HEAD} fill={CREAM} />
-      <path d={DOG_NOSE} fill={fill} />
+      <path d={DOG_NOSE} fill={ink} />
       <path
         d="M40 70 Q51 78 62 70"
         fill="none"
-        stroke={fill}
+        stroke={ink}
         strokeWidth="1.6"
         strokeLinecap="round"
       />
-      <circle className="pet-eye" cx="38" cy="58" r="3.1" fill={fill} style={blinkStyle(delay, duration)} />
+      <circle className="pet-eye" cx="38" cy="58" r="3.1" fill={ink} style={blinkStyle(delay, duration)} />
       <circle
         className="pet-eye"
         cx="62"
         cy="58"
         r="3.1"
-        fill={fill}
+        fill={ink}
         style={blinkStyle(delay, duration, 0.05)}
       />
     </g>
@@ -96,7 +96,7 @@ export function CatIcon({
 }) {
   return (
     <svg viewBox="0 0 102 90" width={size} height={size} aria-hidden overflow="visible">
-      <CatMark fill={fill} blink={{ delay: 0, duration: 2.6 }} />
+      <CatMark coat={fill} ink={fill} blink={{ delay: 0, duration: 2.6 }} />
     </svg>
   );
 }
@@ -110,7 +110,7 @@ export function DogIcon({
 }) {
   return (
     <svg viewBox="0 0 102 90" width={size} height={size} aria-hidden overflow="visible">
-      <DogMark fill={fill} blink={{ delay: 0.4, duration: 3.1 }} />
+      <DogMark coat={fill} ink={fill} blink={{ delay: 0.4, duration: 3.1 }} />
     </svg>
   );
 }
@@ -138,9 +138,9 @@ export function PetCluster() {
           transform={`translate(${pet.x} ${pet.y}) rotate(${pet.rot}) scale(${pet.s}) translate(-51 -45)`}
         >
           {pet.kind === "cat" ? (
-            <CatMark fill={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
+            <CatMark coat={CREAM} ink={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
           ) : (
-            <DogMark fill={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
+            <DogMark coat={CREAM} ink={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
           )}
         </g>
       ))}
