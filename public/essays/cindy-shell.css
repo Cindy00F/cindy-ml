@@ -358,10 +358,43 @@ html.cindy-dark .axes-text {
   fill: #f3ead8 !important;
 }
 
+/* Cluster labels sit on cream cards in light mode; dark mode needs dark cards. */
+html.cindy-dark .bubble-rect,
+html.cindy-dark #hull-g > rect {
+  fill: #2c261e !important;
+}
+
+html.cindy-dark .bubble-label,
+html.cindy-dark #hull-text {
+  fill: #f3ead8 !important;
+}
+
+html.cindy-dark .bubble-rect[stroke="#2D3142"],
+html.cindy-dark .bubble-rect[stroke="#2d3142"],
+html.cindy-dark #hull-g > rect[stroke="black"],
+html.cindy-dark #hull-g > rect[stroke="#000"],
+html.cindy-dark #hull-g > rect[stroke="#000000"] {
+  stroke: #d4c4a8 !important;
+}
+
 html.cindy-dark svg line,
 html.cindy-dark svg .domain,
-html.cindy-dark svg .tick line {
-  stroke: #f3ead8 !important;
+html.cindy-dark svg .tick line,
+html.cindy-dark #hull-path,
+html.cindy-dark #line-decision-boundary,
+html.cindy-dark #line-x-dimension {
+  stroke: #e6d9c4 !important;
+}
+
+html.cindy-dark table#data-table,
+html.cindy-dark table#data-table th,
+html.cindy-dark table#data-table td {
+  color: #f3ead8 !important;
+  border-color: rgba(243, 234, 216, 0.35) !important;
+}
+
+html.cindy-dark .animal-head {
+  fill: #efe4d2 !important;
 }
 
 @media (max-width: 700px) {

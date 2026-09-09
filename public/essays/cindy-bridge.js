@@ -132,7 +132,11 @@
     and: "和",
     or: "或",
     ",": "，",
+    ".": "。",
     "Train,Test,Validation": "训练、测试、验证",
+    "Majority Vote: Cat": "多数：猫",
+    "Majority Vote: Dog": "多数：狗",
+    "Majority Vote:": "多数：",
   };
 
   var SUBS = [
@@ -273,6 +277,7 @@
       retargetPromo();
       applyLocale(currentLocale);
       hideAuthorByline();
+      fitChartLabels();
     } finally {
       applying = false;
     }
@@ -368,6 +373,30 @@
     }).observe(document.body, { childList: true, subtree: true });
   }
 
+  function wrapSvgLabel(text, rect) {
+    if (!text || !rect || typeof text.getBBox !== "function") return;
+    var bbox;
+    try {
+      bbox = text.getBBox();
+    } catch (err) {
+      return;
+    }
+    if (!bbox || bbox.width < 2) return;
+    rect.removeAttribute("transform");
+    rect.setAttribute("x", bbox.x - 12);
+    rect.setAttribute("y", bbox.y - 5);
+    rect.setAttribute("width", bbox.width + 24);
+    rect.setAttribute("height", bbox.height + 10);
+  }
+
+  function fitChartLabels() {
+    var labels = document.querySelectorAll(".bubble-label");
+    var rects = document.querySelectorAll(".bubble-rect");
+    var count = Math.min(labels.length, rects.length);
+    for (var i = 0; i < count; i++) wrapSvgLabel(labels[i], rects[i]);
+    wrapSvgLabel(document.getElementById("hull-text"), document.querySelector("#hull-g > rect"));
+  }
+
   function isPhone() {
     return window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
   }
@@ -413,9 +442,18 @@
   }
 
   function scheduleFit() {
-    window.setTimeout(fitScrollyChart, 40);
-    window.setTimeout(fitScrollyChart, 250);
-    window.setTimeout(fitScrollyChart, 800);
+    window.setTimeout(function () {
+      fitScrollyChart();
+      fitChartLabels();
+    }, 40);
+    window.setTimeout(function () {
+      fitScrollyChart();
+      fitChartLabels();
+    }, 250);
+    window.setTimeout(function () {
+      fitScrollyChart();
+      fitChartLabels();
+    }, 800);
   }
 
   compactIntroBreaks();
@@ -424,5 +462,12 @@
   if (typeof ResizeObserver === "function") {
     var figure = document.querySelector("#scrolly figure");
     if (figure) new ResizeObserver(scheduleFit).observe(figure);
+  }
+  var chartSvg = document.getElementById("bubble-svg");
+  if (chartSvg && typeof MutationObserver === "function") {
+    new MutationObserver(function () {
+      if (applying) return;
+      fitChartLabels();
+    }).observe(chartSvg, { childList: true, subtree: true, characterData: true });
   }
 })();
