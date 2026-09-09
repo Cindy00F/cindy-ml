@@ -98,7 +98,11 @@ export default async function DashboardPage({
                     {t.diveIn}
                   </span>
                 </div>
-                <ArticleThumb slug={article.slug} className="h-auto w-full border border-foreground/15" />
+                <ArticleThumb
+                  slug={article.slug}
+                  playable
+                  className="h-auto w-full border border-foreground/15"
+                />
               </Link>
             ))}
           </div>

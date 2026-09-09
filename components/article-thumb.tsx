@@ -1,14 +1,19 @@
 "use client";
 
+import { useId, useRef } from "react";
 import { PetCluster } from "@/components/pet-icons";
 import { articles } from "@/lib/articles";
 
 function Frame({
   children,
   title,
+  paper,
+  clipId,
 }: {
   children: React.ReactNode;
   title?: string;
+  paper?: boolean;
+  clipId?: string;
 }) {
   return (
     <>
@@ -18,8 +23,15 @@ function Frame({
         y="16"
         width="488"
         height="268"
-        className="fill-none stroke-foreground/25"
+        className={paper ? "pet-frame-paper stroke-foreground/20" : "fill-none stroke-foreground/25"}
       />
+      {paper && clipId ? (
+        <defs>
+          <clipPath id={clipId}>
+            <rect x="16" y="16" width="488" height="268" />
+          </clipPath>
+        </defs>
+      ) : null}
       {title ? (
         <text
           x="36"
@@ -31,17 +43,21 @@ function Frame({
           {title}
         </text>
       ) : null}
-      {children}
+      {paper && clipId ? <g clipPath={`url(#${clipId})`}>{children}</g> : children}
     </>
   );
 }
 
-function drawing(slug: string, title: string) {
+function drawing(
+  slug: string,
+  title: string,
+  opts: { playable?: boolean; clipId: string; onDragged?: () => void },
+) {
   switch (slug) {
     case "train-test-validation":
       return (
-        <Frame>
-          <PetCluster />
+        <Frame paper clipId={opts.clipId}>
+          <PetCluster draggable={opts.playable} onDragged={opts.onDragged} />
         </Frame>
       );
     case "linear-regression":
@@ -262,19 +278,36 @@ function drawing(slug: string, title: string) {
 export function ArticleThumb({
   slug,
   className = "",
+  playable = false,
 }: {
   slug: string;
   className?: string;
+  playable?: boolean;
 }) {
   const article = articles.find((a) => a.slug === slug);
+  const clipId = useId().replace(/:/g, "");
+  const skipNav = useRef(false);
+
   return (
     <svg
       viewBox="0 0 520 300"
       className={className}
       aria-hidden="true"
       preserveAspectRatio="xMidYMid meet"
+      onClick={(e) => {
+        if (!skipNav.current) return;
+        e.preventDefault();
+        e.stopPropagation();
+        skipNav.current = false;
+      }}
     >
-      {drawing(slug, article?.title.en ?? "")}
+      {drawing(slug, article?.title.en ?? "", {
+        playable,
+        clipId: `pet-frame-${clipId}`,
+        onDragged: () => {
+          skipNav.current = true;
+        },
+      })}
     </svg>
   );
 }

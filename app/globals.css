@@ -375,6 +375,18 @@ body:has(.split-essay) header {
   font-weight: 700;
 }
 
+.pet-frame-paper {
+  fill: #e4d4bf;
+}
+
+html.dark .pet-frame-paper {
+  fill: #2c261e;
+}
+
+.pet-mark {
+  touch-action: none;
+}
+
 .pet-eye {
   transform-box: fill-box;
   transform-origin: 50% 50%;

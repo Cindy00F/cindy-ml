@@ -1,4 +1,12 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import {
+  useCallback,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 
 const CAT_EAR =
   "M98.236,69.06l-9.263-1.48c0.557-1.164,1.032-2.373,1.438-3.615l7.062,1.131c0.13,0.021,0.258,0.028,0.386,0.028 c1.167,0,2.193-0.845,2.382-2.034c0.212-1.317-0.686-2.558-2.003-2.769l-6.675-1.067c0.28-1.726,0.427-3.508,0.427-5.343 c0-6.845-4.561-22.027-6.425-26.725c-1.431-3.602-2.868-5.95-4.531-8.67c-0.774-1.264-1.604-2.621-2.514-4.245 c-0.403-0.718-1.142-1.181-1.964-1.23c-0.849-0.062-1.611,0.324-2.097,0.987c-3.021,4.139-7.708,8.75-9.605,8.75 c-0.775,0-2.202-0.176-3.855-0.38c-2.922-0.36-6.562-0.81-10.338-0.81c-3.111,0-6.12,0.394-8.776,0.741 c-1.843,0.241-3.434,0.449-4.533,0.449c-3.984,0-8.543-6.114-9.827-8.256c-0.434-0.723-1.213-1.17-2.058-1.175 c-0.881-0.004-1.628,0.427-2.072,1.145c-2.846,4.602-4.725,7.642-6.769,12.961C14.749,32.337,10.35,47.23,10.35,53.91 c0,1.735,0.136,3.422,0.386,5.062L2.311,60.32c-1.317,0.209-2.215,1.451-2.004,2.769c0.189,1.188,1.217,2.034,2.383,2.034 c0.126,0,0.255-0.008,0.385-0.028l8.765-1.402c0.394,1.244,0.859,2.453,1.403,3.62L2.307,69.06 c-1.317,0.211-2.215,1.451-2.005,2.771c0.19,1.187,1.217,2.034,2.383,2.034c0.127,0,0.256-0.01,0.386-0.028l12.746-2.039 c6.81,9.795,19.501,15.824,35.349,15.824c15.708,0,28.317-5.926,35.172-15.568l11.136,1.781c0.13,0.021,0.258,0.029,0.386,0.029 c1.167,0,2.193-0.847,2.382-2.034C100.452,70.511,99.553,69.271,98.236,69.06z";
@@ -21,6 +29,9 @@ const DOG_NOSE =
 const CREAM = "#feefd7";
 const INK = "#1b1814";
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+
+const FRAME = { x: 16, y: 16, w: 488, h: 268 };
+const PAD = 22;
 
 type Blink = { delay: number; duration: number };
 
@@ -129,21 +140,142 @@ const CLUSTER = Array.from({ length: 54 }, (_, i) => {
   };
 });
 
-export function PetCluster() {
+function clientToSvg(svg: SVGSVGElement, clientX: number, clientY: number) {
+  const pt = svg.createSVGPoint();
+  pt.x = clientX;
+  pt.y = clientY;
+  const ctm = svg.getScreenCTM();
+  if (!ctm) return { x: 0, y: 0 };
+  const p = pt.matrixTransform(ctm.inverse());
+  return { x: p.x, y: p.y };
+}
+
+function clamp(n: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, n));
+}
+
+function PetFace({
+  kind,
+  delay,
+  duration,
+}: {
+  kind: "cat" | "dog";
+  delay: number;
+  duration: number;
+}) {
+  return kind === "cat" ? (
+    <CatMark coat={CREAM} ink={INK} blink={{ delay, duration }} />
+  ) : (
+    <DogMark coat={CREAM} ink={INK} blink={{ delay, duration }} />
+  );
+}
+
+export function PetCluster({
+  draggable = false,
+  onDragged,
+}: {
+  draggable?: boolean;
+  onDragged?: () => void;
+}) {
+  const [positions, setPositions] = useState(() => CLUSTER.map((p) => ({ x: p.x, y: p.y })));
+  const [lift, setLift] = useState<number | null>(null);
+  const drag = useRef<{
+    i: number;
+    ox: number;
+    oy: number;
+    startX: number;
+    startY: number;
+    moved: boolean;
+  } | null>(null);
+  const onDraggedRef = useRef(onDragged);
+  onDraggedRef.current = onDragged;
+
+  const onPointerDown = useCallback(
+    (i: number, e: ReactPointerEvent<SVGGElement>) => {
+      if (!draggable) return;
+      e.stopPropagation();
+      const svg = e.currentTarget.ownerSVGElement;
+      if (!svg) return;
+      const p = clientToSvg(svg, e.clientX, e.clientY);
+      const pos = positions[i];
+      drag.current = {
+        i,
+        ox: p.x - pos.x,
+        oy: p.y - pos.y,
+        startX: pos.x,
+        startY: pos.y,
+        moved: false,
+      };
+      setLift(i);
+      e.currentTarget.setPointerCapture(e.pointerId);
+    },
+    [draggable, positions],
+  );
+
+  const onPointerMove = useCallback((e: ReactPointerEvent<SVGGElement>) => {
+    const d = drag.current;
+    if (!d) return;
+    const svg = e.currentTarget.ownerSVGElement;
+    if (!svg) return;
+    const p = clientToSvg(svg, e.clientX, e.clientY);
+    const x = clamp(p.x - d.ox, FRAME.x + PAD, FRAME.x + FRAME.w - PAD);
+    const y = clamp(p.y - d.oy, FRAME.y + PAD, FRAME.y + FRAME.h - PAD);
+    if (!d.moved && Math.hypot(x - d.startX, y - d.startY) > 3) {
+      d.moved = true;
+      onDraggedRef.current?.();
+    }
+    setPositions((prev) => {
+      const next = [...prev];
+      next[d.i] = { x, y };
+      return next;
+    });
+  }, []);
+
+  const endDrag = useCallback((e: ReactPointerEvent<SVGGElement>) => {
+    if (drag.current?.moved) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    drag.current = null;
+    setLift(null);
+  }, []);
+
   return (
     <g>
-      {CLUSTER.map((pet, i) => (
+      {CLUSTER.map((pet, i) => {
+        const pos = positions[i];
+        const isLifted = lift === i;
+        return (
+          <g
+            key={i}
+            className={draggable ? "pet-mark" : undefined}
+            style={{
+              cursor: draggable ? (isLifted ? "grabbing" : "grab") : undefined,
+              visibility: isLifted ? "hidden" : "visible",
+            }}
+            transform={`translate(${pos.x} ${pos.y}) rotate(${pet.rot}) scale(${pet.s}) translate(-51 -45)`}
+            onPointerDown={(e) => onPointerDown(i, e)}
+            onPointerMove={draggable ? onPointerMove : undefined}
+            onPointerUp={draggable ? endDrag : undefined}
+            onPointerCancel={draggable ? endDrag : undefined}
+          >
+            <PetFace kind={pet.kind} delay={pet.delay} duration={pet.duration} />
+          </g>
+        );
+      })}
+      {lift !== null ? (
         <g
-          key={i}
-          transform={`translate(${pet.x} ${pet.y}) rotate(${pet.rot}) scale(${pet.s}) translate(-51 -45)`}
+          pointerEvents="none"
+          style={{ filter: "drop-shadow(0 2px 2px rgba(27, 24, 20, 0.18))" }}
+          transform={`translate(${positions[lift].x} ${positions[lift].y}) rotate(${CLUSTER[lift].rot}) scale(${CLUSTER[lift].s}) translate(-51 -45)`}
         >
-          {pet.kind === "cat" ? (
-            <CatMark coat={CREAM} ink={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
-          ) : (
-            <DogMark coat={CREAM} ink={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
-          )}
+          <PetFace
+            kind={CLUSTER[lift].kind}
+            delay={CLUSTER[lift].delay}
+            duration={CLUSTER[lift].duration}
+          />
         </g>
-      ))}
+      ) : null}
     </g>
   );
 }
