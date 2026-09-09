@@ -76,35 +76,50 @@ export default async function DashboardPage({
           <p className="py-20 text-sm text-muted-foreground">{t.emptySearch}</p>
         ) : (
           <div>
-            {filtered.map((article, i) => (
-              <Link
-                key={article.slug}
-                href={`/articles/${article.slug}`}
-                className={`grid items-center gap-8 border-t py-12 md:grid-cols-2 ${
-                  i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
-                }`}
-              >
-                <div>
-                  <p className="text-xs text-muted-foreground">
-                    {categories.find((c) => c.id === article.category)?.label[locale]}
-                    {" · "}
-                    {article.minutes} {t.minutes}
-                  </p>
-                  <h3 className="font-heading mt-2 text-3xl max-[700px]:text-2xl max-[700px]:leading-tight">{article.title[locale]}</h3>
-                  <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                    {article.summary[locale]}
-                  </p>
-                  <span className="mt-6 inline-block text-sm underline underline-offset-4">
-                    {t.diveIn}
-                  </span>
+            {filtered.map((article, i) => {
+              const href = `/articles/${article.slug}`;
+              const playable = article.slug === "train-test-validation";
+              return (
+                <div
+                  key={article.slug}
+                  className={`grid items-center gap-8 border-t py-12 md:grid-cols-2 ${
+                    i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
+                  }`}
+                >
+                  <Link href={href}>
+                    <p className="text-xs text-muted-foreground">
+                      {categories.find((c) => c.id === article.category)?.label[locale]}
+                      {" · "}
+                      {article.minutes} {t.minutes}
+                    </p>
+                    <h3 className="font-heading mt-2 text-3xl max-[700px]:text-2xl max-[700px]:leading-tight">
+                      {article.title[locale]}
+                    </h3>
+                    <p className="mt-4 text-sm leading-7 text-muted-foreground">
+                      {article.summary[locale]}
+                    </p>
+                    <span className="mt-6 inline-block text-sm underline underline-offset-4">
+                      {t.diveIn}
+                    </span>
+                  </Link>
+                  {playable ? (
+                    <ArticleThumb
+                      slug={article.slug}
+                      playable
+                      href={href}
+                      className="h-auto w-full border border-foreground/15"
+                    />
+                  ) : (
+                    <Link href={href}>
+                      <ArticleThumb
+                        slug={article.slug}
+                        className="h-auto w-full border border-foreground/15"
+                      />
+                    </Link>
+                  )}
                 </div>
-                <ArticleThumb
-                  slug={article.slug}
-                  playable
-                  className="h-auto w-full border border-foreground/15"
-                />
-              </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>

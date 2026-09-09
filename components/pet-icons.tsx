@@ -2,6 +2,7 @@
 
 import {
   useCallback,
+  useEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -179,6 +180,8 @@ export function PetCluster({
 }) {
   const [positions, setPositions] = useState(() => CLUSTER.map((p) => ({ x: p.x, y: p.y })));
   const [lift, setLift] = useState<number | null>(null);
+  const positionsRef = useRef(positions);
+  positionsRef.current = positions;
   const drag = useRef<{
     i: number;
     ox: number;
@@ -186,18 +189,23 @@ export function PetCluster({
     startX: number;
     startY: number;
     moved: boolean;
+    svg: SVGSVGElement;
   } | null>(null);
   const onDraggedRef = useRef(onDragged);
   onDraggedRef.current = onDragged;
+  const stopListen = useRef<(() => void) | null>(null);
+
+  useEffect(() => () => stopListen.current?.(), []);
 
   const onPointerDown = useCallback(
     (i: number, e: ReactPointerEvent<SVGGElement>) => {
       if (!draggable) return;
+      e.preventDefault();
       e.stopPropagation();
       const svg = e.currentTarget.ownerSVGElement;
       if (!svg) return;
       const p = clientToSvg(svg, e.clientX, e.clientY);
-      const pos = positions[i];
+      const pos = positionsRef.current[i];
       drag.current = {
         i,
         ox: p.x - pos.x,
@@ -205,40 +213,47 @@ export function PetCluster({
         startX: pos.x,
         startY: pos.y,
         moved: false,
+        svg,
       };
       setLift(i);
-      e.currentTarget.setPointerCapture(e.pointerId);
+
+      const onMove = (ev: PointerEvent) => {
+        const d = drag.current;
+        if (!d) return;
+        ev.preventDefault();
+        const pt = clientToSvg(d.svg, ev.clientX, ev.clientY);
+        const x = clamp(pt.x - d.ox, FRAME.x + PAD, FRAME.x + FRAME.w - PAD);
+        const y = clamp(pt.y - d.oy, FRAME.y + PAD, FRAME.y + FRAME.h - PAD);
+        if (!d.moved && Math.hypot(x - d.startX, y - d.startY) > 3) {
+          d.moved = true;
+          onDraggedRef.current?.();
+        }
+        setPositions((prev) => {
+          const next = [...prev];
+          next[d.i] = { x, y };
+          return next;
+        });
+      };
+
+      const onUp = () => {
+        stopListen.current?.();
+        stopListen.current = null;
+        drag.current = null;
+        setLift(null);
+      };
+
+      stopListen.current?.();
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", onUp);
+      stopListen.current = () => {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        window.removeEventListener("pointercancel", onUp);
+      };
     },
-    [draggable, positions],
+    [draggable],
   );
-
-  const onPointerMove = useCallback((e: ReactPointerEvent<SVGGElement>) => {
-    const d = drag.current;
-    if (!d) return;
-    const svg = e.currentTarget.ownerSVGElement;
-    if (!svg) return;
-    const p = clientToSvg(svg, e.clientX, e.clientY);
-    const x = clamp(p.x - d.ox, FRAME.x + PAD, FRAME.x + FRAME.w - PAD);
-    const y = clamp(p.y - d.oy, FRAME.y + PAD, FRAME.y + FRAME.h - PAD);
-    if (!d.moved && Math.hypot(x - d.startX, y - d.startY) > 3) {
-      d.moved = true;
-      onDraggedRef.current?.();
-    }
-    setPositions((prev) => {
-      const next = [...prev];
-      next[d.i] = { x, y };
-      return next;
-    });
-  }, []);
-
-  const endDrag = useCallback((e: ReactPointerEvent<SVGGElement>) => {
-    if (drag.current?.moved) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-    drag.current = null;
-    setLift(null);
-  }, []);
 
   return (
     <g>
@@ -251,15 +266,14 @@ export function PetCluster({
             className={draggable ? "pet-mark" : undefined}
             style={{
               cursor: draggable ? (isLifted ? "grabbing" : "grab") : undefined,
+              touchAction: draggable ? "none" : undefined,
               visibility: isLifted ? "hidden" : "visible",
             }}
             transform={`translate(${pos.x} ${pos.y}) rotate(${pet.rot}) scale(${pet.s}) translate(-51 -45)`}
             onPointerDown={(e) => onPointerDown(i, e)}
-            onPointerMove={draggable ? onPointerMove : undefined}
-            onPointerUp={draggable ? endDrag : undefined}
-            onPointerCancel={draggable ? endDrag : undefined}
           >
             <PetFace kind={pet.kind} delay={pet.delay} duration={pet.duration} />
+            {draggable ? <circle cx="51" cy="48" r="50" fill="transparent" /> : null}
           </g>
         );
       })}

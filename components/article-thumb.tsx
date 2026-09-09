@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { PetCluster } from "@/components/pet-icons";
 import { articles } from "@/lib/articles";
 
@@ -279,11 +280,14 @@ export function ArticleThumb({
   slug,
   className = "",
   playable = false,
+  href,
 }: {
   slug: string;
   className?: string;
   playable?: boolean;
+  href?: string;
 }) {
+  const router = useRouter();
   const article = articles.find((a) => a.slug === slug);
   const clipId = useId().replace(/:/g, "");
   const skipNav = useRef(false);
@@ -292,13 +296,20 @@ export function ArticleThumb({
     <svg
       viewBox="0 0 520 300"
       className={className}
-      aria-hidden="true"
+      aria-hidden={!href}
       preserveAspectRatio="xMidYMid meet"
+      onDragStart={(e) => e.preventDefault()}
       onClick={(e) => {
-        if (!skipNav.current) return;
-        e.preventDefault();
-        e.stopPropagation();
-        skipNav.current = false;
+        if (skipNav.current) {
+          e.preventDefault();
+          e.stopPropagation();
+          skipNav.current = false;
+          return;
+        }
+        if (href) {
+          e.preventDefault();
+          router.push(href);
+        }
       }}
     >
       {drawing(slug, article?.title.en ?? "", {
