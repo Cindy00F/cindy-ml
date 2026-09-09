@@ -5,20 +5,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DEMO_ACCOUNT, messages } from "@/lib/messages";
 import { getLocale, getSession, getTheme } from "@/lib/session";
+import { safeNextPath } from "@/lib/paths";
 import { redirect } from "next/navigation";
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
+  const params = await searchParams;
+  const next = safeNextPath(params.next);
   const session = await getSession();
-  if (session) redirect("/dashboard");
+  if (session) redirect(next);
 
   const locale = await getLocale();
   const theme = await getTheme();
   const t = messages[locale];
-  const params = await searchParams;
   const error = params.error === "1";
 
   return (
@@ -36,6 +38,7 @@ export default async function LoginPage({
         </div>
         <div className="w-full max-w-sm space-y-3 border-t pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
           <form action={loginAction} method="post" className="space-y-5">
+            <input type="hidden" name="next" value={next} />
             <h2 className="font-heading text-2xl">{t.loginTitle}</h2>
             <div className="space-y-2">
               <Label htmlFor="email">{t.email}</Label>
@@ -68,6 +71,7 @@ export default async function LoginPage({
             </button>
           </form>
           <form action={guestAction} method="post">
+            <input type="hidden" name="next" value={next} />
             <button
               type="submit"
               className="h-10 w-full border border-foreground text-sm"

@@ -10,28 +10,32 @@ import {
   setSessionCookie,
   THEME_COOKIE,
 } from "@/lib/session";
+import { safeNextPath } from "@/lib/paths";
 
 export async function loginAction(formData: FormData) {
+  const next = safeNextPath(formData.get("next"));
   const email = String(formData.get("email") ?? "")
     .trim()
     .toLowerCase();
   const password = String(formData.get("password") ?? "");
   if (email !== DEMO_ACCOUNT.email || password !== DEMO_ACCOUNT.password) {
-    redirect("/login?error=1");
+    const login = next === "/dashboard" ? "/login?error=1" : `/login?error=1&next=${encodeURIComponent(next)}`;
+    redirect(login);
   }
   await setSessionCookie({
     email: DEMO_ACCOUNT.email,
     name: DEMO_ACCOUNT.name,
   });
-  redirect("/dashboard");
+  redirect(next);
 }
 
-export async function guestAction() {
+export async function guestAction(formData: FormData) {
+  const next = safeNextPath(formData.get("next"));
   await setSessionCookie({
     email: DEMO_ACCOUNT.email,
     name: DEMO_ACCOUNT.name,
   });
-  redirect("/dashboard");
+  redirect(next);
 }
 
 export async function logoutAction() {

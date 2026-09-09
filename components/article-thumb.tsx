@@ -290,7 +290,7 @@ export function ArticleThumb({
   const router = useRouter();
   const article = articles.find((a) => a.slug === slug);
   const clipId = useId().replace(/:/g, "");
-  const skipNav = useRef(false);
+  const draggedAt = useRef(0);
 
   return (
     <svg
@@ -300,10 +300,9 @@ export function ArticleThumb({
       preserveAspectRatio="xMidYMid meet"
       onDragStart={(e) => e.preventDefault()}
       onClick={(e) => {
-        if (skipNav.current) {
+        if (Date.now() - draggedAt.current < 500) {
           e.preventDefault();
           e.stopPropagation();
-          skipNav.current = false;
           return;
         }
         if (href) {
@@ -316,7 +315,7 @@ export function ArticleThumb({
         playable,
         clipId: `pet-frame-${clipId}`,
         onDragged: () => {
-          skipNav.current = true;
+          draggedAt.current = Date.now();
         },
       })}
     </svg>

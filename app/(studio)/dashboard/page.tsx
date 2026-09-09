@@ -106,7 +106,8 @@ export default async function DashboardPage({
                     <ArticleThumb
                       slug={article.slug}
                       playable
-                      className="h-auto w-full border border-foreground/15"
+                      href={href}
+                      className="h-auto w-full cursor-pointer border border-foreground/15"
                     />
                   ) : (
                     <Link href={href}>
