@@ -127,6 +127,11 @@
     "D2L book": "《动手学深度学习》",
     ", watch": "",
     ", or read the": "，也可以翻翻",
+    ", a": "，",
+    ", and a": "，还有",
+    and: "和",
+    or: "或",
+    ",": "，",
     "Train,Test,Validation": "训练、测试、验证",
   };
 
@@ -144,8 +149,10 @@
     ["training set", "训练集"],
     ["validation set", "验证集"],
     ["testing set", "测试集"],
-    [", and a ", "，还有"],
-    [", a ", "，"],
+    [", and a", "，还有"],
+    [", a", "，"],
+    [" and ", "和"],
+    [" or ", "或"],
     ["By Jared Wilber & Brent Werness.", ""],
     ["Jared Wilber", ""],
     ["Brent Werness", ""],
@@ -243,7 +250,7 @@
     for (var i = 0; i < links.length; i++) {
       var a = links[i];
       var href = a.getAttribute("href") || "";
-      if (href.indexOf("youtube.com") !== -1) {
+      if (href.indexOf("youtube.com/channel/UC12LqyqTQYbXatYS9AA7Nuw") !== -1) {
         a.style.display = "none";
         continue;
       }
