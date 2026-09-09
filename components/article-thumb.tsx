@@ -26,7 +26,7 @@ function Frame({
           y="48"
           className="fill-foreground"
           fontSize="13"
-          fontFamily="ui-serif, Georgia, serif"
+          fontFamily="var(--font-outfit), var(--font-noto-sans-sc), sans-serif"
         >
           {title}
         </text>
