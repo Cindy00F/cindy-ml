@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { tickLabel, type EssayTick } from "@/lib/essay-labels";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -16,15 +17,41 @@ export function EssayScale({
   onWheelDelta?: (deltaY: number) => void;
 }) {
   const { locale } = useI18n();
+  const rootRef = useRef<HTMLElement>(null);
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
   const activeIndex = Math.max(
     0,
     ticks.findIndex((tick) => tick.id === activeId),
   );
 
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const jump = (event: Event) => {
+      const node = event.target as Node | null;
+      const el = node instanceof Element ? node : node?.parentElement;
+      const button = el?.closest("[data-tick-id]");
+      if (!button || !root.contains(button)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const id = button.getAttribute("data-tick-id");
+      if (id) onSelectRef.current(id);
+    };
+            root.addEventListener("pointerdown", jump, true);
+            root.addEventListener("click", jump, true);
+            root.setAttribute("data-cindy-bound", "1");
+    return () => {
+      root.removeEventListener("pointerdown", jump, true);
+      root.removeEventListener("click", jump, true);
+    };
+  }, [ticks.length]);
+
   if (ticks.length < 2) return null;
 
   return (
     <aside
+      ref={rootRef}
       className="essay-scale pointer-events-auto absolute inset-y-0 right-0 z-30 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[701px]:flex dark:from-[#1b1814] dark:text-[#f3ead8]"
       aria-label={locale === "zh" ? "章节刻度" : "Section scale"}
       onWheel={(event) => {
@@ -45,7 +72,18 @@ export function EssayScale({
             <li key={tick.id} className="h-8">
               <button
                 type="button"
-                onClick={() => onSelect(tick.id)}
+                data-tick-id={tick.id}
+                ref={(el) => {
+                  if (!el) return;
+                  el.onclick = (event) => {
+                    event.preventDefault();
+                    onSelectRef.current(tick.id);
+                  };
+                  el.onpointerdown = (event) => {
+                    event.preventDefault();
+                    onSelectRef.current(tick.id);
+                  };
+                }}
                 onWheel={(event) => {
                   if (!onWheelDelta) return;
                   event.preventDefault();
@@ -54,7 +92,7 @@ export function EssayScale({
                 aria-current={isActive ? "true" : undefined}
                 title={label}
                 className={cn(
-                  "pointer-events-auto flex h-8 w-full cursor-pointer items-center justify-end gap-2 text-right hover:opacity-100",
+                  "pointer-events-auto flex h-8 w-full cursor-pointer items-center justify-end gap-2 text-right hover:opacity-100 [&_*]:pointer-events-none",
                   isActive ? "font-bold" : "font-medium",
                 )}
                 style={{ fontSize: `${size}px`, opacity }}

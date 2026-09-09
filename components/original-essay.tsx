@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type WheelEvent } from "react";
+import Script from "next/script";
 import { EssayScale } from "@/components/essay-scale";
 import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
@@ -14,14 +15,13 @@ const HIDE_CHROME = `
     box-sizing: border-box;
     height: auto !important;
     min-height: 100%;
-    padding-right: 9.25rem !important;
     overflow-x: hidden;
     overflow-y: auto !important;
     scrollbar-width: none;
+    scroll-behavior: auto !important;
   }
   body { height: auto !important; min-height: 100%; overflow-y: visible !important; }
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
-  @media (max-width: 700px) { html { padding-right: 0 !important; } }
   body > header, header { display: none !important; }
   #toc {
     position: absolute !important;
@@ -142,19 +142,15 @@ function sendPrefs(win: Window | null, locale: Locale, theme: ThemeName) {
 
 function jumpToSection(win: Window | null, doc: Document | null, id: string) {
   if (!win || !doc) return;
+  const node = doc.getElementById(id) ?? doc.querySelector<HTMLElement>(`section[id="${id}"]`);
+  if (!node) return;
+  const root = doc.scrollingElement ?? doc.documentElement;
+  const y = Math.max(0, node.getBoundingClientRect().top + (win.scrollY || root.scrollTop || 0) - 8);
+  win.scrollTo(0, y);
+  root.scrollTop = y;
+  doc.documentElement.scrollTop = y;
+  if (doc.body) doc.body.scrollTop = y;
   sendGo(win, id);
-  const node = doc.getElementById(id);
-  if (node) {
-    const root = doc.scrollingElement ?? doc.documentElement;
-    const y = Math.max(0, node.getBoundingClientRect().top + (win.scrollY || root.scrollTop || 0) - 8);
-    win.scrollTo(0, y);
-    root.scrollTop = y;
-  }
-  try {
-    win.location.hash = id;
-  } catch {
-    /* ignore */
-  }
   const tocLink = doc.querySelector<HTMLAnchorElement>(
     `#toc a[href="#${id}"], #toc a[data-page="${id}"]`,
   );
@@ -264,11 +260,7 @@ export function OriginalEssay({
     const collect = () => {
       hideOriginalChrome(doc);
       const next = ticksFromDom(doc);
-      if (next.length >= 2) {
-        setTicks(next);
-        const fromToc = selectedIdFromToc(doc);
-        setActiveId((current) => fromToc ?? current ?? next[0]?.id ?? null);
-      }
+      if (next.length >= 2) setTicks(next);
       return next.length >= 2 ? next : known;
     };
 
@@ -337,15 +329,37 @@ export function OriginalEssay({
   }, [bindIframe, teardown]);
 
   useEffect(() => {
+    document.documentElement.dataset.cindyEssay = "hydrated";
+  }, []);
+
+  useEffect(() => {
     sendPrefs(iframeRef.current?.contentWindow ?? null, prefs.locale, prefs.theme);
   }, [prefs]);
 
-  const onSelect = (id: string) => {
+  const onSelect = useCallback((id: string) => {
     const iframe = iframeRef.current;
+    const win = iframe?.contentWindow ?? null;
+    const doc = iframe?.contentDocument ?? null;
     setActiveId(id);
-    iframe?.focus();
-    jumpToSection(iframe?.contentWindow ?? null, iframe?.contentDocument ?? null, id);
-  };
+    if (!win || !doc) return;
+    jumpToSection(win, doc, id);
+  }, []);
+
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const node = event.target as Node | null;
+      const el = node instanceof Element ? node : node?.parentElement;
+      const id = el?.closest("[data-tick-id]")?.getAttribute("data-tick-id");
+      if (!id) return;
+      onSelect(id);
+    };
+    document.addEventListener("pointerdown", handler, true);
+    document.addEventListener("click", handler, true);
+    return () => {
+      document.removeEventListener("pointerdown", handler, true);
+      document.removeEventListener("click", handler, true);
+    };
+  }, [onSelect]);
 
   const onHostWheel = (event: WheelEvent<HTMLDivElement>) => {
     const win = iframeRef.current?.contentWindow;
@@ -358,11 +372,34 @@ export function OriginalEssay({
       className="original-essay relative z-0 min-h-0 w-full flex-1 bg-[#fcf4e8] text-[#1a1a1a] dark:bg-[#1b1814] dark:text-[#f3ead8]"
       onWheel={onHostWheel}
     >
+      <Script id="cindy-scale-jump" strategy="afterInteractive">{`
+        document.addEventListener("click", function (event) {
+          var node = event.target;
+          var el = node && node.closest ? node : node && node.parentElement;
+          var btn = el && el.closest ? el.closest("[data-tick-id]") : null;
+          if (!btn) return;
+          var id = btn.getAttribute("data-tick-id");
+          var iframe = document.querySelector(".original-essay iframe");
+          if (!id || !iframe || !iframe.contentWindow) return;
+          var win = iframe.contentWindow;
+          var doc = iframe.contentDocument;
+          var go = win.__cindyGo;
+          if (typeof go === "function") go(id);
+          else if (doc) {
+            var section = doc.getElementById(id);
+            if (section) {
+              var y = section.getBoundingClientRect().top + (win.scrollY || 0) - 8;
+              win.scrollTo(0, y);
+            }
+          }
+          win.postMessage({ type: "cindy-go", id: id }, "*");
+        }, true);
+      `}</Script>
       <iframe
         ref={iframeRef}
         title="MLU-Explain essay"
         src={srcRef.current}
-        className="absolute inset-0 z-0 h-full w-full border-0 bg-[#fcf4e8] dark:bg-[#1b1814]"
+        className="absolute inset-y-0 left-0 z-0 h-full w-full border-0 bg-[#fcf4e8] min-[701px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814]"
       />
       <EssayScale
         ticks={ticks}
