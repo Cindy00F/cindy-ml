@@ -142,6 +142,8 @@
     ["training set", "训练集"],
     ["validation set", "验证集"],
     ["testing set", "测试集"],
+    [", and a ", "，以及"],
+    [", a ", "，"],
   ];
 
   function readCookie(name) {

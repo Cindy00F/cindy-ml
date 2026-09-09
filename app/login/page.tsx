@@ -24,7 +24,7 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader locale={locale} theme={theme} />
-      <main className="mx-auto grid w-full max-w-6xl items-center gap-16 px-6 py-16 md:grid-cols-2">
+      <main className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-10 sm:px-6 sm:py-16 md:grid-cols-2 md:gap-16">
         <div>
           <h1 className="font-heading mt-3 text-4xl leading-tight sm:text-5xl">
             {t.welcomeBack}
@@ -34,7 +34,7 @@ export default async function LoginPage({
           </p>
           <DeskDoodle className="mt-10 hidden max-w-xs text-foreground md:block" />
         </div>
-        <div className="max-w-sm space-y-3 border-t pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
+        <div className="w-full max-w-sm space-y-3 border-t pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
           <form action={loginAction} method="post" className="space-y-5">
             <h2 className="font-heading text-2xl">{t.loginTitle}</h2>
             <div className="space-y-2">

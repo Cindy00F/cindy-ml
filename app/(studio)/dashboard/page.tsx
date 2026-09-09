@@ -46,7 +46,7 @@ export default async function DashboardPage({
               name="q"
               defaultValue={q}
               placeholder={t.search}
-              className="h-9 w-48 border-b border-foreground/30 bg-transparent text-sm outline-none"
+              className="h-9 w-full max-w-[11rem] min-w-0 border-b border-foreground/30 bg-transparent text-sm outline-none sm:w-48 sm:max-w-none"
             />
           </form>
         </div>
@@ -90,7 +90,7 @@ export default async function DashboardPage({
                     {" · "}
                     {article.minutes} {t.minutes}
                   </p>
-                  <h3 className="font-heading mt-2 text-3xl">{article.title[locale]}</h3>
+                  <h3 className="font-heading mt-2 text-2xl leading-tight sm:text-3xl">{article.title[locale]}</h3>
                   <p className="mt-4 text-sm leading-7 text-muted-foreground">
                     {article.summary[locale]}
                   </p>

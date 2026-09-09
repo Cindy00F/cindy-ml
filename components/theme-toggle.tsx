@@ -35,7 +35,7 @@ export function ThemeToggle({ theme }: { theme: ThemeName }) {
         });
       }}
       aria-label={current === "dark" ? "Switch to light" : "切换到暗色"}
-      className="relative z-[1] inline-flex items-center gap-1 px-1.5 py-1 text-xs text-muted-foreground hover:text-foreground"
+      className="relative z-[1] inline-flex min-h-9 items-center gap-1 px-1 py-1 text-[11px] text-muted-foreground hover:text-foreground sm:min-h-0 sm:px-1.5 sm:text-xs"
     >
       {current === "dark" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
       <span className={current === "light" ? "text-foreground" : "opacity-50"}>亮</span>

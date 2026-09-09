@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif, Outfit } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { getLocale, getTheme } from "@/lib/session";
@@ -30,6 +30,12 @@ export const metadata: Metadata = {
   title: "Cindy 在学习机器学习",
   description: "Fourteen visual essays on machine learning.",
   icons: { icon: "/favicon.svg" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

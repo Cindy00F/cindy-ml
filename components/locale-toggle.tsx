@@ -34,7 +34,7 @@ export function LocaleToggle({ locale }: { locale: Locale }) {
           router.refresh();
         });
       }}
-      className="relative z-[1] inline-flex items-center gap-1 px-1.5 py-1 text-xs tracking-wide text-muted-foreground hover:text-foreground"
+      className="relative z-[1] inline-flex min-h-9 items-center gap-1 px-1 py-1 text-[11px] tracking-wide text-muted-foreground hover:text-foreground sm:min-h-0 sm:px-1.5 sm:text-xs"
       aria-label={current === "zh" ? "Switch to English" : "切换到中文"}
     >
       <Globe className="size-3.5" />
