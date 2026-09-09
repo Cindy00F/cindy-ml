@@ -1,5 +1,6 @@
 "use client";
 
+import { PetCluster } from "@/components/pet-icons";
 import { articles } from "@/lib/articles";
 
 function Frame({
@@ -40,44 +41,7 @@ function drawing(slug: string, title: string) {
     case "train-test-validation":
       return (
         <Frame>
-          <text x="36" y="48" className="fill-foreground" fontSize="13" fontFamily="ui-serif, Georgia, serif">
-            Train · Val · Test
-          </text>
-          {[
-            { x: 40, label: "Train", cats: 5, dogs: 4 },
-            { x: 190, label: "Val", cats: 3, dogs: 3 },
-            { x: 340, label: "Test", cats: 3, dogs: 3 },
-          ].map((box) => (
-            <g key={box.label}>
-              <rect
-                x={box.x}
-                y="72"
-                width="140"
-                height="190"
-                className="fill-none stroke-foreground/40"
-              />
-              <text x={box.x + 12} y="94" className="fill-foreground/70" fontSize="11">
-                {box.label}
-              </text>
-              {Array.from({ length: box.cats }, (_, i) => (
-                <g key={`c${i}`} transform={`translate(${box.x + 28 + (i % 3) * 36} ${128 + Math.floor(i / 3) * 42})`}>
-                  <circle r="11" className="fill-none stroke-foreground" />
-                  <path d="M-6 -8 L-3 -16 L0 -8" className="fill-none stroke-foreground" />
-                  <path d="M6 -8 L3 -16 L0 -8" className="fill-none stroke-foreground" />
-                </g>
-              ))}
-              {Array.from({ length: box.dogs }, (_, i) => (
-                <g
-                  key={`d${i}`}
-                  transform={`translate(${box.x + 46 + (i % 3) * 36} ${210 + Math.floor(i / 3) * 28})`}
-                >
-                  <circle r="11" className="fill-none stroke-foreground" />
-                  <path d="M-10 -2 Q-12 -10 -4 -7" className="fill-none stroke-foreground" />
-                  <path d="M10 -2 Q12 -10 4 -7" className="fill-none stroke-foreground" />
-                </g>
-              ))}
-            </g>
-          ))}
+          <PetCluster />
         </Frame>
       );
     case "linear-regression":

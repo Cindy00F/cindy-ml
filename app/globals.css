@@ -376,6 +376,8 @@ body:has(.split-essay) header {
 }
 
 .pet-eye {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
   animation: pet-blink 2.6s linear infinite;
 }
 
@@ -385,13 +387,20 @@ body:has(.split-essay) header {
 
 @keyframes pet-blink {
   0%,
-  26%,
-  32%,
+  22%,
+  34%,
   100% {
-    opacity: 1;
+    transform: scaleY(1);
   }
-  29% {
-    opacity: 0;
+  26%,
+  30% {
+    transform: scaleY(0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pet-eye {
+    animation: none;
   }
 }
 

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 const CAT_EAR =
   "M98.236,69.06l-9.263-1.48c0.557-1.164,1.032-2.373,1.438-3.615l7.062,1.131c0.13,0.021,0.258,0.028,0.386,0.028 c1.167,0,2.193-0.845,2.382-2.034c0.212-1.317-0.686-2.558-2.003-2.769l-6.675-1.067c0.28-1.726,0.427-3.508,0.427-5.343 c0-6.845-4.561-22.027-6.425-26.725c-1.431-3.602-2.868-5.95-4.531-8.67c-0.774-1.264-1.604-2.621-2.514-4.245 c-0.403-0.718-1.142-1.181-1.964-1.23c-0.849-0.062-1.611,0.324-2.097,0.987c-3.021,4.139-7.708,8.75-9.605,8.75 c-0.775,0-2.202-0.176-3.855-0.38c-2.922-0.36-6.562-0.81-10.338-0.81c-3.111,0-6.12,0.394-8.776,0.741 c-1.843,0.241-3.434,0.449-4.533,0.449c-3.984,0-8.543-6.114-9.827-8.256c-0.434-0.723-1.213-1.17-2.058-1.175 c-0.881-0.004-1.628,0.427-2.072,1.145c-2.846,4.602-4.725,7.642-6.769,12.961C14.749,32.337,10.35,47.23,10.35,53.91 c0,1.735,0.136,3.422,0.386,5.062L2.311,60.32c-1.317,0.209-2.215,1.451-2.004,2.769c0.189,1.188,1.217,2.034,2.383,2.034 c0.126,0,0.255-0.008,0.385-0.028l8.765-1.402c0.394,1.244,0.859,2.453,1.403,3.62L2.307,69.06 c-1.317,0.211-2.215,1.451-2.005,2.771c0.19,1.187,1.217,2.034,2.383,2.034c0.127,0,0.256-0.01,0.386-0.028l12.746-2.039 c6.81,9.795,19.501,15.824,35.349,15.824c15.708,0,28.317-5.926,35.172-15.568l11.136,1.781c0.13,0.021,0.258,0.029,0.386,0.029 c1.167,0,2.193-0.847,2.382-2.034C100.452,70.511,99.553,69.271,98.236,69.06z";
 
@@ -17,6 +19,73 @@ const DOG_NOSE =
   "M36.399,64.384c0,7.885,8.166,14.282,14.277,14.282c6.111,0,14.28-6.397,14.28-14.282C64.956,56.5,36.399,56.5,36.399,64.384z";
 
 const CREAM = "#feefd7";
+const INK = "#1b1814";
+const GOLDEN = Math.PI * (3 - Math.sqrt(5));
+
+type Blink = { delay: number; duration: number };
+
+function blinkStyle(delay: number, duration: number, extra = 0): CSSProperties {
+  return {
+    animationDelay: `${delay + extra}s`,
+    animationDuration: `${duration}s`,
+  };
+}
+
+function CatMark({ fill, blink }: { fill: string; blink?: Blink }) {
+  const delay = blink?.delay ?? 0;
+  const duration = blink?.duration ?? 2.6;
+  return (
+    <g>
+      <path d={CAT_EAR} fill={fill} />
+      <path d={CAT_HEAD} fill={CREAM} />
+      <path d={CAT_NOSE} fill={fill} />
+      <path
+        d="M16 56 H7 M18 62 H8 M18 50 H9 M86 56 H95 M84 62 H94 M84 50 H93"
+        fill="none"
+        stroke={fill}
+        strokeWidth="1.35"
+        strokeLinecap="round"
+      />
+      <circle className="pet-eye" cx="38" cy="54" r="3.2" fill={fill} style={blinkStyle(delay, duration)} />
+      <circle
+        className="pet-eye"
+        cx="62"
+        cy="54"
+        r="3.2"
+        fill={fill}
+        style={blinkStyle(delay, duration, 0.04)}
+      />
+    </g>
+  );
+}
+
+function DogMark({ fill, blink }: { fill: string; blink?: Blink }) {
+  const delay = blink?.delay ?? 0;
+  const duration = blink?.duration ?? 2.8;
+  return (
+    <g>
+      <path d={DOG_EAR} fill={fill} />
+      <path d={DOG_HEAD} fill={CREAM} />
+      <path d={DOG_NOSE} fill={fill} />
+      <path
+        d="M40 70 Q51 78 62 70"
+        fill="none"
+        stroke={fill}
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      <circle className="pet-eye" cx="38" cy="58" r="3.1" fill={fill} style={blinkStyle(delay, duration)} />
+      <circle
+        className="pet-eye"
+        cx="62"
+        cy="58"
+        r="3.1"
+        fill={fill}
+        style={blinkStyle(delay, duration, 0.05)}
+      />
+    </g>
+  );
+}
 
 export function CatIcon({
   fill,
@@ -27,11 +96,7 @@ export function CatIcon({
 }) {
   return (
     <svg viewBox="0 0 102 90" width={size} height={size} aria-hidden overflow="visible">
-      <path d={CAT_EAR} fill={fill} />
-      <path d={CAT_HEAD} fill={CREAM} />
-      <path d={CAT_NOSE} fill={fill} />
-      <circle className="pet-eye" cx="38" cy="54" r="3.2" fill={fill} />
-      <circle className="pet-eye pet-eye-delay" cx="62" cy="54" r="3.2" fill={fill} />
+      <CatMark fill={fill} blink={{ delay: 0, duration: 2.6 }} />
     </svg>
   );
 }
@@ -45,11 +110,40 @@ export function DogIcon({
 }) {
   return (
     <svg viewBox="0 0 102 90" width={size} height={size} aria-hidden overflow="visible">
-      <path d={DOG_EAR} fill={fill} />
-      <path d={DOG_HEAD} fill={CREAM} />
-      <path d={DOG_NOSE} fill={fill} />
-      <circle className="pet-eye" cx="38" cy="58" r="3.1" fill={fill} />
-      <circle className="pet-eye pet-eye-delay" cx="62" cy="58" r="3.1" fill={fill} />
+      <DogMark fill={fill} blink={{ delay: 0.4, duration: 3.1 }} />
     </svg>
+  );
+}
+
+const CLUSTER = Array.from({ length: 54 }, (_, i) => {
+  const r = 124 * Math.sqrt((i + 0.35) / 54);
+  const a = i * GOLDEN + 0.55;
+  return {
+    x: 260 + r * Math.cos(a),
+    y: 158 + r * Math.sin(a) * 0.9,
+    kind: (i * 5 + 2) % 7 < 4 ? ("cat" as const) : ("dog" as const),
+    s: 0.29 + (i % 4) * 0.012,
+    rot: ((i * 19) % 23) - 11,
+    delay: (i * 0.37) % 4.2,
+    duration: 2.35 + (i % 7) * 0.28,
+  };
+});
+
+export function PetCluster() {
+  return (
+    <g>
+      {CLUSTER.map((pet, i) => (
+        <g
+          key={i}
+          transform={`translate(${pet.x} ${pet.y}) rotate(${pet.rot}) scale(${pet.s}) translate(-51 -45)`}
+        >
+          {pet.kind === "cat" ? (
+            <CatMark fill={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
+          ) : (
+            <DogMark fill={INK} blink={{ delay: pet.delay, duration: pet.duration }} />
+          )}
+        </g>
+      ))}
+    </g>
   );
 }
