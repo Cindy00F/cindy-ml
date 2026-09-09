@@ -54,7 +54,7 @@ export function EssayScale({
                 aria-current={isActive ? "true" : undefined}
                 title={label}
                 className={cn(
-                  "pointer-events-auto flex h-8 w-full items-center justify-end gap-2 text-right",
+                  "pointer-events-auto flex h-8 w-full cursor-pointer items-center justify-end gap-2 text-right",
                   isActive ? "font-bold" : "font-medium",
                 )}
                 style={{ fontSize: `${size}px`, opacity }}
