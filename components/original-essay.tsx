@@ -120,14 +120,25 @@ function documentOffsetTop(node: HTMLElement) {
   return top;
 }
 
-function scrollIframeToId(doc: Document, win: Window, id: string) {
-  const node = doc.getElementById(id);
-  if (!node) return false;
-  const scroller = doc.scrollingElement ?? doc.documentElement;
-  const top = Math.max(0, documentOffsetTop(node) - 24);
-  scroller.scrollTop = top;
-  win.scrollTo(0, top);
-  return true;
+function installCindyGo(doc: Document) {
+  if (doc.getElementById("cindy-go")) return;
+  const script = doc.createElement("script");
+  script.id = "cindy-go";
+  script.textContent = `
+    window.__cindyGo = function (id) {
+      var el = document.getElementById(id);
+      if (!el) return false;
+      var root = document.scrollingElement || document.documentElement;
+      var y = el.getBoundingClientRect().top + (root.scrollTop || window.pageYOffset || 0) - 12;
+      if (y < 0) y = 0;
+      if (root.scrollTo) root.scrollTo(0, y);
+      root.scrollTop = y;
+      if (document.body) document.body.scrollTop = y;
+      el.scrollIntoView({ block: "start", inline: "nearest" });
+      return true;
+    };
+  `;
+  doc.documentElement.appendChild(script);
 }
 
 function hideOriginalChrome(doc: Document) {
@@ -143,6 +154,7 @@ function hideOriginalChrome(doc: Document) {
     link.href = "/essays/cindy-shell.css";
     doc.head?.appendChild(link);
   }
+  installCindyGo(doc);
 }
 
 export function OriginalEssay({ folder }: { folder: string }) {
@@ -273,10 +285,21 @@ export function OriginalEssay({ folder }: { folder: string }) {
   const onSelect = (id: string) => {
     const iframe = iframeRef.current;
     const doc = iframe?.contentDocument;
-    const win = iframe?.contentWindow;
+    const win = iframe?.contentWindow as
+      | (Window & { __cindyGo?: (sectionId: string) => boolean })
+      | null;
     if (!doc || !win) return;
     setActiveId(id);
-    scrollIframeToId(doc, win, id);
+    if (doc && !doc.getElementById("cindy-go")) installCindyGo(doc);
+    const jumped = win.__cindyGo?.(id);
+    if (!jumped) {
+      const node = doc.getElementById(id);
+      if (node) {
+        const top = Math.max(0, documentOffsetTop(node) - 24);
+        (doc.scrollingElement ?? doc.documentElement).scrollTop = top;
+        win.scrollTo(0, top);
+      }
+    }
     const tocLink = doc.querySelector<HTMLAnchorElement>(
       `#toc a[href="#${id}"], #toc a[data-page="${id}"]`,
     );
