@@ -110,7 +110,25 @@ function selectedIdFromToc(doc: Document) {
   return (selected.getAttribute("href") ?? "").replace("#", "") || selected.dataset.page || null;
 }
 
-function hideOriginalChrome(doc: Document) {
+function documentOffsetTop(node: HTMLElement) {
+  let top = 0;
+  let current: HTMLElement | null = node;
+  while (current) {
+    top += current.offsetTop;
+    current = current.offsetParent as HTMLElement | null;
+  }
+  return top;
+}
+
+function scrollIframeToId(doc: Document, win: Window, id: string) {
+  const node = doc.getElementById(id);
+  if (!node) return false;
+  const scroller = doc.scrollingElement ?? doc.documentElement;
+  const top = Math.max(0, documentOffsetTop(node) - 24);
+  scroller.scrollTop = top;
+  win.scrollTo(0, top);
+  return true;
+}
   if (!doc.getElementById("cindy-chrome-style")) {
     const style = doc.createElement("style");
     style.id = "cindy-chrome-style";
@@ -256,15 +274,13 @@ export function OriginalEssay({ folder }: { folder: string }) {
     const win = iframe?.contentWindow;
     if (!doc || !win) return;
     setActiveId(id);
+    scrollIframeToId(doc, win, id);
     const tocLink = doc.querySelector<HTMLAnchorElement>(
       `#toc a[href="#${id}"], #toc a[data-page="${id}"]`,
     );
-    tocLink?.classList.add("selected");
-    const node = doc.getElementById(id);
-    if (node) {
-      node.scrollIntoView({ behavior: "smooth", block: "center" });
-    } else {
-      win.location.hash = id;
+    if (tocLink) {
+      doc.querySelectorAll("#toc a").forEach((link) => link.classList.remove("selected"));
+      tocLink.classList.add("selected");
     }
   };
 
