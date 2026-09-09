@@ -387,31 +387,36 @@ html.dark .pet-frame-paper {
   touch-action: none;
 }
 
-.pet-eye {
-  transform-box: fill-box;
-  transform-origin: 50% 50%;
-  animation: pet-blink 2.6s linear infinite;
+.animal-eye1 {
+  animation: pet-essay-eye 2s linear 0s infinite;
+}
+.animal-eye2 {
+  animation: pet-essay-eye 2.5s linear 0s infinite;
+}
+.animal-eye3 {
+  animation: pet-essay-eye 1.5s linear 0s infinite;
+}
+.animal-eye4 {
+  animation: pet-essay-eye 3s linear 0s infinite;
 }
 
-.pet-eye-delay {
-  animation-duration: 3.2s;
-}
-
-@keyframes pet-blink {
-  0%,
-  22%,
-  34%,
-  100% {
-    transform: scaleY(1);
+@keyframes pet-essay-eye {
+  20% {
+    fill: #232f3e;
   }
-  26%,
-  30% {
-    transform: scaleY(0.08);
+  35% {
+    fill: rgba(252, 244, 232, 0.8549019608);
+  }
+  40% {
+    fill: #232f3e;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pet-eye {
+  .animal-eye1,
+  .animal-eye2,
+  .animal-eye3,
+  .animal-eye4 {
     animation: none;
   }
 }

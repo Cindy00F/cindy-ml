@@ -5,7 +5,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 
@@ -28,73 +27,59 @@ const DOG_NOSE =
   "M36.399,64.384c0,7.885,8.166,14.282,14.277,14.282c6.111,0,14.28-6.397,14.28-14.282C64.956,56.5,36.399,56.5,36.399,64.384z";
 
 const CREAM = "#feefd7";
-const INK = "#1b1814";
+const INK = "#232f3e";
 const GOLDEN = Math.PI * (3 - Math.sqrt(5));
 
 const FRAME = { x: 16, y: 16, w: 488, h: 268 };
 const PAD = 22;
 
-type Blink = { delay: number; duration: number };
-
-function blinkStyle(delay: number, duration: number, extra = 0): CSSProperties {
-  return {
-    animationDelay: `${delay + extra}s`,
-    animationDuration: `${duration}s`,
-  };
+function eyeClass(i: number) {
+  if (i % 5 === 0) return "animal-eye1";
+  if (i % 3 === 0) return "animal-eye2";
+  if (i % 2 === 0) return "animal-eye3";
+  return "animal-eye4";
 }
 
-function CatMark({ coat, ink, blink }: { coat: string; ink: string; blink?: Blink }) {
-  const delay = blink?.delay ?? 0;
-  const duration = blink?.duration ?? 2.6;
+function CatMark({
+  coat,
+  ink,
+  creamHead = false,
+  blinkClass = "animal-eye1",
+}: {
+  coat: string;
+  ink: string;
+  creamHead?: boolean;
+  blinkClass?: string;
+}) {
   return (
     <g>
       <path d={CAT_EAR} fill={coat} />
-      <path d={CAT_HEAD} fill={CREAM} />
+      <path d={CAT_HEAD} fill={creamHead ? CREAM : coat} />
       <path d={CAT_NOSE} fill={ink} />
-      <path
-        d="M16 56 H7 M18 62 H8 M18 50 H9 M86 56 H95 M84 62 H94 M84 50 H93"
-        fill="none"
-        stroke={ink}
-        strokeWidth="1.35"
-        strokeLinecap="round"
-      />
-      <circle className="pet-eye" cx="38" cy="54" r="3.2" fill={ink} style={blinkStyle(delay, duration)} />
-      <circle
-        className="pet-eye"
-        cx="62"
-        cy="54"
-        r="3.2"
-        fill={ink}
-        style={blinkStyle(delay, duration, 0.04)}
-      />
+      <circle className={blinkClass} cx="35.735" cy="49.639" r="4.397" fill={ink} />
+      <circle className={blinkClass} cx="66.599" cy="49.639" r="4.397" fill={ink} />
     </g>
   );
 }
 
-function DogMark({ coat, ink, blink }: { coat: string; ink: string; blink?: Blink }) {
-  const delay = blink?.delay ?? 0;
-  const duration = blink?.duration ?? 2.8;
+function DogMark({
+  coat,
+  ink,
+  creamHead = false,
+  blinkClass = "animal-eye1",
+}: {
+  coat: string;
+  ink: string;
+  creamHead?: boolean;
+  blinkClass?: string;
+}) {
   return (
     <g>
       <path d={DOG_EAR} fill={coat} />
-      <path d={DOG_HEAD} fill={CREAM} />
+      <path d={DOG_HEAD} fill={creamHead ? CREAM : coat} />
       <path d={DOG_NOSE} fill={ink} />
-      <path
-        d="M40 70 Q51 78 62 70"
-        fill="none"
-        stroke={ink}
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-      <circle className="pet-eye" cx="38" cy="58" r="3.1" fill={ink} style={blinkStyle(delay, duration)} />
-      <circle
-        className="pet-eye"
-        cx="62"
-        cy="58"
-        r="3.1"
-        fill={ink}
-        style={blinkStyle(delay, duration, 0.05)}
-      />
+      <circle className={blinkClass} cx="35.735" cy="49.639" r="4.397" fill={ink} />
+      <circle className={blinkClass} cx="66.599" cy="49.639" r="4.397" fill={ink} />
     </g>
   );
 }
@@ -108,7 +93,7 @@ export function CatIcon({
 }) {
   return (
     <svg viewBox="0 0 102 90" width={size} height={size} aria-hidden overflow="visible">
-      <CatMark coat={fill} ink={fill} blink={{ delay: 0, duration: 2.6 }} />
+      <CatMark coat={fill} ink={fill} blinkClass="animal-eye1" />
     </svg>
   );
 }
@@ -122,7 +107,7 @@ export function DogIcon({
 }) {
   return (
     <svg viewBox="0 0 102 90" width={size} height={size} aria-hidden overflow="visible">
-      <DogMark coat={fill} ink={fill} blink={{ delay: 0.4, duration: 3.1 }} />
+      <DogMark coat={fill} ink={fill} blinkClass="animal-eye2" />
     </svg>
   );
 }
@@ -134,10 +119,9 @@ const CLUSTER = Array.from({ length: 54 }, (_, i) => {
     x: 260 + r * Math.cos(a),
     y: 158 + r * Math.sin(a) * 0.9,
     kind: (i * 5 + 2) % 7 < 4 ? ("cat" as const) : ("dog" as const),
-    s: 0.29 + (i % 4) * 0.012,
+    s: 0.3,
     rot: ((i * 19) % 23) - 11,
-    delay: (i * 0.37) % 4.2,
-    duration: 2.35 + (i % 7) * 0.28,
+    blinkClass: eyeClass(i),
   };
 });
 
@@ -157,17 +141,15 @@ function clamp(n: number, min: number, max: number) {
 
 function PetFace({
   kind,
-  delay,
-  duration,
+  blinkClass,
 }: {
   kind: "cat" | "dog";
-  delay: number;
-  duration: number;
+  blinkClass: string;
 }) {
   return kind === "cat" ? (
-    <CatMark coat={CREAM} ink={INK} blink={{ delay, duration }} />
+    <CatMark coat={INK} ink={INK} creamHead blinkClass={blinkClass} />
   ) : (
-    <DogMark coat={CREAM} ink={INK} blink={{ delay, duration }} />
+    <DogMark coat={INK} ink={INK} creamHead blinkClass={blinkClass} />
   );
 }
 
@@ -272,7 +254,7 @@ export function PetCluster({
             transform={`translate(${pos.x} ${pos.y}) rotate(${pet.rot}) scale(${pet.s}) translate(-51 -45)`}
             onPointerDown={(e) => onPointerDown(i, e)}
           >
-            <PetFace kind={pet.kind} delay={pet.delay} duration={pet.duration} />
+            <PetFace kind={pet.kind} blinkClass={pet.blinkClass} />
             {draggable ? <circle cx="51" cy="48" r="50" fill="transparent" /> : null}
           </g>
         );
@@ -283,11 +265,7 @@ export function PetCluster({
           style={{ filter: "drop-shadow(0 2px 2px rgba(27, 24, 20, 0.18))" }}
           transform={`translate(${positions[lift].x} ${positions[lift].y}) rotate(${CLUSTER[lift].rot}) scale(${CLUSTER[lift].s}) translate(-51 -45)`}
         >
-          <PetFace
-            kind={CLUSTER[lift].kind}
-            delay={CLUSTER[lift].delay}
-            duration={CLUSTER[lift].duration}
-          />
+          <PetFace kind={CLUSTER[lift].kind} blinkClass={CLUSTER[lift].blinkClass} />
         </g>
       ) : null}
     </g>
