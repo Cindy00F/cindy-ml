@@ -395,6 +395,21 @@ body:has(.split-essay) header {
   }
 }
 
+html.dark .original-essay,
+html.dark .original-essay iframe {
+  background: #1b1814 !important;
+  color: #f3ead8;
+}
+
+html.dark .essay-scale {
+  color: #f3ead8;
+  background-image: linear-gradient(to left, #1b1814 70%, transparent);
+}
+
+html.dark .essay-scale .essay-scale-tick {
+  background: #f3ead8;
+}
+
 @media (max-width: 980px) {
   .split-scrolly {
     display: block;

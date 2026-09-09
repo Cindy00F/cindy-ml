@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
 import { messages, type Locale, type MessageKey } from "@/lib/messages";
 
 type I18nContextValue = {
@@ -17,12 +18,27 @@ export function I18nProvider({
   locale: Locale;
   children: React.ReactNode;
 }) {
+  const [current, setCurrent] = useState(locale);
+
+  useEffect(() => {
+    setCurrent(locale);
+  }, [locale]);
+
+  useEffect(() => {
+    const onPrefs = (event: Event) => {
+      const next = (event as CustomEvent<CindyPrefs>).detail?.locale;
+      if (next) setCurrent(next);
+    };
+    window.addEventListener(CINDY_PREFS_EVENT, onPrefs);
+    return () => window.removeEventListener(CINDY_PREFS_EVENT, onPrefs);
+  }, []);
+
   const value = useMemo(
     () => ({
-      locale,
-      t: (key: MessageKey) => messages[locale][key],
+      locale: current,
+      t: (key: MessageKey) => messages[current][key],
     }),
-    [locale],
+    [current],
   );
   return (
     <I18nContext.Provider value={value}>

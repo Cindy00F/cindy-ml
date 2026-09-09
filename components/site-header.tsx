@@ -15,7 +15,7 @@ export function SiteHeader({
 }) {
   const t = messages[locale];
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-foreground/10 bg-background/90 backdrop-blur-md">
+    <header className="sticky top-0 z-[200] w-full border-b border-foreground/10 bg-background/90 pointer-events-auto backdrop-blur-md">
       <div className="mx-auto flex h-12 w-full max-w-[100rem] items-center justify-between gap-4 px-4 sm:px-6">
         <Link
           href={email ? "/dashboard" : "/login"}

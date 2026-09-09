@@ -68,3 +68,47 @@ article > section[data-index] {
   padding-top: 18vh;
   padding-bottom: 28vh;
 }
+
+html.cindy-dark,
+html.cindy-dark body,
+body.cindy-dark {
+  background-color: #1b1814 !important;
+  color: #f3ead8 !important;
+}
+
+html.cindy-dark #scrolly,
+html.cindy-dark figure,
+html.cindy-dark article,
+html.cindy-dark p,
+html.cindy-dark h1,
+html.cindy-dark h2,
+html.cindy-dark h3,
+html.cindy-dark h4,
+html.cindy-dark li,
+html.cindy-dark span,
+html.cindy-dark label {
+  color: #f3ead8 !important;
+}
+
+html.cindy-dark .button {
+  color: #f3ead8 !important;
+  border-color: rgba(243, 234, 216, 0.55) !important;
+  background: transparent !important;
+}
+
+html.cindy-dark .button.active,
+html.cindy-dark button.active {
+  background: #f3ead8 !important;
+  color: #1b1814 !important;
+}
+
+html.cindy-dark svg text,
+html.cindy-dark .axes-text {
+  fill: #f3ead8 !important;
+}
+
+html.cindy-dark svg line,
+html.cindy-dark svg .domain,
+html.cindy-dark svg .tick line {
+  stroke: #f3ead8 !important;
+}

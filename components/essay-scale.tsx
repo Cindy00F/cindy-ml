@@ -25,7 +25,7 @@ export function EssayScale({
 
   return (
     <aside
-      className="essay-scale pointer-events-none absolute inset-y-0 right-0 z-20 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[701px]:flex"
+      className="essay-scale pointer-events-auto absolute inset-y-0 right-0 z-30 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[701px]:flex dark:from-[#1b1814] dark:text-[#f3ead8]"
       aria-label={locale === "zh" ? "章节刻度" : "Section scale"}
       onWheel={(event) => {
         if (!onWheelDelta) return;
@@ -33,7 +33,7 @@ export function EssayScale({
         onWheelDelta(event.deltaY);
       }}
     >
-      <div className="pointer-events-none absolute top-12 bottom-12 right-[14px] w-px bg-[#1a1a1a]/20" />
+      <div className="pointer-events-none absolute top-12 bottom-12 right-[14px] w-px bg-[#1a1a1a]/20 dark:bg-[#f3ead8]/25" />
       <ol className="relative flex flex-col justify-center">
         {ticks.map((tick, i) => {
           const distance = Math.abs(i - activeIndex);
@@ -54,7 +54,7 @@ export function EssayScale({
                 aria-current={isActive ? "true" : undefined}
                 title={label}
                 className={cn(
-                  "pointer-events-auto flex h-8 w-full cursor-pointer items-center justify-end gap-2 text-right",
+                  "pointer-events-auto flex h-8 w-full cursor-pointer items-center justify-end gap-2 text-right hover:opacity-100",
                   isActive ? "font-bold" : "font-medium",
                 )}
                 style={{ fontSize: `${size}px`, opacity }}
@@ -62,7 +62,7 @@ export function EssayScale({
                 <span className="min-w-0 truncate">{label}</span>
                 <span
                   className={cn(
-                    "relative z-[1] block shrink-0 bg-[#1a1a1a]",
+                    "relative z-[1] essay-scale-tick block shrink-0 bg-[#1a1a1a] dark:bg-[#f3ead8]",
                     isActive ? "h-[2px] w-5" : "h-px w-2.5 opacity-70",
                   )}
                 />

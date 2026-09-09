@@ -7,7 +7,7 @@ import { MarkReadButton } from "@/components/mark-read-button";
 import { getArticle, neighbors } from "@/lib/articles";
 import { originalEssayFolder } from "@/lib/original-essays";
 import { messages } from "@/lib/messages";
-import { getLocale } from "@/lib/session";
+import { getLocale, getTheme } from "@/lib/session";
 
 export default async function ArticlePage({
   params,
@@ -16,6 +16,7 @@ export default async function ArticlePage({
 }) {
   const { slug } = await params;
   const locale = await getLocale();
+  const theme = await getTheme();
   const t = messages[locale];
   const article = getArticle(slug);
   if (!article) notFound();
@@ -24,7 +25,7 @@ export default async function ArticlePage({
 
   const folder = originalEssayFolder(article.slug);
   if (folder) {
-    return <OriginalEssay folder={folder} />;
+    return <OriginalEssay folder={folder} locale={locale} theme={theme} />;
   }
 
   return (

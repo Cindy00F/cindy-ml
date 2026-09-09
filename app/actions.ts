@@ -11,11 +11,6 @@ import {
   THEME_COOKIE,
 } from "@/lib/session";
 
-function nextPath(formData: FormData) {
-  const raw = String(formData.get("next") ?? "/dashboard");
-  return raw.startsWith("/") && !raw.startsWith("//") ? raw : "/dashboard";
-}
-
 export async function loginAction(formData: FormData) {
   const email = String(formData.get("email") ?? "")
     .trim()
@@ -51,7 +46,6 @@ export async function setLocaleAction(formData: FormData) {
     sameSite: "lax",
   });
   revalidatePath("/", "layout");
-  redirect(nextPath(formData));
 }
 
 export async function setThemeAction(formData: FormData) {
@@ -61,5 +55,4 @@ export async function setThemeAction(formData: FormData) {
     sameSite: "lax",
   });
   revalidatePath("/", "layout");
-  redirect(nextPath(formData));
 }
