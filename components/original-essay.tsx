@@ -32,7 +32,7 @@ const HIDE_CHROME = `
     display: flex !important;
   }
   figure { top: 0 !important; }
-  @media (min-width: 951px) {
+  @media (min-width: 701px) {
     #intro-mobile { display: none !important; }
     #scrolly { display: flex !important; flex-direction: row-reverse !important; }
     #scrolly > * { flex: 1; }
@@ -44,37 +44,6 @@ const HIDE_CHROME = `
       box-sizing: border-box;
       padding-top: 18vh;
       padding-bottom: 28vh;
-    }
-  }
-  @media (max-width: 950px) {
-    #intro-mobile { display: block !important; }
-    #scrolly { display: block !important; padding: 0 2% !important; }
-    figure {
-      position: sticky !important;
-      top: 0 !important;
-      width: 100% !important;
-      height: min(72vh, 32rem) !important;
-    }
-    article {
-      max-width: 100% !important;
-      padding: 0 0.85rem !important;
-    }
-    article > section[data-index],
-    section[data-index] {
-      min-height: 0 !important;
-      height: auto !important;
-      margin: 0 0 1.5rem !important;
-      padding: 0 !important;
-    }
-    #intro-mobile p,
-    article p {
-      font-size: 1rem !important;
-      padding: 0.9rem 1rem !important;
-      text-align: left !important;
-    }
-    article h2 {
-      font-size: 1.35rem !important;
-      padding-top: 0.4rem !important;
     }
   }
 `;
@@ -432,7 +401,7 @@ export function OriginalEssay({
         ref={iframeRef}
         title="MLU-Explain essay"
         src={srcRef.current}
-        className="absolute inset-y-0 left-0 z-0 h-full w-full border-0 bg-[#fcf4e8] min-[951px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814]"
+        className="absolute inset-y-0 left-0 z-0 h-full w-full border-0 bg-[#fcf4e8] min-[701px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814]"
       />
       <EssayScale
         ticks={ticks}

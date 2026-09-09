@@ -30,23 +30,23 @@ export const articles: Article[] = [
     sourcePath: "train-test-validation",
     title: { zh: "训练、验证与测试集", en: "Train, Test, and Validation Sets" },
     summary: {
-      zh: "监督学习里，数据通常要切成三份互不重叠的集合：训练集用来学，验证集用来选模型，测试集用来估在真实世界里会怎样。下面用猫和狗、体重和毛量，配一个活的逻辑回归。",
-      en: "In supervised learning, data is usually split into three independent sets: train to learn, validation to choose, test to estimate performance in the wild. Below, cats and dogs, weight and fluffiness, and a live logistic model.",
+      zh: "学监督模型时总会听到：数据要切成训练、验证、测试三份。这篇我用猫和狗、体重和毛量，把这件事摊开，自己拖着玩。",
+      en: "I kept hearing that data should be split three ways. This note uses cats, dogs, weight, and fluffiness so I can drag the idea around until it sticks.",
     },
     sections: [
       {
         id: "intro",
-        heading: { zh: "为什么要把数据切开", en: "The Importance of Data Splitting" },
+        heading: { zh: "数据为什么要切开", en: "The Importance of Data Splitting" },
         body: {
-          zh: "多数监督学习任务里，稳妥的做法是把数据分成三份互不重叠的集合：训练集、验证集、测试集。\n为了看清为什么要这样切，假设我们有一批宠物，只有两类：猫和狗。每只宠物只有两个特征：体重、毛量。目标是选出一个合适的模型，根据这两个特征判断它是猫还是狗。",
+          zh: "学监督模型的时候，我常把数据先分成三份，各做各的：训练集、验证集、测试集。\n为什么要这样切？我拿一批假想的宠物来试，只有猫和狗。每只我只知道体重和毛量。接下来就试着猜：它是猫，还是狗。",
           en: "In most supervised tasks, best practice is to split data into three independent sets: training, validation, and testing.\nTo see why, pretend we have a dataset of two kinds of pets: cats and dogs. Each pet has two features: weight and fluffiness. The job is to choose and evaluate a model that classifies a pet as cat or dog.",
         },
       },
       {
         id: "split",
-        heading: { zh: "训练、验证与测试", en: "Train, Test, and Validation Splits" },
+        heading: { zh: "三份数据，三种用途", en: "Train, Test, and Validation Splits" },
         body: {
-          zh: "第一步是把宠物随机分进三份。\n训练集：喂给模型，让它学习可能的规律。\n验证集：比较不同模型、不同超参数，看谁在未见过的数据上更稳。\n测试集：用来近似模型在真实世界里的表现。随机划分是为了让每一份都尽量代表总体。",
+          zh: "第一步很简单：把宠物随机分成三堆。\n训练集：拿来上课，让模型自己摸规律。\n验证集：换模型、改参数，看谁更稳。\n测试集：藏到最后才打开，估一估到了外面会怎样。",
           en: "First, randomly split the pets into three independent sets.\nTraining set: the data the model learns from.\nValidation set: an unbiased look at how different models and hyperparameters compare.\nTest set: an estimate of accuracy in the wild. Random assignment keeps each split as representative as possible.",
         },
       },

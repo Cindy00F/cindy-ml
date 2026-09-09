@@ -52,7 +52,7 @@ export function EssayScale({
   return (
     <aside
       ref={rootRef}
-      className="essay-scale pointer-events-auto absolute inset-y-0 right-0 z-30 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[951px]:flex dark:from-[#1b1814] dark:text-[#f3ead8]"
+      className="essay-scale pointer-events-auto absolute inset-y-0 right-0 z-30 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[701px]:flex dark:from-[#1b1814] dark:text-[#f3ead8]"
       aria-label={locale === "zh" ? "章节刻度" : "Section scale"}
       onWheel={(event) => {
         if (!onWheelDelta) return;

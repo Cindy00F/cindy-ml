@@ -1,4 +1,8 @@
 /* Cindy shell: hide original top nav; keep scrolly working inside the iframe. */
+:root {
+  --cindy-cream: #fcf4e8;
+}
+
 html {
   box-sizing: border-box;
   height: auto !important;
@@ -43,7 +47,7 @@ figure {
   top: 0 !important;
 }
 
-@media (min-width: 951px) {
+@media (min-width: 701px) {
   #intro-mobile {
     display: none !important;
   }
@@ -68,46 +72,250 @@ figure {
   }
 }
 
-@media (max-width: 950px) {
-  #intro-mobile {
+/* Phone only. Desktop (≥701px) stays the original two-column scrolly. */
+@media (max-width: 700px) {
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    font-size: 16px !important;
+  }
+
+  #scrolly #intro {
+    display: none !important;
+  }
+
+  #scrolly > #intro-mobile,
+  #scrolly > section.intro-mobile {
     display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0.7rem 1rem 0.55rem !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  #scrolly > #intro-mobile h2,
+  #scrolly > section.intro-mobile h2 {
+    display: inline-block !important;
+    width: auto !important;
+    max-width: 100% !important;
+    font-size: 1.28rem !important;
+    line-height: 1.28 !important;
+    padding: 0 !important;
+    margin: 0 0 0.45rem !important;
+    text-align: left !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #scrolly > #intro-mobile p,
+  #scrolly > section.intro-mobile p {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 0.94rem !important;
+    line-height: 1.55 !important;
+    padding: 0.15rem 0 0.4rem !important;
+    margin: 0 !important;
+    text-align: left !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    box-sizing: border-box !important;
+  }
+
+  #scrolly > #intro-mobile p br,
+  #scrolly > section.intro-mobile p br {
+    display: block;
+    content: "";
+    margin: 0.18em 0;
+    line-height: 0.2;
   }
 
   #scrolly {
     display: block !important;
-    padding: 0 2% !important;
-  }
-
-  figure {
-    position: sticky !important;
-    top: 0 !important;
     width: 100% !important;
-    height: min(72vh, 32rem) !important;
-  }
-
-  article {
-    max-width: 100% !important;
-    padding: 0 0.85rem !important;
-  }
-
-  article > section[data-index],
-  section[data-index] {
-    min-height: 0 !important;
-    height: auto !important;
-    margin: 0 0 1.5rem !important;
+    margin: 0 !important;
     padding: 0 !important;
   }
 
-  #intro-mobile p,
-  article p {
-    font-size: 1rem !important;
-    padding: 0.9rem 1rem !important;
+  #scrolly figure {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 0 !important;
+    width: 100% !important;
+    height: 50dvh !important;
+    min-height: 15.5rem !important;
+    max-height: 24rem !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  #scrolly #main-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #scrolly .button-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.25rem;
+    opacity: 1 !important;
+    padding: 0.35rem 0.5rem 0.2rem !important;
+    flex: 0 0 auto !important;
+  }
+
+  #scrolly .button-container p,
+  #scrolly .button-container label {
+    font-size: 0.78rem !important;
+    padding: 0 0.3rem 0 0 !important;
+  }
+
+  #scrolly .button-container .button,
+  #scrolly .button-container button {
+    font-size: 0.78rem !important;
+    padding: 0.28rem 0.55rem !important;
+    min-height: 2.1rem;
+  }
+
+  /* Original grid is 1fr 1fr, which leaves a large empty table pane. */
+  #scrolly #chart-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-template-columns: none !important;
+    grid-template-rows: none !important;
+  }
+
+  #scrolly #chart {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  #scrolly #chart svg,
+  #scrolly #bubble-svg {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+  }
+
+  #scrolly #table {
+    flex: 0 1 auto !important;
+    width: 100% !important;
+    max-height: 28% !important;
+    overflow: auto !important;
+  }
+
+  #scrolly #table:empty {
+    display: none !important;
+  }
+
+  #scrolly article {
+    position: relative !important;
+    z-index: 1 !important;
+    width: calc(100% - 1.7rem) !important;
+    max-width: 26rem !important;
+    margin: -44vh auto 0 !important;
+    padding: 0 0 3.25rem !important;
+    pointer-events: none !important;
+    box-sizing: border-box !important;
     text-align: left !important;
   }
 
-  article h2 {
-    font-size: 1.35rem !important;
-    padding-top: 0.4rem !important;
+  #scrolly article h2,
+  #scrolly article p {
+    pointer-events: auto !important;
+    max-width: 100%;
+    box-sizing: border-box !important;
+  }
+
+  #scrolly article h2 {
+    display: inline-block !important;
+    width: auto !important;
+    font-size: 1.05rem !important;
+    line-height: 1.3 !important;
+    padding: 0.08rem 0.15rem !important;
+    margin: 0.2rem 0 0.55rem !important;
+    text-align: left !important;
+    background: var(--cindy-cream) !important;
+    box-shadow: 0 0 0 0.4rem var(--cindy-cream);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  #scrolly article p {
+    display: block !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    padding: 0.7rem 0.85rem !important;
+    margin: 0.3rem 0 0.7rem !important;
+    text-align: left !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    background: color-mix(in srgb, var(--cindy-cream) 96%, transparent) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #scrolly article > section[data-index] {
+    min-height: 130vh !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-end !important;
+    align-items: stretch !important;
+  }
+
+  #scrolly article > section[data-index]:last-of-type {
+    min-height: 72vh !important;
+  }
+
+  #scrolly article .button,
+  #scrolly article button,
+  #scrolly figure .button,
+  #scrolly figure button {
+    pointer-events: auto !important;
+  }
+
+  #scrolly .highlight,
+  #scrolly .highlight-blue,
+  #scrolly .highlight-pink,
+  #scrolly .highlight-yellow,
+  #scrolly [id^="annotation"] {
+    display: inline !important;
+    padding: 0.02em 0.12em;
+    white-space: normal !important;
   }
 }
 
@@ -116,6 +324,7 @@ html.cindy-dark body,
 body.cindy-dark {
   background-color: #1b1814 !important;
   color: #f3ead8 !important;
+  --cindy-cream: #1b1814;
 }
 
 html.cindy-dark #scrolly,
@@ -153,4 +362,15 @@ html.cindy-dark svg line,
 html.cindy-dark svg .domain,
 html.cindy-dark svg .tick line {
   stroke: #f3ead8 !important;
+}
+
+@media (max-width: 700px) {
+  html.cindy-dark #scrolly article h2 {
+    background: #1b1814 !important;
+    box-shadow: 0 0 0 0.4rem #1b1814;
+  }
+
+  html.cindy-dark #scrolly article p {
+    background: rgba(27, 24, 20, 0.94) !important;
+  }
 }

@@ -24,7 +24,7 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader locale={locale} theme={theme} />
-      <main className="mx-auto grid w-full max-w-6xl items-center gap-10 px-5 py-10 sm:px-6 sm:py-16 md:grid-cols-2 md:gap-16">
+      <main className="mx-auto grid w-full max-w-6xl items-center gap-16 px-6 py-16 max-[700px]:gap-10 max-[700px]:px-4 max-[700px]:py-10 md:grid-cols-2">
         <div>
           <h1 className="font-heading mt-3 text-4xl leading-tight sm:text-5xl">
             {t.welcomeBack}

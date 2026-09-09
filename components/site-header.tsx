@@ -16,7 +16,7 @@ export function SiteHeader({
   const t = messages[locale];
   return (
     <header className="sticky top-0 z-[200] w-full border-b border-foreground/10 bg-background/90 pointer-events-auto backdrop-blur-md">
-      <div className="mx-auto flex h-12 w-full max-w-[100rem] items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6">
+      <div className="mx-auto flex h-12 w-full max-w-[100rem] items-center justify-between gap-4 px-4 max-[700px]:gap-2 max-[700px]:px-3 sm:px-6">
         <Link
           href={email ? "/dashboard" : "/login"}
           className="font-heading shrink-0 text-xl leading-none"
@@ -45,7 +45,7 @@ export function SiteHeader({
             <form action={logoutAction}>
               <button
                 type="submit"
-                className="min-h-9 px-2 py-1 text-xs text-muted-foreground hover:text-foreground sm:min-h-0"
+                className="px-2 py-1 text-xs text-muted-foreground hover:text-foreground max-[700px]:min-h-9"
               >
                 {t.logout}
               </button>

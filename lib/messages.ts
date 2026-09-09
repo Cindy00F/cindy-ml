@@ -18,7 +18,7 @@ export const messages = {
     brandEn: "在学机器学习",
     tagline: "边学边看图的机器学习可视化",
     loginTitle: "登录",
-    loginSubtitle: "14 篇机器学习可视化文章。题目来自 MLU-Explain，交互重新写过。",
+    loginSubtitle: "这是我边学边记的 14 篇小文章。题目来自 MLU-Explain，我按自己看图的习惯重新排过。",
     email: "邮箱",
     password: "密码",
     signIn: "进入",
@@ -42,7 +42,7 @@ export const messages = {
     articlesCount: "篇",
     lastVisited: "最近阅读",
     noneYet: "还没有阅读记录",
-    diveIn: "阅读",
+    diveIn: "打开这篇",
     continueReading: "继续",
     markDone: "标记已读",
     marked: "已读完",
@@ -59,9 +59,9 @@ export const messages = {
     emptySearch: "没有匹配的文章。",
     aboutTitle: "关于",
     aboutBody:
-      "这是一组机器学习可视化文章：点进去是带交互的图文，不是说明书。题目来自 Amazon MLU-Explain，版式黑白留白，交互重新写过。",
+      "我在学机器学习。看不懂的地方就画出来、拖一拖，写成可以点进去玩的笔记。不是教材，也不赶进度。",
     credit:
-      "概念来自 aws-samples/aws-mlu-explain（CC BY-SA 4.0）。这是个人学习页，不是产品。",
+      "图和交互改编自 MLU-Explain（Jared Wilber 等，CC BY-SA 4.0）。版权留在这里，正文里就不再署名了。",
     next: "下一篇",
     prev: "上一篇",
     playgroundHint: "拖动滑块、点画布，或把动物拖到新位置。",
@@ -70,7 +70,7 @@ export const messages = {
     sourceNote: "参考",
     signedInAs: "已登录",
     welcomeBack: "Cindy 在学习机器学习",
-    dashboardLead: "这里放 14 篇机器学习可视化文章，边学边看图。",
+    dashboardLead: "最近在学的东西，写成可以点进去玩的小文章。不赶进度，一篇一篇看就好。",
     noPhilips: "",
   },
   en: {
@@ -79,7 +79,7 @@ export const messages = {
     tagline: "Visual essays while learning machine learning",
     loginTitle: "Sign in",
     loginSubtitle:
-      "Fourteen visual essays on machine learning. Topics from MLU-Explain; the interactions are rewritten.",
+      "Fourteen short visual notes while I learn. Topics from MLU-Explain, arranged the way I like to read charts.",
     email: "Email",
     password: "Password",
     signIn: "Enter",
@@ -103,7 +103,7 @@ export const messages = {
     articlesCount: "essays",
     lastVisited: "Last read",
     noneYet: "No reading history yet",
-    diveIn: "Read",
+    diveIn: "Open this one",
     continueReading: "Continue",
     markDone: "Mark as read",
     marked: "Finished",
@@ -120,9 +120,9 @@ export const messages = {
     emptySearch: "No matching articles.",
     aboutTitle: "About",
     aboutBody:
-      "A set of visual machine-learning essays: click in and you get a chart you can play with, not a manual. Topics from Amazon MLU-Explain. Black and white layout; interactions rewritten.",
+      "I am learning machine learning. When an idea will not sit still, I draw it and drag it. These are notes, not a textbook.",
     credit:
-      "Concepts from aws-samples/aws-mlu-explain (CC BY-SA 4.0). This is a personal study page, not a product.",
+      "Figures and interactions adapted from MLU-Explain (Jared Wilber et al., CC BY-SA 4.0). Attribution lives here, not as a byline on each essay.",
     next: "Next",
     prev: "Previous",
     playgroundHint: "Drag sliders, click the canvas, or move the animals.",
@@ -132,7 +132,7 @@ export const messages = {
     signedInAs: "Signed in",
     welcomeBack: "Cindy is learning machine learning",
     dashboardLead:
-      "Fourteen visual essays on machine learning — read them with the chart in view.",
+      "Things I am learning, written as short pieces you can click into and play with. No rush — one at a time.",
     noPhilips: "",
   },
 } as const;
