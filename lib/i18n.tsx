@@ -24,7 +24,11 @@ export function I18nProvider({
     }),
     [locale],
   );
-  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
+  return (
+    <I18nContext.Provider value={value}>
+      <div className="flex h-full min-h-full flex-1 flex-col">{children}</div>
+    </I18nContext.Provider>
+  );
 }
 
 export function useI18n() {

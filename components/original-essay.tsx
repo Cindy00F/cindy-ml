@@ -237,12 +237,12 @@ export function OriginalEssay({ folder }: { folder: string }) {
   };
 
   return (
-    <div className="original-essay relative h-[calc(100svh-3rem)] min-h-0 flex-1 overflow-hidden bg-[#fcf4e8] text-[#1a1a1a]">
+    <div className="original-essay relative h-[calc(100dvh-3.25rem)] min-h-[40rem] w-full bg-[#fcf4e8] text-[#1a1a1a]">
       <iframe
         ref={iframeRef}
         title="MLU-Explain essay"
         src={`/essays/${folder}/index.html`}
-        className="h-full w-full border-0 bg-[#fcf4e8]"
+        className="absolute inset-0 h-full w-full border-0 bg-[#fcf4e8]"
       />
       <EssayScale ticks={ticks} activeId={activeId} onSelect={onSelect} />
     </div>

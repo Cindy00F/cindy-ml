@@ -42,7 +42,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${instrument.variable} ${outfit.variable} h-full antialiased ${theme === "dark" ? "dark" : ""}`}
     >
       <body
-        className="min-h-full flex flex-col"
+        className="flex h-full min-h-full flex-col"
         style={{
           fontFamily:
             'var(--font-geist-sans), "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif',
