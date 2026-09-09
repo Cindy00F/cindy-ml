@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type WheelEvent } from "react";
 import { EssayScale } from "@/components/essay-scale";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
 import { originalEssayTicks } from "@/lib/original-essays";
@@ -10,16 +10,38 @@ const EMPTY_TICKS: EssayTick[] = [];
 const HIDE_CHROME = `
   html {
     box-sizing: border-box;
+    height: auto !important;
+    min-height: 100%;
     padding-right: 9.25rem !important;
+    overflow-x: hidden;
+    overflow-y: auto !important;
     scrollbar-width: none;
   }
+  body { height: auto !important; min-height: 100%; overflow-y: visible !important; }
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
-  @media (max-width: 700px) {
-    html { padding-right: 0 !important; }
-  }
+  @media (max-width: 700px) { html { padding-right: 0 !important; } }
   body > header, header { display: none !important; }
-  #toc { display: none !important; }
+  #toc {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    display: flex !important;
+  }
   figure { top: 0 !important; }
+  #intro-mobile { display: none !important; }
+  #scrolly { display: flex !important; flex-direction: row-reverse !important; }
+  #scrolly > * { flex: 1; }
+  article > section[data-index] {
+    min-height: 100vh;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    height: auto !important;
+    box-sizing: border-box;
+    padding-top: 18vh;
+    padding-bottom: 28vh;
+  }
 `;
 
 function uniqueTicks(ticks: EssayTick[]) {
@@ -229,22 +251,46 @@ export function OriginalEssay({ folder }: { folder: string }) {
   }, [bindIframe, teardown]);
 
   const onSelect = (id: string) => {
-    const doc = iframeRef.current?.contentDocument;
-    const node = doc?.getElementById(id);
+    const iframe = iframeRef.current;
+    const doc = iframe?.contentDocument;
+    const win = iframe?.contentWindow;
+    if (!doc || !win) return;
     setActiveId(id);
-    if (!node) return;
-    node.scrollIntoView({ behavior: "smooth", block: "start" });
+    const tocLink = doc.querySelector<HTMLAnchorElement>(
+      `#toc a[href="#${id}"], #toc a[data-page="${id}"]`,
+    );
+    tocLink?.classList.add("selected");
+    const node = doc.getElementById(id);
+    if (node) {
+      node.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      win.location.hash = id;
+    }
+  };
+
+  const onHostWheel = (event: WheelEvent<HTMLDivElement>) => {
+    const win = iframeRef.current?.contentWindow;
+    if (!win) return;
+    win.scrollBy(0, event.deltaY);
   };
 
   return (
-    <div className="original-essay relative h-[calc(100dvh-3.25rem)] min-h-[40rem] w-full bg-[#fcf4e8] text-[#1a1a1a]">
+    <div
+      className="original-essay relative min-h-0 w-full flex-1 bg-[#fcf4e8] text-[#1a1a1a]"
+      onWheel={onHostWheel}
+    >
       <iframe
         ref={iframeRef}
         title="MLU-Explain essay"
         src={`/essays/${folder}/index.html`}
         className="absolute inset-0 h-full w-full border-0 bg-[#fcf4e8]"
       />
-      <EssayScale ticks={ticks} activeId={activeId} onSelect={onSelect} />
+      <EssayScale
+        ticks={ticks}
+        activeId={activeId}
+        onSelect={onSelect}
+        onWheelDelta={(deltaY) => iframeRef.current?.contentWindow?.scrollBy(0, deltaY)}
+      />
     </div>
   );
 }

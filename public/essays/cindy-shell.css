@@ -1,8 +1,18 @@
-/* Cindy shell: hide original MLU-Explain top nav; leave room on the right for our scale. */
+/* Cindy shell: hide original top nav; keep scrolly working inside the iframe. */
 html {
   box-sizing: border-box;
+  height: auto !important;
+  min-height: 100%;
   padding-right: 9.25rem !important;
+  overflow-x: hidden;
+  overflow-y: auto !important;
   scrollbar-width: none;
+}
+
+body {
+  height: auto !important;
+  min-height: 100%;
+  overflow-y: visible !important;
 }
 
 html::-webkit-scrollbar,
@@ -23,9 +33,38 @@ header {
 }
 
 #toc {
-  display: none !important;
+  /* Keep in layout for the original scrolly script; just take it off screen. */
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  display: flex !important;
 }
 
 figure {
   top: 0 !important;
+}
+
+#intro-mobile {
+  display: none !important;
+}
+
+#scrolly {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+}
+
+#scrolly > * {
+  flex: 1;
+}
+
+article > section[data-index] {
+  min-height: 100vh;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  height: auto !important;
+  box-sizing: border-box;
+  padding-top: 18vh;
+  padding-bottom: 28vh;
 }

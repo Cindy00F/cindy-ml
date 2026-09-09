@@ -1,14 +1,17 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { setThemeAction } from "@/app/actions";
 import type { ThemeName } from "@/lib/messages";
 
 export function ThemeToggle({ theme }: { theme: ThemeName }) {
+  const pathname = usePathname();
   const next = theme === "dark" ? "light" : "dark";
   return (
     <form action={setThemeAction}>
       <input type="hidden" name="theme" value={next} />
+      <input type="hidden" name="next" value={pathname || "/dashboard"} />
       <button
         type="submit"
         aria-label={theme === "dark" ? "Switch to light" : "切换到暗色"}

@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 import { DEMO_ACCOUNT, type Locale, type ThemeName } from "@/lib/messages";
 import {
   clearSessionCookie,
@@ -9,6 +10,11 @@ import {
   setSessionCookie,
   THEME_COOKIE,
 } from "@/lib/session";
+
+function nextPath(formData: FormData) {
+  const raw = String(formData.get("next") ?? "/dashboard");
+  return raw.startsWith("/") && !raw.startsWith("//") ? raw : "/dashboard";
+}
 
 export async function loginAction(formData: FormData) {
   const email = String(formData.get("email") ?? "")
@@ -44,6 +50,8 @@ export async function setLocaleAction(formData: FormData) {
     path: "/",
     sameSite: "lax",
   });
+  revalidatePath("/", "layout");
+  redirect(nextPath(formData));
 }
 
 export async function setThemeAction(formData: FormData) {
@@ -52,4 +60,6 @@ export async function setThemeAction(formData: FormData) {
     path: "/",
     sameSite: "lax",
   });
+  revalidatePath("/", "layout");
+  redirect(nextPath(formData));
 }

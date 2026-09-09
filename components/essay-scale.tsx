@@ -8,10 +8,12 @@ export function EssayScale({
   ticks,
   activeId,
   onSelect,
+  onWheelDelta,
 }: {
   ticks: EssayTick[];
   activeId: string | null;
   onSelect: (id: string) => void;
+  onWheelDelta?: (deltaY: number) => void;
 }) {
   const { locale } = useI18n();
   const activeIndex = Math.max(
@@ -25,6 +27,11 @@ export function EssayScale({
     <aside
       className="essay-scale pointer-events-none absolute inset-y-0 right-0 z-20 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[701px]:flex"
       aria-label={locale === "zh" ? "章节刻度" : "Section scale"}
+      onWheel={(event) => {
+        if (!onWheelDelta) return;
+        event.preventDefault();
+        onWheelDelta(event.deltaY);
+      }}
     >
       <div className="pointer-events-none absolute top-12 bottom-12 right-[14px] w-px bg-[#1a1a1a]/20" />
       <ol className="relative flex flex-col justify-center">
@@ -39,6 +46,11 @@ export function EssayScale({
               <button
                 type="button"
                 onClick={() => onSelect(tick.id)}
+                onWheel={(event) => {
+                  if (!onWheelDelta) return;
+                  event.preventDefault();
+                  onWheelDelta(event.deltaY);
+                }}
                 aria-current={isActive ? "true" : undefined}
                 title={label}
                 className={cn(

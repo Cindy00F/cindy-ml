@@ -1,14 +1,17 @@
 "use client";
 
 import { Globe } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { setLocaleAction } from "@/app/actions";
 import type { Locale } from "@/lib/messages";
 
 export function LocaleToggle({ locale }: { locale: Locale }) {
+  const pathname = usePathname();
   const next = locale === "zh" ? "en" : "zh";
   return (
     <form action={setLocaleAction}>
       <input type="hidden" name="locale" value={next} />
+      <input type="hidden" name="next" value={pathname || "/dashboard"} />
       <button
         type="submit"
         className="inline-flex items-center gap-1 px-1.5 py-1 text-xs tracking-wide text-muted-foreground hover:text-foreground"
