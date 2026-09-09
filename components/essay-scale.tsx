@@ -23,46 +23,35 @@ export function EssayScale({
 
   return (
     <aside
-      className="essay-scale relative z-10 flex h-full w-[7.5rem] shrink-0 flex-col justify-center overflow-hidden border-l border-black/10 bg-[#fcf4e8] px-2 py-8 text-[#1a1a1a] sm:w-[10.5rem] sm:px-3"
+      className="essay-scale pointer-events-none absolute inset-y-0 right-0 z-20 flex w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a]"
       aria-label={locale === "zh" ? "章节刻度" : "Section scale"}
     >
-      <div className="pointer-events-none absolute top-10 bottom-10 right-[13px] w-px bg-[#1a1a1a]/25 sm:right-[18px]" />
-      <ol className="relative flex flex-col justify-center gap-0.5">
+      <div className="pointer-events-none absolute top-12 bottom-12 right-[14px] w-px bg-[#1a1a1a]/20" />
+      <ol className="relative flex flex-col justify-center">
         {ticks.map((tick, i) => {
           const distance = Math.abs(i - activeIndex);
           const isActive = tick.id === activeId || (activeId === null && i === 0);
-          const scale = Math.max(0.58, 1 - distance * 0.1);
-          const opacity = Math.max(0.32, 1 - distance * 0.15);
-          const shift = Math.min(36, distance * 8);
           const label = tickLabel(locale, tick);
+          const size = Math.max(11, 14 - distance);
+          const opacity = Math.max(0.38, 1 - distance * 0.12);
           return (
-            <li key={tick.id}>
+            <li key={tick.id} className="h-8">
               <button
                 type="button"
                 onClick={() => onSelect(tick.id)}
                 aria-current={isActive ? "true" : undefined}
                 title={label}
                 className={cn(
-                  "group relative flex w-full origin-right items-center justify-end gap-2 py-0.5 text-right transition-[transform,opacity] duration-300 ease-out",
-                  isActive ? "text-[#1a1a1a]" : "text-[#1a1a1a]/70",
+                  "pointer-events-auto flex h-8 w-full items-center justify-end gap-2 text-right",
+                  isActive ? "font-bold" : "font-medium",
                 )}
-                style={{
-                  transform: `translateX(${shift}px) scale(${scale})`,
-                  opacity,
-                }}
+                style={{ fontSize: `${size}px`, opacity }}
               >
+                <span className="min-w-0 truncate">{label}</span>
                 <span
                   className={cn(
-                    "max-w-[5.6rem] truncate tracking-wide sm:max-w-[7.2rem]",
-                    isActive ? "text-[12px] font-bold sm:text-[13px]" : "text-[10px] font-medium sm:text-[11px]",
-                  )}
-                >
-                  {label}
-                </span>
-                <span
-                  className={cn(
-                    "relative z-[1] block h-px bg-[#1a1a1a] transition-all",
-                    isActive ? "w-5 sm:w-7" : "w-2.5 opacity-70 sm:w-3.5",
+                    "relative z-[1] block shrink-0 bg-[#1a1a1a]",
+                    isActive ? "h-[2px] w-5" : "h-px w-2.5 opacity-70",
                   )}
                 />
               </button>

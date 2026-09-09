@@ -8,16 +8,15 @@ import { originalEssayTicks } from "@/lib/original-essays";
 const EMPTY_TICKS: EssayTick[] = [];
 
 const HIDE_CHROME = `
+  html {
+    box-sizing: border-box;
+    padding-right: 9.25rem !important;
+    scrollbar-width: none;
+  }
+  html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
   body > header, header { display: none !important; }
   #toc { display: none !important; }
   figure { top: 0 !important; }
-  @media (min-width: 640px) {
-    #intro-mobile { display: none !important; }
-    #intro { display: block !important; }
-    #scrolly { display: flex !important; flex-direction: row-reverse !important; }
-    #scrolly > * { flex: 1; }
-    figure { position: sticky !important; top: 0 !important; height: 100vh !important; }
-  }
 `;
 
 function uniqueTicks(ticks: EssayTick[]) {
@@ -235,12 +234,12 @@ export function OriginalEssay({ folder }: { folder: string }) {
   };
 
   return (
-    <div className="original-essay flex h-[calc(100svh-3rem)] min-h-0 flex-1 bg-[#fcf4e8] text-[#1a1a1a]">
+    <div className="original-essay relative h-[calc(100svh-3rem)] min-h-0 flex-1 overflow-hidden bg-[#fcf4e8] text-[#1a1a1a]">
       <iframe
         ref={iframeRef}
         title="MLU-Explain essay"
         src={`/essays/${folder}/index.html`}
-        className="h-full min-w-0 flex-1 border-0 bg-[#fcf4e8]"
+        className="h-full w-full border-0 bg-[#fcf4e8]"
       />
       <EssayScale ticks={ticks} activeId={activeId} onSelect={onSelect} />
     </div>

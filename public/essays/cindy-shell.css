@@ -1,4 +1,16 @@
-/* Cindy shell: hide original MLU-Explain top nav so our chrome + scale can take over. */
+/* Cindy shell: hide original MLU-Explain top nav; leave room on the right for our scale. */
+html {
+  box-sizing: border-box;
+  padding-right: 9.25rem !important;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
 body > header,
 header {
   display: none !important;
@@ -10,29 +22,4 @@ header {
 
 figure {
   top: 0 !important;
-}
-
-@media (min-width: 640px) {
-  #intro-mobile {
-    display: none !important;
-  }
-
-  #intro {
-    display: block !important;
-  }
-
-  #scrolly {
-    display: flex !important;
-    flex-direction: row-reverse !important;
-  }
-
-  #scrolly > * {
-    flex: 1;
-  }
-
-  figure {
-    position: sticky !important;
-    top: 0 !important;
-    height: 100vh !important;
-  }
 }
