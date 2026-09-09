@@ -14,6 +14,9 @@ const HIDE_CHROME = `
     scrollbar-width: none;
   }
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+  @media (max-width: 700px) {
+    html { padding-right: 0 !important; }
+  }
   body > header, header { display: none !important; }
   #toc { display: none !important; }
   figure { top: 0 !important; }
