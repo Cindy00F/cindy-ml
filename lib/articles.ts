@@ -99,10 +99,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#c45c26",
     sourcePath: "neural-networks",
-    title: { zh: "神经网络", en: "Neural Networks" },
+    title: { zh: "怎么一层层叠起来，就会自己判断？", en: "How does stacking layers start to judge?" },
     summary: {
-      zh: "从单个神经元走到多层网络：加权求和、非线性激活、前向传播，以及为什么深度能组合出复杂决策面。",
-      en: "From one neuron to a stacked network: weighted sums, nonlinear activations, forward passes, and why depth composes rich decision surfaces.",
+      zh: "这篇从一根神经、一个感知机讲起：先加权，再弯曲，再往下传。拜托拖一拖隐藏层，看分界线怎么从一条直线，弯成一块一块的区域。",
+      en: "This note starts from one neuron, one perceptron: weigh, bend, pass it on. Please drag the hidden layer and watch a straight boundary fold into patches.",
     },
     sections: [
       {
@@ -135,10 +135,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#2f6f64",
     sourcePath: "equality-of-odds",
-    title: { zh: "机会均等 / 几率均等", en: "Equality of Odds" },
+    title: { zh: "准确率很高，就代表对谁都公平吗？", en: "If accuracy is high, is it fair to everyone?" },
     summary: {
-      zh: "用真正例率和假正例率在不同群体间是否一致，来度量分类器是否把错误不公平地压在某一类人身上。",
-      en: "A fairness criterion: true-positive and false-positive rates should match across groups, so errors are not dumped onto one population.",
+      zh: "这篇拿两个群体举例：同一条分数线，漏报和误报可能差一截。拜托拖一下两边的阈值，看错误会不会被压在同一群人身上。",
+      en: "This note uses two groups: the same cutoff can miss one group and over-flag the other. Please drag both thresholds and see who gets stuck with the errors.",
     },
     sections: [
       {
@@ -171,10 +171,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#3d5a99",
     sourcePath: "logistic-regression",
-    title: { zh: "逻辑回归", en: "Logistic Regression" },
+    title: { zh: "怎么把一条线，变成「是不是」的概率？", en: "How does a line become a yes-or-no probability?" },
     summary: {
-      zh: "把线性打分压进 (0,1)，得到类别概率。用阈值做二分类，并看清 sigmoid 如何把「距离边界」变成置信度。",
-      en: "Squash a linear score into (0, 1) to get class probability. Classify with a threshold, and watch the sigmoid turn distance-to-boundary into confidence.",
+      zh: "这篇拿气温猜晴天还是雨天：温度这些特征，压进 0 到 1。阈值大约 0.5。如果分错了，拜托拖拽阈值，看预测怎么变。",
+      en: "This note guesses rain or sun from temperature, squashed into 0 to 1. The cutoff is about 0.5. If it sorts wrong, please drag the threshold and watch the guess move.",
     },
     sections: [
       {
@@ -207,10 +207,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#b4532a",
     sourcePath: "linear-regression",
-    title: { zh: "线性回归", en: "Linear Regression" },
+    title: { zh: "怎么用一条直线，去猜一个数字？", en: "How do you guess a number with a straight line?" },
     summary: {
-      zh: "用一条直线（超平面）拟合数值关系。最小二乘如何决定斜率与截距，残差又在讲述哪些点在抗拒这条线。",
-      en: "Fit a numeric relationship with a line (a hyperplane). Least squares chooses slope and intercept; residuals tell you which points resist the story.",
+      zh: "这篇拿散点举例：找一条最贴着点的线。点离线越近，猜得越稳。拜托在图上加点，看斜率和截距跟着跑。",
+      en: "This note uses a scatter of dots: find the line that hugs them. Closer dots, stabler guesses. Please add points and watch slope and intercept run after them.",
     },
     sections: [
       {
@@ -243,10 +243,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#6b4ea1",
     sourcePath: "reinforcement-learning",
-    title: { zh: "强化学习", en: "Reinforcement Learning" },
+    title: { zh: "没有标准答案，怎么靠试错学会选？", en: "With no right answers, how do you learn by trying?" },
     summary: {
-      zh: "智能体用试错最大化长期回报。多臂老虎机把「探索与利用」这一核心张力缩成一个可玩弄的实验。",
-      en: "An agent learns by trial and error to maximize long-run reward. A multi-armed bandit compresses the explore–exploit tension into a toy you can play.",
+      zh: "这篇拿几台老虎机举例：有的臂奖多，有的少。你要一边试、一边用。拜托拉几下，看探索和利用怎么打架。",
+      en: "This note uses a few slot machines: some arms pay more. You have to try, and also use what works. Please pull a few times and watch explore fight exploit.",
     },
     sections: [
       {
@@ -279,10 +279,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#8a3a4a",
     sourcePath: "roc-auc",
-    title: { zh: "ROC 与 AUC", en: "ROC & AUC" },
+    title: { zh: "换一条分数线，模型到底变好还是变差？", en: "Move the cutoff — is the model better or worse?" },
     summary: {
-      zh: "扫一遍分类阈值，把真正例率对假正例率画成曲线。AUC 是这条曲线下的面积，也是随机正例排在负例前面的概率。",
-      en: "Sweep the classification threshold and plot true-positive rate against false-positive rate. AUC is the area under that curve — also the chance a random positive ranks above a random negative.",
+      zh: "这篇把抓住的和误报的画成一条弯弯的线。面积好看，也不等于你该用哪个阈值。拜托拖拽阈值，看工作点在曲线上跑。",
+      en: "This note plots catches against false alarms as a curve. A pretty area still does not pick your cutoff. Please drag the threshold and watch the operating point run.",
     },
     sections: [
       {
@@ -315,10 +315,10 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2d6a4f",
     sourcePath: "cross-validation",
-    title: { zh: "交叉验证", en: "Cross-Validation" },
+    title: { zh: "切一刀就信了，会不会太运气？", en: "Trust one split — or is that just luck?" },
     summary: {
-      zh: "把数据轮流当作验证折，得到比单次划分更稳的泛化估计。K 折如何工作，以及它不能替代最终的测试集。",
-      en: "Rotate data through a validation fold for a stabler estimate than one split. How K-fold works — and why it still does not replace a final test set.",
+      zh: "这篇把数据轮流当考卷：这一折藏起来打分，下一折再换。大约 5 折或 10 折最常见。拜托看色块怎么轮，别把一次划分当成全世界。",
+      en: "This note takes turns hiding a fold for scoring, then swaps. Five or ten folds is the usual. Please watch the blocks rotate — one cut is not the whole world.",
     },
     sections: [
       {
@@ -351,10 +351,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#9c4a1a",
     sourcePath: "precision-recall",
-    title: { zh: "精确率与召回率", en: "Precision & Recall" },
+    title: { zh: "光看准确率，为什么会骗人？", en: "Why can accuracy lie to you?" },
     summary: {
-      zh: "准确率在类别不平衡时会骗人。精确率问「报出来的有多少是真的」，召回率问「真的里面找回了多少」，F1 是二者的调和。",
-      en: "Accuracy lies under imbalance. Precision asks how many of the raised flags are true; recall asks how many of the true cases you recovered. F1 is their harmonic mean.",
+      zh: "这篇拿癌症筛查举例：报出来的有多少是真的，真的里面找回了多少。拜托拖拽阈值，看精确率和召回率怎么互相让。",
+      en: "This note uses a cancer screen: how many raised flags are true, and how many true cases you found. Please drag the threshold and watch precision trade with recall.",
     },
     sections: [
       {
@@ -387,10 +387,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#1f6b3a",
     sourcePath: "random-forest",
-    title: { zh: "随机森林", en: "Random Forest" },
+    title: { zh: "一棵树爱记错，很多棵一起投票呢？", en: "One tree memorizes. What if many trees vote?" },
     summary: {
-      zh: "许多有差异的决策树投票。Bagging 和随机特征让树之间相关性下降，多数表决把单树的高方差压下去。",
-      en: "Many diverse trees vote. Bagging and random features cut correlation; majority vote damps the variance of any one tree.",
+      zh: "这篇拿路牌分类举例：每棵树只看一部分数据和特征，最后少数服从多数。拜托把树加多一点，看多数表决稳不稳。",
+      en: "This note sorts road signs: each tree sees only some rows and features, then they vote. Please add more trees and see if the majority settles down.",
     },
     sections: [
       {
@@ -422,10 +422,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#4a7c2c",
     sourcePath: "decision-tree",
-    title: { zh: "决策树", en: "Decision Trees" },
+    title: { zh: "怎么一刀一刀切开，问出是什么？", en: "How do you ask your way there, one cut at a time?" },
     summary: {
-      zh: "一连串 if-then 把特征空间切成矩形。熵与信息增益决定刀落在哪；树太深就会把噪声也背下来。",
-      en: "A cascade of if-then rules carves the feature space into rectangles. Entropy and information gain pick the cuts; a tree that grows too deep memorizes noise.",
+      zh: "这篇拿苹果、樱桃、橡树举例：问一个特征，再问下一个。切太深就会把噪声也背下来。拜托跟着重画那些分割线。",
+      en: "This note uses apples, cherries, and oaks: ask one feature, then the next. Cut too deep and you memorize noise. Please watch those partition lines get redrawn.",
     },
     sections: [
       {
@@ -458,10 +458,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#7a3e6d",
     sourcePath: "bias-variance",
-    title: { zh: "偏差–方差权衡", en: "The Bias–Variance Tradeoff" },
+    title: { zh: "模型太傻和太精，哪边更伤？", en: "Too simple or too sharp — which one hurts more?" },
     summary: {
-      zh: "欠拟合是偏差，过拟合是方差。测试误差的 U 形曲线，以及用模型复杂度在两者之间找谷底。",
-      en: "Underfit is bias; overfit is variance. The U-shaped test-error curve, and how model complexity searches for the valley between them.",
+      zh: "这篇拿打靶举例：老瞄偏是偏差，换一批数据就乱跳是方差。中间有个谷。拜托拖复杂度，看测试误差怎么先降再升。",
+      en: "This note uses a dartboard: always missing the same way is bias; jumping when the data changes is variance. There is a valley in the middle. Please drag complexity and watch test error fall, then rise.",
     },
     sections: [
       {
@@ -494,10 +494,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#1f4e79",
     sourcePath: "double-descent",
-    title: { zh: "双重下降：直观", en: "Double Descent: A Visual Introduction" },
+    title: { zh: "过拟合之后，误差为什么还能再掉一次？", en: "After overfitting, why can error fall again?" },
     summary: {
-      zh: "过了插值阈值，测试误差可以再次下降。它没有推翻偏差–方差，而是把「过拟合」在过参数区重新解释。",
-      en: "Past the interpolation threshold, test error can fall a second time. The bias–variance story is not repealed — overfitting is reinterpreted in the over-parameterized regime.",
+      zh: "这篇画了一条怪曲线：误差先降，在插值点附近鼓起来，再往下掉。拜托盯着那条峰，看「越复杂越糟」在哪里说不通。",
+      en: "This note draws a weird curve: error falls, humps near interpolation, then falls again. Please watch that peak — that is where “more complex is worse” stops making sense.",
     },
     sections: [
       {
@@ -529,10 +529,10 @@ export const articles: Article[] = [
     minutes: 13,
     accent: "#153e66",
     sourcePath: "double-descent2",
-    title: { zh: "双重下降：数学", en: "Double Descent: A Mathematical Explanation" },
+    title: { zh: "刚好记满训练点，为什么反而是最晃的时候？", en: "Why is a perfect fit the wobbliest moment?" },
     summary: {
-      zh: "用多项式拟合把插值写清楚：欠定系统的最小范数解如何比刚刚插值的高次式更稳，以及峰值为何出现在自由度等于样本数附近。",
-      en: "Polynomial fitting makes interpolation concrete: why a minimum-norm solution in an underdetermined system can be stabler than a just-interpolating high-degree fit, and why the peak sits near degrees of freedom ≈ n.",
+      zh: "这篇拿多项式拟合举例：次数刚好够穿过每个点时，线会抖得很凶。再高一点，反而更稳。拜托拖次数，看测试误差在插值点附近鼓包。",
+      en: "This note fits a polynomial: when the degree just threads every point, the line thrashes. A little higher, and it calms down. Please drag the degree and watch test error hump near interpolation.",
     },
     sections: [
       {
