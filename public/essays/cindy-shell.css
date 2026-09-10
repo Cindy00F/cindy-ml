@@ -33,6 +33,18 @@ header {
   display: none !important;
 }
 
+#intro__date,
+#intro-date,
+.authors,
+h3#intro__date {
+  display: none !important;
+}
+
+h2.logo {
+  font-family: var(--font-outfit), var(--font-noto-sans-sc), "PingFang SC", sans-serif !important;
+  letter-spacing: 0.08em !important;
+}
+
 #toc {
   /* Keep in layout for the original scrolly script; just take it off screen. */
   position: absolute !important;

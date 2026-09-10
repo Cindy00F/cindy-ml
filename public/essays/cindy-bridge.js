@@ -27,6 +27,8 @@
   var applying = false;
   var scheduled = null;
 
+  var EXTRA = window.__cindyI18n || {};
+
   var EN_TO_ZH = {
     "The Importance of Data Splitting": "数据为什么要切开",
     "Train, Test, and Validation Splits": "三份数据，三种用途",
@@ -156,7 +158,33 @@
     "Majority Vote: Cat": "多数：猫",
     "Majority Vote: Dog": "多数：狗",
     "Majority Vote:": "多数：",
+    "Logistic Regression": "逻辑回归",
+    "Linear Regression": "线性回归",
+    "Neural Networks": "神经网络",
+    "Reinforcement Learning": "强化学习",
+    "Precision & Recall": "精确率与召回率",
+    "Random Forest": "随机森林",
+    "Decision Trees": "决策树",
+    "Bias Variance Tradeoff": "偏差–方差权衡",
+    "Double Descent": "双重下降",
+    "Double Descent 2": "双重下降：数学",
+    "ROC & AUC": "ROC 与 AUC",
+    "K-Fold Cross-Validation": "K 折交叉验证",
+    "Cross-Validation": "交叉验证",
+    "Equality of Odds": "几率均等",
+    "Regression for Classification": "用来分类的回归",
+    "References + Open Source": "参考与开源",
+    "MLU-EXPLAIN": "Cindy",
+    "MLU-EXPL": "Cindy",
+    "MLU-Explain": "Cindy",
+    "MLU-Explain articles": "这些笔记",
   };
+
+  for (var extraKey in EXTRA) {
+    if (Object.prototype.hasOwnProperty.call(EXTRA, extraKey) && !Object.prototype.hasOwnProperty.call(EN_TO_ZH, extraKey)) {
+      EN_TO_ZH[extraKey] = EXTRA[extraKey];
+    }
+  }
 
   var SUBS = [
     ["The Importance of Data Splitting", "数据为什么要切开"],
@@ -178,7 +206,10 @@
     [" or ", "或"],
     ["By Jared Wilber & Brent Werness.", ""],
     ["Jared Wilber", ""],
+    ["Erin Bugbee", ""],
     ["Brent Werness", ""],
+    ["MLU-EXPLAIN", "Cindy"],
+    ["MLU-Explain", "Cindy"],
   ];
 
 
@@ -198,13 +229,29 @@
     var core = raw.slice(lead.length, raw.length - trail.length);
     if (!core) return raw;
     var compact = core.replace(/\s+/g, " ").trim();
-    if (Object.prototype.hasOwnProperty.call(EN_TO_ZH, core)) return lead + EN_TO_ZH[core] + trail;
-    if (Object.prototype.hasOwnProperty.call(EN_TO_ZH, compact)) return lead + EN_TO_ZH[compact] + trail;
+    var hit = lookupZh(core);
+    if (hit != null) return lead + hit + trail;
+    hit = lookupZh(compact);
+    if (hit != null) return lead + hit + trail;
     var next = core;
     for (var i = 0; i < SUBS.length; i++) {
       if (next.indexOf(SUBS[i][0]) !== -1) next = next.split(SUBS[i][0]).join(SUBS[i][1]);
     }
     return lead + next + trail;
+  }
+
+  var LOWER_INDEX = null;
+  function lookupZh(key) {
+    if (Object.prototype.hasOwnProperty.call(EN_TO_ZH, key)) return EN_TO_ZH[key];
+    if (!LOWER_INDEX) {
+      LOWER_INDEX = {};
+      for (var k in EN_TO_ZH) {
+        if (Object.prototype.hasOwnProperty.call(EN_TO_ZH, k)) LOWER_INDEX[k.toLowerCase()] = EN_TO_ZH[k];
+      }
+    }
+    var lower = key.toLowerCase();
+    if (Object.prototype.hasOwnProperty.call(LOWER_INDEX, lower)) return LOWER_INDEX[lower];
+    return null;
   }
 
   function walk(node, visit) {
@@ -240,13 +287,20 @@
   }
 
   function hideAuthorByline() {
+    var dates = document.querySelectorAll("#intro__date, #intro-date");
+    for (var d = 0; d < dates.length; d++) dates[d].style.display = "none";
+    var logos = document.querySelectorAll("h2.logo, #intro-icon h2");
+    for (var L = 0; L < logos.length; L++) logos[L].textContent = "Cindy";
+
     walk(document.body, function (textNode) {
       var value = textNode.nodeValue || "";
-      if (!/Jared\s+Wilber|Brent\s+Werness/i.test(value)) return;
+      if (!/Jared\s+Wilber|Brent\s+Werness|Erin\s+Bugbee/i.test(value)) return;
       textNode.nodeValue = value
-        .replace(/By\s+Jared\s+Wilber\s*(&|and|、|,)?\s*Brent\s+Werness\.?/gi, "")
+        .replace(/By\s+Jared\s+Wilber\s*(&|and|、|,)?\s*(Brent\s+Werness|Erin\s+Bugbee)?\.?/gi, "")
+        .replace(/Erin\s+Bugbee\s*(&|and|、|,)?\s*Jared\s+Wilber\.?/gi, "")
         .replace(/Jared\s+Wilber/gi, "")
         .replace(/Brent\s+Werness/gi, "")
+        .replace(/Erin\s+Bugbee/gi, "")
         .replace(/^[、，,.\s]+|[、，,.\s]+$/g, "");
       if (String(textNode.nodeValue || "").trim()) return;
       var node = textNode.nextSibling;

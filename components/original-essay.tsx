@@ -23,7 +23,7 @@ const HIDE_CHROME = `
   }
   body { height: auto !important; min-height: 100%; overflow-y: visible !important; }
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
-  body > header, header { display: none !important; }
+  body > header, header, #intro__date, #intro-date { display: none !important; }
   #toc {
     position: absolute !important;
     left: -9999px !important;
@@ -117,10 +117,17 @@ function selectedIdFromToc(doc: Document) {
 
 function installCindyBridge(doc: Document) {
   if (doc.querySelector(`script[src="${BASE_PATH}/essays/cindy-bridge.js"]`)) return;
+  const host = doc.body ?? doc.documentElement;
+  const i18n = doc.createElement("script");
+  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js`;
+  i18n.id = "cindy-i18n";
+  i18n.async = false;
   const script = doc.createElement("script");
   script.src = `${BASE_PATH}/essays/cindy-bridge.js`;
   script.id = "cindy-bridge";
-  (doc.body ?? doc.documentElement).appendChild(script);
+  script.async = false;
+  host.appendChild(i18n);
+  host.appendChild(script);
 }
 
 function hideOriginalChrome(doc: Document) {
