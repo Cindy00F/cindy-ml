@@ -1,10 +1,10 @@
-import { guestAction, loginAction } from "@/app/actions";
+import { ClientRedirect } from "@/components/client-redirect";
 import { DeskDoodle } from "@/components/desk-doodle";
+import { LoginPanel } from "@/components/login-panel";
 import { SiteHeader } from "@/components/site-header";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { DEMO_ACCOUNT, messages } from "@/lib/messages";
+import { messages } from "@/lib/messages";
 import { getLocale, getSession, getTheme } from "@/lib/session";
+import { IS_STATIC } from "@/lib/site";
 import { safeNextPath } from "@/lib/paths";
 import { redirect } from "next/navigation";
 
@@ -13,6 +13,7 @@ export default async function LoginPage({
 }: {
   searchParams: Promise<{ error?: string; next?: string }>;
 }) {
+  if (IS_STATIC) return <ClientRedirect href="/dashboard/" />;
   const params = await searchParams;
   const next = safeNextPath(params.next);
   const session = await getSession();
@@ -36,51 +37,7 @@ export default async function LoginPage({
           </p>
           <DeskDoodle className="mt-10 hidden max-w-xs text-foreground md:block" />
         </div>
-        <div className="w-full max-w-sm space-y-3 border-t pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
-          <form action={loginAction} method="post" className="space-y-5">
-            <input type="hidden" name="next" value={next} />
-            <h2 className="font-heading text-2xl">{t.loginTitle}</h2>
-            <div className="space-y-2">
-              <Label htmlFor="email">{t.email}</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="username"
-                defaultValue={DEMO_ACCOUNT.email}
-                className="h-10 rounded-none"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">{t.password}</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                defaultValue={DEMO_ACCOUNT.password}
-                className="h-10 rounded-none"
-              />
-            </div>
-            {error ? <p className="text-sm">{t.invalidCreds}</p> : null}
-            <button
-              type="submit"
-              className="h-10 w-full border border-foreground bg-foreground text-sm text-background"
-            >
-              {t.signIn}
-            </button>
-          </form>
-          <form action={guestAction} method="post">
-            <input type="hidden" name="next" value={next} />
-            <button
-              type="submit"
-              className="h-10 w-full border border-foreground text-sm"
-            >
-              {t.guest}
-            </button>
-          </form>
-          <p className="text-xs text-muted-foreground">{t.demoHint}</p>
-        </div>
+        <LoginPanel locale={locale} next={next} error={error} />
       </main>
     </div>
   );

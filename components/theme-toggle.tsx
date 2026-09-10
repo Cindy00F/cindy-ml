@@ -1,17 +1,16 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
-import { setThemeAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { persistTheme } from "@/lib/client-auth";
 import { emitCindyPrefs } from "@/lib/client-prefs";
+import { IS_STATIC } from "@/lib/site";
 import type { ThemeName } from "@/lib/messages";
 
 export function ThemeToggle({ theme }: { theme: ThemeName }) {
-  const pathname = usePathname();
   const router = useRouter();
   const [current, setCurrent] = useState(theme);
-  const [, startTransition] = useTransition();
 
   useEffect(() => {
     setCurrent(theme);
@@ -26,13 +25,8 @@ export function ThemeToggle({ theme }: { theme: ThemeName }) {
         setCurrent(next);
         document.documentElement.classList.toggle("dark", next === "dark");
         emitCindyPrefs({ theme: next });
-        startTransition(async () => {
-          const data = new FormData();
-          data.set("theme", next);
-          data.set("next", pathname || "/dashboard");
-          await setThemeAction(data);
-          router.refresh();
-        });
+        persistTheme(next);
+        if (!IS_STATIC) router.refresh();
       }}
       aria-label={current === "dark" ? "Switch to light" : "切换到暗色"}
       className="relative z-[1] inline-flex items-center gap-1 px-1.5 py-1 text-xs text-muted-foreground hover:text-foreground max-[700px]:min-h-9 max-[700px]:px-1"

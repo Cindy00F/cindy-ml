@@ -2,7 +2,15 @@
 
 14 篇机器学习可视化文章，全部使用 [MLU-Explain](https://mlu-explain.github.io/) 发布稿（CC BY-SA 4.0）。交互和版式与原作相同。
 
-语言切换、亮/暗主题、退出始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。
+**线上地址：** [https://cindy00f.github.io/cindy-ml/](https://cindy00f.github.io/cindy-ml/)
+
+语言切换、亮/暗主题始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。
+
+如果这个链接打开是 404，到 GitHub 仓库 **Settings → Pages**：
+
+1. Source 选 **Deploy from a branch**
+2. Branch 选 **`gh-pages`**，文件夹选 **`/` (root)**
+3. 保存后再等一两分钟
 
 ## 先说清楚：127.0.0.1 是哪台电脑
 
@@ -20,7 +28,7 @@
 3. 双击项目根目录的 `start.bat`。
 4. 等几秒，浏览器会打开训练/验证/测试集这篇。不要关掉那个黑色窗口。
 
-登录：`xinyi00f@outlook.com` / `cindy`。也可以点「访客进入」。
+本地开发需要登录：`xinyi00f@outlook.com` / `cindy`。也可以点「访客进入」。GitHub Pages 上的站点不需要登录。
 
 ## macOS / Linux
 

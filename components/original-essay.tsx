@@ -6,6 +6,7 @@ import { EssayScale } from "@/components/essay-scale";
 import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
 import type { Locale, ThemeName } from "@/lib/messages";
+import { BASE_PATH } from "@/lib/site";
 import { originalEssayTicks } from "@/lib/original-essays";
 
 const EMPTY_TICKS: EssayTick[] = [];
@@ -115,9 +116,9 @@ function selectedIdFromToc(doc: Document) {
 }
 
 function installCindyBridge(doc: Document) {
-  if (doc.querySelector('script[src="/essays/cindy-bridge.js"]')) return;
+  if (doc.querySelector(`script[src="${BASE_PATH}/essays/cindy-bridge.js"]`)) return;
   const script = doc.createElement("script");
-  script.src = "/essays/cindy-bridge.js";
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js`;
   script.id = "cindy-bridge";
   (doc.body ?? doc.documentElement).appendChild(script);
 }
@@ -129,10 +130,10 @@ function hideOriginalChrome(doc: Document) {
     style.textContent = HIDE_CHROME;
     doc.head?.appendChild(style);
   }
-  if (!doc.querySelector('link[href="/essays/cindy-shell.css"]')) {
+  if (!doc.querySelector(`link[href="${BASE_PATH}/essays/cindy-shell.css"]`)) {
     const link = doc.createElement("link");
     link.rel = "stylesheet";
-    link.href = "/essays/cindy-shell.css";
+    link.href = `${BASE_PATH}/essays/cindy-shell.css`;
     doc.head?.appendChild(link);
   }
   installCindyBridge(doc);
@@ -180,7 +181,7 @@ export function OriginalEssay({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const boundDoc = useRef<Document | null>(null);
   const prefsRef = useRef({ locale, theme });
-  const srcRef = useRef(`/essays/${folder}/index.html?lang=${locale}&theme=${theme}`);
+  const srcRef = useRef(`${BASE_PATH}/essays/${folder}/index.html?lang=${locale}&theme=${theme}`);
   const known = originalEssayTicks[folder] ?? EMPTY_TICKS;
   const [ticks, setTicks] = useState<EssayTick[]>(known);
   const [activeId, setActiveId] = useState<string | null>(known[0]?.id ?? null);
@@ -251,7 +252,7 @@ export function OriginalEssay({
         href === "https://mlu-explain.github.io"
       ) {
         event.preventDefault();
-        window.top!.location.href = "/dashboard";
+        window.top!.location.href = `${BASE_PATH}/dashboard/`;
       }
     };
     doc.addEventListener("click", onClick);

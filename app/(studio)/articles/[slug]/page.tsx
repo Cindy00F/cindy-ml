@@ -4,10 +4,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ArticlePlayground } from "@/components/playgrounds";
 import { OriginalEssay } from "@/components/original-essay";
 import { MarkReadButton } from "@/components/mark-read-button";
-import { getArticle, neighbors } from "@/lib/articles";
+import { getArticle, neighbors, articles } from "@/lib/articles";
 import { originalEssayFolder } from "@/lib/original-essays";
 import { messages } from "@/lib/messages";
 import { getLocale, getTheme } from "@/lib/session";
+
+export function generateStaticParams() {
+  return articles.map((article) => ({ slug: article.slug }));
+}
 
 export default async function ArticlePage({
   params,

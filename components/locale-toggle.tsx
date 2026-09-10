@@ -1,17 +1,16 @@
 "use client";
 
 import { Globe } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
-import { setLocaleAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { persistLocale } from "@/lib/client-auth";
 import { emitCindyPrefs } from "@/lib/client-prefs";
+import { IS_STATIC } from "@/lib/site";
 import type { Locale } from "@/lib/messages";
 
 export function LocaleToggle({ locale }: { locale: Locale }) {
-  const pathname = usePathname();
   const router = useRouter();
   const [current, setCurrent] = useState(locale);
-  const [, startTransition] = useTransition();
 
   useEffect(() => {
     setCurrent(locale);
@@ -26,13 +25,8 @@ export function LocaleToggle({ locale }: { locale: Locale }) {
         setCurrent(next);
         document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
         emitCindyPrefs({ locale: next });
-        startTransition(async () => {
-          const data = new FormData();
-          data.set("locale", next);
-          data.set("next", pathname || "/dashboard");
-          await setLocaleAction(data);
-          router.refresh();
-        });
+        persistLocale(next);
+        if (!IS_STATIC) router.refresh();
       }}
       className="relative z-[1] inline-flex items-center gap-1 px-1.5 py-1 text-xs tracking-wide text-muted-foreground hover:text-foreground max-[700px]:min-h-9 max-[700px]:px-1"
       aria-label={current === "zh" ? "Switch to English" : "切换到中文"}

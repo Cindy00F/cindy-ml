@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Noto_Sans_SC, Outfit } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { getLocale, getTheme } from "@/lib/session";
+import { BASE_PATH, IS_STATIC } from "@/lib/site";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -25,7 +26,7 @@ const notoSansSC = Noto_Sans_SC({
 export const metadata: Metadata = {
   title: "Cindy 在学习机器学习",
   description: "Fourteen visual essays on machine learning.",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: `${BASE_PATH}/favicon.svg` },
 };
 
 export const viewport: Viewport = {
@@ -56,6 +57,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           ["--font-heading" as string]: FONT_STACK,
         }}
       >
+        {IS_STATIC ? (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `try{if(localStorage.getItem("cindy-theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`,
+            }}
+          />
+        ) : null}
         <Providers locale={locale}>{children}</Providers>
       </body>
     </html>

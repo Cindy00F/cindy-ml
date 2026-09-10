@@ -2,6 +2,25 @@
   if (window.__cindyBridge) return;
   window.__cindyBridge = true;
 
+  function siteBase() {
+    var path = window.location.pathname || "";
+    var i = path.indexOf("/essays/");
+    if (i >= 0) return path.slice(0, i);
+    if (window.top && window.top !== window) {
+      try {
+        var topPath = window.top.location.pathname || "";
+        if (topPath.indexOf("/cindy-ml") === 0) return "/cindy-ml";
+      } catch (e) {
+        /* ignore */
+      }
+    }
+    return "";
+  }
+
+  function dashboardUrl() {
+    return siteBase() + "/dashboard/";
+  }
+
   var currentLocale = "zh";
   var currentTheme = "light";
   var originals = typeof WeakMap === "function" ? new WeakMap() : null;
@@ -259,10 +278,10 @@
         continue;
       }
       if (href.indexOf("aws.amazon.com/machine-learning/mlu") !== -1) {
-        a.setAttribute("href", "/dashboard");
+        a.setAttribute("href", dashboardUrl());
         a.addEventListener("click", function (event) {
           event.preventDefault();
-          if (window.top) window.top.location.href = "/dashboard";
+          if (window.top) window.top.location.href = dashboardUrl();
         });
       }
     }

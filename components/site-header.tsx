@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { logoutAction } from "@/app/actions";
 import { LocaleToggle } from "@/components/locale-toggle";
+import { LogoutButton } from "@/components/logout-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { messages, type Locale, type ThemeName } from "@/lib/messages";
+import { IS_STATIC } from "@/lib/site";
 
 export function SiteHeader({
   locale,
@@ -41,15 +42,8 @@ export function SiteHeader({
         <div className="flex items-center gap-0.5">
           <LocaleToggle locale={locale} />
           <ThemeToggle theme={theme} />
-          {email ? (
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="px-2 py-1 text-xs text-muted-foreground hover:text-foreground max-[700px]:min-h-9"
-              >
-                {t.logout}
-              </button>
-            </form>
+          {email && !IS_STATIC ? (
+            <LogoutButton label={t.logout} />
           ) : null}
         </div>
       </div>

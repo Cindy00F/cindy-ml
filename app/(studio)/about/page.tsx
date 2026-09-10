@@ -2,6 +2,8 @@ import { DeskDoodle } from "@/components/desk-doodle";
 import { messages } from "@/lib/messages";
 import { getLocale } from "@/lib/session";
 
+export const dynamic = "force-static";
+
 export default async function AboutPage() {
   const locale = await getLocale();
   const t = messages[locale];

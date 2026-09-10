@@ -1,11 +1,15 @@
 import { cookies } from "next/headers";
 import { DEMO_ACCOUNT, type Locale, type Session, type ThemeName } from "@/lib/messages";
+import { IS_STATIC } from "@/lib/site";
 
 export const SESSION_COOKIE = "cindy-session";
 export const LOCALE_COOKIE = "cindy-locale";
 export const THEME_COOKIE = "cindy-theme";
 
 export async function getSession(): Promise<Session | null> {
+  if (IS_STATIC) {
+    return { email: DEMO_ACCOUNT.email, name: DEMO_ACCOUNT.name };
+  }
   const raw = (await cookies()).get(SESSION_COOKIE)?.value;
   if (!raw) return null;
   try {
@@ -30,10 +34,12 @@ export async function clearSessionCookie() {
 }
 
 export async function getLocale(): Promise<Locale> {
+  if (IS_STATIC) return "zh";
   return (await cookies()).get(LOCALE_COOKIE)?.value === "en" ? "en" : "zh";
 }
 
 export async function getTheme(): Promise<ThemeName> {
+  if (IS_STATIC) return "light";
   return (await cookies()).get(THEME_COOKIE)?.value === "dark" ? "dark" : "light";
 }
 

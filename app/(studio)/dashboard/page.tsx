@@ -5,6 +5,8 @@ import { articles, categories, type Category } from "@/lib/articles";
 import { messages } from "@/lib/messages";
 import { getLocale } from "@/lib/session";
 
+export const dynamic = "force-static";
+
 export default async function DashboardPage({
   searchParams,
 }: {
