@@ -571,6 +571,9 @@
 
   compactIntroBreaks();
   scheduleFit();
+  [80, 250, 800, 2000].forEach(function (ms) {
+    window.setTimeout(applyAll, ms);
+  });
   window.addEventListener("resize", scheduleFit, { passive: true });
   if (typeof ResizeObserver === "function") {
     var figure = document.querySelector("#scrolly figure");
