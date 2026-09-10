@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ArticlePlayground } from "@/components/playgrounds";
 import { OriginalEssay } from "@/components/original-essay";
+import { ArticleSummary } from "@/components/article-summary";
 import { MarkReadButton } from "@/components/mark-read-button";
 import { getArticle, neighbors, articles } from "@/lib/articles";
 import { originalEssayFolder } from "@/lib/original-essays";
@@ -45,7 +46,10 @@ export default async function ArticlePage({
       <h1 className="font-heading mt-10 text-4xl leading-tight sm:text-5xl">
         {article.title[locale]}
       </h1>
-      <p className="mt-5 text-base leading-8 text-muted-foreground">{article.summary[locale]}</p>
+      <ArticleSummary
+        text={article.summary[locale]}
+        className="mt-5 text-base leading-8 text-muted-foreground"
+      />
 
       <div className="article-prose mt-8">
         {article.sections.map((section, i) => (

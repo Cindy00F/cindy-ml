@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArticleThumb } from "@/components/article-thumb";
+import { ArticleSummary } from "@/components/article-summary";
 import { DeskDoodle } from "@/components/desk-doodle";
 import { articles, categories, type Category } from "@/lib/articles";
 import { messages } from "@/lib/messages";
@@ -97,9 +98,10 @@ export default async function DashboardPage({
                     <h3 className="font-heading mt-2 text-3xl max-[700px]:text-2xl max-[700px]:leading-tight">
                       {article.title[locale]}
                     </h3>
-                    <p className="mt-4 text-sm leading-7 text-muted-foreground">
-                      {article.summary[locale]}
-                    </p>
+                    <ArticleSummary
+                      text={article.summary[locale]}
+                      className="mt-4 text-sm leading-7 text-muted-foreground"
+                    />
                     <span className="mt-6 inline-block text-sm underline underline-offset-4">
                       {t.diveIn}
                     </span>
