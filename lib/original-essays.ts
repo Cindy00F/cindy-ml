@@ -120,7 +120,7 @@ export const originalEssayTicks: Record<string, KnownTick[]> = {
     { id: "section2", en: "Past Interpolation" },
     { id: "scrolly-side", en: "A Closer Look" },
   ],
-  double-descent2: [
+  "double-descent2": [
     { id: "intro", en: "Introduction" },
     { id: "math", en: "The Mathematics" },
     { id: "conclusion", en: "Conclusion" },
