@@ -28,10 +28,10 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2D3142",
     sourcePath: "train-test-validation",
-    title: { zh: "训练、验证与测试集", en: "Train, Test, and Validation Sets" },
+    title: { zh: "怎么根据特征，自动分辨东西？", en: "How do you tell things apart from features?" },
     summary: {
-      zh: "怎么根据特征，自动分辨东西？这篇拿小猫小狗举例：看体重这些，怎么区分是小猫还是小狗。\n拖拽我。正确率约等于 92%。如果有错误的区分，请拖拽他去正确的位置。",
-      en: "How do you automatically tell things apart from their features? This note uses kittens and puppies — weight and the like — to tell which is which.\nDrag me. Accuracy is about 92%. If something is sorted wrong, drag it to the right place.",
+      zh: "这篇拿小猫小狗举例：拿体重这些特征，区分是小猫还是小狗。正确率约等于 92%。如果有错误的区分，拜托拖拽他去正确的位置。",
+      en: "This note uses kittens and puppies: features like weight, to tell which is which. Accuracy is about 92%. If something is sorted wrong, please drag it to the right place.",
     },
     sections: [
       {
