@@ -24,6 +24,7 @@
   var currentLocale = "zh";
   var currentTheme = "light";
   var originals = typeof WeakMap === "function" ? new WeakMap() : null;
+  var headingOriginals = typeof WeakMap === "function" ? new WeakMap() : null;
   var applying = false;
   var scheduled = null;
 
@@ -163,6 +164,20 @@
     "Neural Networks": "神经网络",
     "Reinforcement Learning": "强化学习",
     "Precision & Recall": "精确率与召回率",
+    Precision: "精确率",
+    Recall: "召回率",
+    Accuracy: "准确率",
+    Problems: "问题",
+    Perceptrons: "感知机",
+    Perceptron: "感知机",
+    "Classification Threshold:": "分类阈值：",
+    "Classification Threshold": "分类阈值",
+    Interpretation: "怎么读",
+    "Rainy Day": "雨天",
+    "Sunny Day": "晴天",
+    "F1-Score": "F1 分数",
+    "Precision:": "精确率：",
+    "Recall:": "召回率：",
     "Random Forest": "随机森林",
     "Decision Trees": "决策树",
     "Bias Variance Tradeoff": "偏差–方差权衡",
@@ -210,6 +225,13 @@
     ["Brent Werness", ""],
     ["MLU-EXPLAIN", "Cindy"],
     ["MLU-Explain", "Cindy"],
+    ["Classification Threshold:", "分类阈值："],
+    ["Classification Threshold", "分类阈值"],
+    ["Perceptrons", "感知机"],
+    ["Perceptron", "感知机"],
+    ["Try moving the threshold for yourself!", "自己拖一下阈值试试！"],
+    ["We need other metrics.", "所以还得看别的指标。"],
+    ["Decision Boundary Threshold", "决策边界阈值"],
   ];
 
 
@@ -266,9 +288,27 @@
     for (var child = node.firstChild; child; child = child.nextSibling) walk(child, visit);
   }
 
+  function applyHeadingLocales(root) {
+    if (!root || !root.querySelectorAll) return;
+    var els = root.querySelectorAll("h1, h2, h3, .intro-hed, .intro-sub, .body-header");
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      if (el.classList && el.classList.contains("logo")) continue;
+      if (el.querySelector && el.querySelector(".katex, .katex-html, math, svg")) continue;
+      if (headingOriginals && !headingOriginals.has(el)) headingOriginals.set(el, el.innerHTML);
+      var html = headingOriginals ? headingOriginals.get(el) : el.innerHTML;
+      if (html != null && el.innerHTML !== html) el.innerHTML = html;
+      if (currentLocale !== "zh") continue;
+      var compact = String(el.textContent || "").replace(/\s+/g, " ").trim();
+      var hit = lookupZh(compact);
+      if (hit != null) el.textContent = hit;
+    }
+  }
+
   function applyLocale(locale) {
     currentLocale = locale === "en" ? "en" : "zh";
     document.documentElement.setAttribute("lang", currentLocale === "zh" ? "zh-CN" : "en");
+    applyHeadingLocales(document.body);
     walk(document.body, function (textNode) {
       var value = textNode.nodeValue;
       if (value == null || !value.trim()) return;

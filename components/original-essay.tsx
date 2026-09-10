@@ -116,14 +116,14 @@ function selectedIdFromToc(doc: Document) {
 }
 
 function installCindyBridge(doc: Document) {
-  if (doc.querySelector(`script[src="${BASE_PATH}/essays/cindy-bridge.js"]`)) return;
+  if (doc.querySelector("script#cindy-bridge, script[src*='cindy-bridge.js']")) return;
   const host = doc.body ?? doc.documentElement;
   const i18n = doc.createElement("script");
-  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js`;
+  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=bundle-zh-2`;
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=bundle-zh-2`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
