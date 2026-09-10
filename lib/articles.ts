@@ -30,8 +30,8 @@ export const articles: Article[] = [
     sourcePath: "train-test-validation",
     title: { zh: "训练、验证与测试集", en: "Train, Test, and Validation Sets" },
     summary: {
-      zh: "学监督模型时总会听到：数据要切成训练、验证、测试三份。这篇我用猫和狗、体重和毛量，把这件事摊开，自己拖着玩。",
-      en: "I kept hearing that data should be split three ways. This note uses cats, dogs, weight, and fluffiness so I can drag the idea around until it sticks.",
+      zh: "怎么根据特征，自动分辨东西？这篇拿小猫小狗举例：看体重这些，怎么区分是小猫还是小狗。",
+      en: "How do you automatically tell things apart from their features? This note uses kittens and puppies — weight and the like — to tell which is which.",
     },
     sections: [
       {
