@@ -4,13 +4,9 @@
 
 **线上地址：** [https://cindy00f.github.io/cindy-ml/](https://cindy00f.github.io/cindy-ml/)
 
-语言切换、亮/暗主题始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。
+语言切换、亮/暗主题始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。GitHub Pages 上的站点不需要登录。
 
-如果这个链接打开是 404，到 GitHub 仓库 **Settings → Pages**：
-
-1. Source 选 **Deploy from a branch**
-2. Branch 选 **`gh-pages`**，文件夹选 **`/` (root)**
-3. 保存后再等一两分钟
+如果这个链接还是 404，到仓库 **Settings → Pages**：Source 选 **Deploy from a branch**，Branch 选 **`gh-pages`**，文件夹选 **`/` (root)**，保存后再等一两分钟。
 
 ## 先说清楚：127.0.0.1 是哪台电脑
 
