@@ -30,8 +30,8 @@ export const articles: Article[] = [
     sourcePath: "train-test-validation",
     title: { zh: "训练、验证与测试集", en: "Train, Test, and Validation Sets" },
     summary: {
-      zh: "怎么根据特征，自动分辨东西？这篇拿小猫小狗举例：看体重这些，怎么区分是小猫还是小狗。",
-      en: "How do you automatically tell things apart from their features? This note uses kittens and puppies — weight and the like — to tell which is which.",
+      zh: "拖拽我。正确率约等于 92%。如果有错误的区分，请拖拽他去正确的位置。",
+      en: "Drag me. Accuracy is about 92%. If something is sorted wrong, drag it to the right place.",
     },
     sections: [
       {
