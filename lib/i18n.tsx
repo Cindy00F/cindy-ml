@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
+import { CINDY_PREFS_EVENT, emitCindyPrefs, type CindyPrefs } from "@/lib/client-prefs";
 import { messages, type Locale, type MessageKey } from "@/lib/messages";
 
 type I18nContextValue = {
@@ -10,6 +10,20 @@ type I18nContextValue = {
 };
 
 const I18nContext = createContext<I18nContextValue | null>(null);
+
+function readStoredLocale(fallback: Locale): Locale {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const stored = localStorage.getItem("cindy-locale");
+    if (stored === "en" || stored === "zh") return stored;
+  } catch {
+    /* ignore */
+  }
+  const match = document.cookie.match(/(?:^|; )cindy-locale=([^;]+)/);
+  const cookie = match ? decodeURIComponent(match[1]) : "";
+  if (cookie === "en" || cookie === "zh") return cookie;
+  return fallback;
+}
 
 export function I18nProvider({
   locale,
@@ -21,7 +35,9 @@ export function I18nProvider({
   const [current, setCurrent] = useState(locale);
 
   useEffect(() => {
-    setCurrent(locale);
+    const stored = readStoredLocale(locale);
+    setCurrent(stored);
+    emitCindyPrefs({ locale: stored });
   }, [locale]);
 
   useEffect(() => {
@@ -32,6 +48,10 @@ export function I18nProvider({
     window.addEventListener(CINDY_PREFS_EVENT, onPrefs);
     return () => window.removeEventListener(CINDY_PREFS_EVENT, onPrefs);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = current === "zh" ? "zh-CN" : "en";
+  }, [current]);
 
   const value = useMemo(
     () => ({

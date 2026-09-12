@@ -9,7 +9,7 @@ export type Pet = {
   weight: number;
 };
 
-/** Pet positions adapted from MLU-Explain (CC BY-SA 4.0). */
+/** Pet positions adapted under CC BY-SA 4.0. */
 export const PETS: Pet[] = [
   { id: 1, split: "train", animal: "cat", fluffiness: 0.3395684301, weight: 3.8497090733 },
   { id: 2, split: "train", animal: "cat", fluffiness: 0.9329005738, weight: 4.1921745764 },

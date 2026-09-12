@@ -1,6 +1,6 @@
 # Cindy 在学习机器学习
 
-14 篇机器学习可视化文章，全部使用 [MLU-Explain](https://mlu-explain.github.io/) 发布稿（CC BY-SA 4.0）。交互和版式与原作相同。
+14 篇可以点进去玩的机器学习可视化笔记。图和交互按 CC BY-SA 4.0 改编。
 
 **线上地址：** [https://cindy00f.github.io/cindy-ml/](https://cindy00f.github.io/cindy-ml/)
 

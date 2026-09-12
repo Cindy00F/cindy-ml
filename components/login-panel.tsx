@@ -1,22 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { DEMO_ACCOUNT, messages, type Locale } from "@/lib/messages";
+import { DEMO_ACCOUNT } from "@/lib/messages";
 import { persistGuestSession, persistSession } from "@/lib/client-auth";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useI18n } from "@/lib/i18n";
 
 export function LoginPanel({
-  locale,
   next,
   error,
 }: {
-  locale: Locale;
   next: string;
   error: boolean;
 }) {
   const router = useRouter();
-  const t = messages[locale];
+  const { t } = useI18n();
 
   return (
     <div className="w-full max-w-sm space-y-3 border-t pt-8 md:border-l md:border-t-0 md:pl-10 md:pt-0">
@@ -37,9 +36,9 @@ export function LoginPanel({
           router.push(next);
         }}
       >
-        <h2 className="font-heading text-2xl">{t.loginTitle}</h2>
+        <h2 className="font-heading text-2xl">{t("loginTitle")}</h2>
         <div className="space-y-2">
-          <Label htmlFor="email">{t.email}</Label>
+          <Label htmlFor="email">{t("email")}</Label>
           <Input
             id="email"
             name="email"
@@ -50,7 +49,7 @@ export function LoginPanel({
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">{t.password}</Label>
+          <Label htmlFor="password">{t("password")}</Label>
           <Input
             id="password"
             name="password"
@@ -60,12 +59,12 @@ export function LoginPanel({
             className="h-10 rounded-none"
           />
         </div>
-        {error ? <p className="text-sm">{t.invalidCreds}</p> : null}
+        {error ? <p className="text-sm">{t("invalidCreds")}</p> : null}
         <button
           type="submit"
           className="h-10 w-full border border-foreground bg-foreground text-sm text-background"
         >
-          {t.signIn}
+          {t("signIn")}
         </button>
       </form>
       <form
@@ -76,10 +75,10 @@ export function LoginPanel({
         }}
       >
         <button type="submit" className="h-10 w-full border border-foreground text-sm">
-          {t.guest}
+          {t("guest")}
         </button>
       </form>
-      <p className="text-xs text-muted-foreground">{t.demoHint}</p>
+      <p className="text-xs text-muted-foreground">{t("demoHint")}</p>
     </div>
   );
 }

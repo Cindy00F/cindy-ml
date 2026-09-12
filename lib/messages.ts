@@ -18,7 +18,7 @@ export const messages = {
     brandEn: "在学机器学习",
     tagline: "边学边看图的机器学习可视化",
     loginTitle: "登录",
-    loginSubtitle: "这是我边学边记的 14 篇小文章。题目来自 MLU-Explain，我按自己看图的习惯重新排过。",
+    loginSubtitle: "这是我边学边记的 14 篇小文章。按自己看图的习惯重新排过。",
     email: "邮箱",
     password: "密码",
     signIn: "进入",
@@ -60,8 +60,7 @@ export const messages = {
     aboutTitle: "关于",
     aboutBody:
       "我在学机器学习。看不懂的地方就画出来、拖一拖，写成可以点进去玩的笔记。不是教材，也不赶进度。",
-    credit:
-      "图和交互改编自 MLU-Explain（Jared Wilber 等，CC BY-SA 4.0）。版权留在这里，正文里就不再署名了。",
+    credit: "图和交互按 CC BY-SA 4.0 改编。",
     next: "下一篇",
     prev: "上一篇",
     playgroundHint: "拖动滑块、点画布，或把动物拖到新位置。",
@@ -78,8 +77,7 @@ export const messages = {
     brandEn: "learning ML",
     tagline: "Visual essays while learning machine learning",
     loginTitle: "Sign in",
-    loginSubtitle:
-      "Fourteen short visual notes while I learn. Topics from MLU-Explain, arranged the way I like to read charts.",
+    loginSubtitle: "Fourteen short visual notes while I learn, arranged the way I like to read charts.",
     email: "Email",
     password: "Password",
     signIn: "Enter",
@@ -121,8 +119,7 @@ export const messages = {
     aboutTitle: "About",
     aboutBody:
       "I am learning machine learning. When an idea will not sit still, I draw it and drag it. These are notes, not a textbook.",
-    credit:
-      "Figures and interactions adapted from MLU-Explain (Jared Wilber et al., CC BY-SA 4.0). Attribution lives here, not as a byline on each essay.",
+    credit: "Figures and interactions adapted under CC BY-SA 4.0.",
     next: "Next",
     prev: "Previous",
     playgroundHint: "Drag sliders, click the canvas, or move the animals.",

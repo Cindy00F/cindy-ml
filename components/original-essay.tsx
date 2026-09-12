@@ -5,6 +5,7 @@ import Script from "next/script";
 import { EssayScale } from "@/components/essay-scale";
 import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
+import { useI18n } from "@/lib/i18n";
 import type { Locale, ThemeName } from "@/lib/messages";
 import { BASE_PATH } from "@/lib/site";
 import { originalEssayTicks } from "@/lib/original-essays";
@@ -32,8 +33,8 @@ const HIDE_CHROME = `
     overflow: hidden !important;
     display: flex !important;
   }
-  figure { top: 0 !important; }
   @media (min-width: 701px) {
+    figure { top: 0 !important; }
     #intro-mobile { display: none !important; }
     #scrolly { display: flex !important; flex-direction: row-reverse !important; }
     #scrolly > * { flex: 1; }
@@ -119,11 +120,11 @@ function installCindyBridge(doc: Document) {
   if (doc.querySelector("script[src*='cindy-bridge.js']")) return;
   const host = doc.body ?? doc.documentElement;
   const i18n = doc.createElement("script");
-  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=bundle-zh-3`;
+  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=mobile-fix-1`;
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=bundle-zh-3`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=mobile-fix-1`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
@@ -137,10 +138,14 @@ function hideOriginalChrome(doc: Document) {
     style.textContent = HIDE_CHROME;
     doc.head?.appendChild(style);
   }
-  if (!doc.querySelector(`link[href="${BASE_PATH}/essays/cindy-shell.css"]`)) {
+  const shellHref = `${BASE_PATH}/essays/cindy-shell.css?v=mobile-fix-1`;
+  const existingShell = doc.querySelector<HTMLLinkElement>(`link[href*="cindy-shell.css"]`);
+  if (existingShell) {
+    existingShell.href = shellHref;
+  } else {
     const link = doc.createElement("link");
     link.rel = "stylesheet";
-    link.href = `${BASE_PATH}/essays/cindy-shell.css`;
+    link.href = shellHref;
     doc.head?.appendChild(link);
   }
   installCindyBridge(doc);
@@ -178,28 +183,36 @@ function sendGo(win: Window, id: string) {
 
 export function OriginalEssay({
   folder,
-  locale,
+  locale: _locale,
   theme,
 }: {
   folder: string;
-  locale: Locale;
+  locale: "zh" | "en";
   theme: ThemeName;
 }) {
+  const { locale: liveLocale } = useI18n();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const boundDoc = useRef<Document | null>(null);
-  const prefsRef = useRef({ locale, theme });
-  const srcRef = useRef(`${BASE_PATH}/essays/${folder}/index.html?lang=${locale}&theme=${theme}`);
+  const prefsRef = useRef({ locale: liveLocale, theme });
+  const srcRef = useRef(`${BASE_PATH}/essays/${folder}/index.html`);
   const known = originalEssayTicks[folder] ?? EMPTY_TICKS;
   const [ticks, setTicks] = useState<EssayTick[]>(known);
   const [activeId, setActiveId] = useState<string | null>(known[0]?.id ?? null);
-  const [prefs, setPrefs] = useState({ locale, theme });
+  const [prefs, setPrefs] = useState({ locale: liveLocale, theme });
   const observers = useRef<Array<{ disconnect: () => void }>>([]);
 
   prefsRef.current = prefs;
 
   useEffect(() => {
-    setPrefs({ locale, theme });
-  }, [locale, theme]);
+    setPrefs((current) => ({
+      locale: liveLocale,
+      theme: current.theme,
+    }));
+  }, [liveLocale]);
+
+  useEffect(() => {
+    setPrefs((current) => ({ ...current, theme }));
+  }, [theme]);
 
   useEffect(() => {
     const onPrefs = (event: Event) => {
@@ -407,7 +420,7 @@ export function OriginalEssay({
       `}</Script>
       <iframe
         ref={iframeRef}
-        title="MLU-Explain essay"
+        title="Essay"
         src={srcRef.current}
         className="absolute inset-y-0 left-0 z-0 h-full w-full border-0 bg-[#fcf4e8] min-[701px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814]"
       />

@@ -371,12 +371,16 @@
         a.style.display = "none";
         continue;
       }
-      if (href.indexOf("aws.amazon.com/machine-learning/mlu") !== -1) {
-        a.setAttribute("href", dashboardUrl());
-        a.addEventListener("click", function (event) {
-          event.preventDefault();
-          if (window.top) window.top.location.href = dashboardUrl();
-        });
+      if (
+        href.indexOf("aws.amazon.com/machine-learning/mlu") !== -1 ||
+        href.indexOf("mlu-explain") !== -1 ||
+        href.indexOf("github.com/aws-samples") !== -1 ||
+        href.indexOf("aws-mlu-explain") !== -1
+      ) {
+        a.removeAttribute("href");
+        a.style.display = "none";
+        a.setAttribute("aria-hidden", "true");
+        continue;
       }
     }
   }
@@ -463,8 +467,8 @@
   );
 
   var query = new URLSearchParams(window.location.search);
-  currentLocale = query.get("lang") || readCookie("cindy-locale") || currentLocale;
-  currentTheme = query.get("theme") || readCookie("cindy-theme") || currentTheme;
+  currentLocale = readCookie("cindy-locale") || query.get("lang") || currentLocale;
+  currentTheme = readCookie("cindy-theme") || query.get("theme") || currentTheme;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", applyAll);
@@ -510,10 +514,6 @@
     wrapSvgLabel(document.getElementById("hull-text"), document.querySelector("#hull-g > rect"));
   }
 
-  function isPhone() {
-    return window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
-  }
-
   function compactIntroBreaks() {
     var intro = document.getElementById("intro-mobile");
     if (!intro) return;
@@ -530,28 +530,10 @@
   }
 
   function fitScrollyChart() {
-    var figure = document.querySelector("#scrolly figure");
     var svg = document.getElementById("bubble-svg") || document.querySelector("#scrolly #chart svg");
-    if (!figure || !svg) return;
-    if (!isPhone()) {
-      svg.style.width = "";
-      svg.style.height = "";
-      return;
-    }
-    var nativeW = parseFloat(
-      svg.getAttribute("width") || (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.width) || svg.clientWidth,
-    );
-    var nativeH = parseFloat(
-      svg.getAttribute("height") || (svg.viewBox && svg.viewBox.baseVal && svg.viewBox.baseVal.height) || svg.clientHeight,
-    );
-    if (!nativeW || !nativeH) return;
-    var chart = document.getElementById("chart") || svg.parentElement;
-    var box = (chart || figure).getBoundingClientRect();
-    var availW = Math.max(80, box.width - 4);
-    var availH = Math.max(80, box.height - 4);
-    var scale = Math.min(availW / nativeW, availH / nativeH, 1);
-    svg.style.width = Math.floor(nativeW * scale) + "px";
-    svg.style.height = Math.floor(nativeH * scale) + "px";
+    if (!svg) return;
+    svg.style.width = "";
+    svg.style.height = "";
   }
 
   function scheduleFit() {

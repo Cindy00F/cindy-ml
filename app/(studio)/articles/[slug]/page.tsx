@@ -70,17 +70,7 @@ export default async function ArticlePage({
 
       <div className="mt-12 flex flex-wrap items-center justify-between gap-3 border-t pt-6">
         <MarkReadButton slug={article.slug} markLabel={t.markDone} doneLabel={t.marked} />
-        <p className="text-xs text-muted-foreground">
-          {t.sourceNote}{" "}
-          <a
-            className="underline underline-offset-4"
-            href={`https://mlu-explain.github.io/${article.sourcePath}/`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            MLU-Explain
-          </a>
-        </p>
+        <p className="text-xs text-muted-foreground">{t.credit}</p>
       </div>
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {prev ? (

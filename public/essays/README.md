@@ -1,6 +1,4 @@
-# Original MLU-Explain essays
+# Visual essays
 
-These folders are the published visual essays from
-[aws-samples/aws-mlu-explain](https://github.com/aws-samples/aws-mlu-explain)
-(CC BY-SA 4.0). Header brand text is changed to Cindy; the charts, type, and
-scrollytelling are the originals.
+These folders are the published visual essays, adapted under CC BY-SA 4.0.
+Header brand text is Cindy; the charts and scrollytelling stay as published.

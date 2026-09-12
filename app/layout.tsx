@@ -60,7 +60,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         {IS_STATIC ? (
           <script
             dangerouslySetInnerHTML={{
-              __html: `try{if(localStorage.getItem("cindy-theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`,
+              __html: `try{if(localStorage.getItem("cindy-theme")==="dark")document.documentElement.classList.add("dark");var l=localStorage.getItem("cindy-locale");if(l==="en"||l==="zh")document.documentElement.lang=l==="zh"?"zh-CN":"en"}catch(e){}`,
             }}
           />
         ) : null}

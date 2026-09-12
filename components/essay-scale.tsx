@@ -10,11 +10,13 @@ export function EssayScale({
   activeId,
   onSelect,
   onWheelDelta,
+  className,
 }: {
   ticks: EssayTick[];
   activeId: string | null;
   onSelect: (id: string) => void;
   onWheelDelta?: (deltaY: number) => void;
+  className?: string;
 }) {
   const { locale } = useI18n();
   const rootRef = useRef<HTMLElement>(null);
@@ -52,7 +54,10 @@ export function EssayScale({
   return (
     <aside
       ref={rootRef}
-      className="essay-scale pointer-events-auto absolute inset-y-0 right-0 z-30 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-[#fcf4e8] from-70% to-transparent py-8 pr-3 pl-2 text-[#1a1a1a] min-[701px]:flex dark:from-[#1b1814] dark:text-[#f3ead8]"
+      className={cn(
+        "essay-scale pointer-events-auto absolute inset-y-0 right-0 z-30 hidden w-[9.25rem] flex-col justify-center bg-gradient-to-l from-background from-70% to-transparent py-8 pr-3 pl-2 min-[701px]:flex",
+        className,
+      )}
       aria-label={locale === "zh" ? "章节刻度" : "Section scale"}
       onWheel={(event) => {
         if (!onWheelDelta) return;
@@ -60,7 +65,6 @@ export function EssayScale({
         onWheelDelta(event.deltaY);
       }}
     >
-      <div className="pointer-events-none absolute top-12 bottom-12 right-[14px] w-px bg-[#1a1a1a]/20 dark:bg-[#f3ead8]/25" />
       <ol className="relative flex flex-col justify-center">
         {ticks.map((tick, i) => {
           const distance = Math.abs(i - activeIndex);

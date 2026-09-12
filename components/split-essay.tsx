@@ -500,19 +500,11 @@ export function SplitEssay({
         <p className="text-center text-3xl">🐾</p>
         <p className="mt-4 text-center text-xs leading-6 opacity-60">
           {zh
-            ? "改编自 MLU-Explain · Train, Test, and Validation Sets（CC BY-SA 4.0）。猫狗图标原作 Adrien Coquet、Maurício Brito。"
-            : "Adapted from MLU-Explain · Train, Test, and Validation Sets (CC BY-SA 4.0). Animal icons after Adrien Coquet & Maurício Brito."}
+            ? "图和交互按 CC BY-SA 4.0 改编。猫狗图标另有出处。"
+            : "Figures and interactions adapted under CC BY-SA 4.0. Animal icons have their own credits."}
         </p>
         <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-[#232f3e]/15 pt-6">
           <MarkReadButton slug={article.slug} markLabel={labels.markDone} doneLabel={labels.marked} />
-          <a
-            className="text-xs underline underline-offset-4 opacity-70"
-            href={`https://mlu-explain.github.io/${article.sourcePath}/`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {labels.sourceNote} MLU-Explain
-          </a>
         </div>
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
           {prev ? (

@@ -3,6 +3,7 @@ import type { Locale } from "@/lib/messages";
 export type EssayTick = {
   id: string;
   en: string;
+  zh?: string;
 };
 
 const byId: Record<string, { zh: string; en: string }> = {
@@ -168,11 +169,12 @@ function normalize(text: string) {
 }
 
 export function tickLabel(locale: Locale, tick: EssayTick) {
+  if (locale === "zh" && tick.zh) return tick.zh;
   const fromId = byId[tick.id.toLowerCase()];
   if (fromId) return fromId[locale];
   const fromTitle = byTitle[normalize(tick.en)];
   if (fromTitle) return fromTitle[locale];
-  return locale === "en" ? tick.en : tick.en;
+  return locale === "en" ? tick.en : tick.zh || tick.en;
 }
 
 const SKIP_ID =
