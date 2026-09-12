@@ -3,6 +3,8 @@ name: GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - "data/events.csv"
   workflow_dispatch:
 
 permissions:
@@ -27,6 +29,8 @@ jobs:
           GITHUB_PAGES: "true"
           NEXT_PUBLIC_BASE_PATH: /cindy-ml
           NEXT_PUBLIC_STATIC: "1"
+          NEXT_PUBLIC_ANALYTICS_GITHUB_REPO: Cindy00F/cindy-ml
+          NEXT_PUBLIC_ANALYTICS_GITHUB_TOKEN: ${{ secrets.ANALYTICS_DISPATCH_TOKEN }}
       - run: cp out/index.html out/404.html
       - uses: peaceiris/actions-gh-pages@v4
         with:

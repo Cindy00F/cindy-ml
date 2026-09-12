@@ -1,0 +1,39 @@
+name: Append analytics CSV
+
+on:
+  repository_dispatch:
+    types: [cindy-track]
+  workflow_dispatch:
+    inputs:
+      events:
+        description: JSON array of events
+        required: true
+        type: string
+
+concurrency:
+  group: analytics-csv
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Append CSV rows
+        env:
+          EVENTS_JSON: ${{ github.event_name == 'repository_dispatch' && toJson(github.event.client_payload.events) || github.event.inputs.events }}
+        run: node scripts/append-analytics.mjs
+      - name: Commit data/events.csv
+        run: |
+          git config user.name "cindy-analytics"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/events.csv
+          if git diff --staged --quiet; then
+            echo "no change"
+            exit 0
+          fi
+          git commit -m "chore: append analytics csv"
+          git push

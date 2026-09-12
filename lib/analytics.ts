@@ -21,7 +21,15 @@ export type AnalyticsEvent = {
   to?: string;
   from?: string;
   seconds?: number;
+  locale?: string;
+  host?: string;
 };
+
+const CSV_HEADER = "id,time,name,path,slug,section,q,to,from,seconds,locale,host";
+const SYNCED_KEY = "cindy-events-synced";
+const GITHUB_REPO =
+  process.env.NEXT_PUBLIC_ANALYTICS_GITHUB_REPO || "Cindy00F/cindy-ml";
+const GITHUB_TOKEN = process.env.NEXT_PUBLIC_ANALYTICS_GITHUB_TOKEN || "";
 
 const STORAGE_KEY = "cindy-events";
 const MAX_EVENTS = 800;
@@ -76,31 +84,137 @@ function persist(events: AnalyticsEvent[]) {
   emit();
 }
 
-function ship(event: AnalyticsEvent) {
-  const endpoint = process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT;
-  if (!endpoint || typeof navigator === "undefined") return;
+function csvCell(value: string | number | undefined) {
+  if (value == null || value === "") return "";
+  const text = String(value).replace(/\r?\n/g, " ").slice(0, 200);
+  if (/[",]/.test(text)) return `"${text.replace(/"/g, '""')}"`;
+  return text;
+}
+
+export function eventsToCsv(events: AnalyticsEvent[]) {
+  const lines = events.map((event) =>
+    [
+      event.id,
+      event.t ? new Date(event.t).toISOString() : "",
+      event.name,
+      event.path,
+      event.slug,
+      event.section,
+      event.q,
+      event.to,
+      event.from,
+      event.seconds,
+      event.locale,
+      event.host,
+    ]
+      .map(csvCell)
+      .join(","),
+  );
+  return `${CSV_HEADER}\n${lines.join("\n")}\n`;
+}
+
+function readSynced(): Set<string> {
   try {
-    const body = JSON.stringify(event);
-    if (navigator.sendBeacon) {
-      navigator.sendBeacon(endpoint, new Blob([body], { type: "application/json" }));
-      return;
-    }
-    void fetch(endpoint, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body,
-      keepalive: true,
-    });
+    const raw = window.localStorage.getItem(SYNCED_KEY);
+    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function writeSynced(ids: Set<string>) {
+  try {
+    window.localStorage.setItem(SYNCED_KEY, JSON.stringify([...ids].slice(-MAX_EVENTS)));
   } catch {
     /* ignore */
   }
 }
 
-export function track(partial: Omit<AnalyticsEvent, "id" | "t">) {
+let flushTimer: number | null = null;
+let flushing = false;
+let leaveBound = false;
+
+function bindLeaveFlush() {
+  if (leaveBound || typeof window === "undefined") return;
+  leaveBound = true;
+  window.addEventListener("pagehide", () => {
+    void flushToGithub();
+  });
+}
+
+async function flushToGithub() {
+  if (flushing || typeof window === "undefined") return;
+  const token = GITHUB_TOKEN;
+  if (!token) return;
+  const synced = readSynced();
+  const pending = loadEvents().filter((event) => !synced.has(event.id)).slice(0, 30);
+  if (!pending.length) return;
+  flushing = true;
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/dispatches`, {
+      method: "POST",
+      headers: {
+        accept: "application/vnd.github+json",
+        authorization: `Bearer ${token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ event_type: "cindy-track", client_payload: { events: pending } }),
+      keepalive: true,
+    });
+    if (res.ok || res.status === 204) {
+      for (const event of pending) synced.add(event.id);
+      writeSynced(synced);
+    }
+  } catch {
+    /* keep local; retry next time */
+  } finally {
+    flushing = false;
+  }
+}
+
+function scheduleGithubFlush() {
+  if (!GITHUB_TOKEN || typeof window === "undefined") return;
+  bindLeaveFlush();
+  if (flushTimer != null) return;
+  flushTimer = window.setTimeout(() => {
+    flushTimer = null;
+    void flushToGithub();
+  }, 4000);
+}
+
+export function canSyncGithub() {
+  return Boolean(GITHUB_TOKEN);
+}
+
+export function githubCsvUrl() {
+  return `https://raw.githubusercontent.com/${GITHUB_REPO}/main/data/events.csv`;
+}
+
+export function githubFileUrl() {
+  return `https://github.com/${GITHUB_REPO}/blob/main/data/events.csv`;
+}
+
+export async function syncEventsToGithub() {
+  await flushToGithub();
+}
+
+export function track(partial: Omit<AnalyticsEvent, "id" | "t" | "locale" | "host">) {
   if (typeof window === "undefined") return;
-  const event: AnalyticsEvent = { id: uid(), t: Date.now(), ...partial };
+  let locale = "";
+  try {
+    locale = localStorage.getItem("cindy-locale") || "";
+  } catch {
+    /* ignore */
+  }
+  const event: AnalyticsEvent = {
+    id: uid(),
+    t: Date.now(),
+    locale: locale === "en" ? "en" : "zh",
+    host: window.location.host,
+    ...partial,
+  };
   persist([...loadEvents(), event]);
-  ship(event);
+  scheduleGithubFlush();
 }
 
 export function clearEvents() {

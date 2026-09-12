@@ -1,14 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { articles } from "@/lib/articles";
 import {
+  canSyncGithub,
   clearEvents,
   emptyEvents,
+  eventsToCsv,
+  githubCsvUrl,
+  githubFileUrl,
   loadEvents,
   subscribeAnalytics,
   summarize,
+  syncEventsToGithub,
 } from "@/lib/analytics";
 import { useI18n } from "@/lib/i18n";
 
@@ -34,16 +39,72 @@ function when(ts: number, locale: "zh" | "en") {
   return new Date(ts).toLocaleString(locale === "zh" ? "zh-CN" : "en");
 }
 
+function downloadCsv(events: ReturnType<typeof loadEvents>) {
+  const blob = new Blob([eventsToCsv(events)], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "cindy-events.csv";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export function StatsHome() {
   const { locale, t } = useI18n();
   const events = useSyncExternalStore(subscribeAnalytics, loadEvents, emptyEvents);
   const summary = useMemo(() => summarize(events), [events]);
   const recent = [...events].reverse().slice(0, 40);
+  const [repoCount, setRepoCount] = useState<number | null>(null);
+  const [syncState, setSyncState] = useState<"idle" | "ok" | "err">("idle");
+  const canSync = canSyncGithub();
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${githubCsvUrl()}?t=${Date.now()}`)
+      .then((res) => (res.ok ? res.text() : ""))
+      .then((text) => {
+        if (cancelled || !text) return;
+        const rows = text.trim().split(/\r?\n/).length - 1;
+        setRepoCount(Math.max(0, rows));
+      })
+      .catch(() => {
+        if (!cancelled) setRepoCount(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [syncState]);
 
   return (
     <div className="py-10">
       <h1 className="font-heading text-4xl leading-tight">{t("statsTitle")}</h1>
       <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">{t("statsLead")}</p>
+      <p className="mt-3 text-sm text-muted-foreground">
+        {canSync ? t("statsSynced") : t("statsLocalOnly")}
+        {repoCount != null ? ` · ${t("statsRepo")} ${repoCount}` : null}
+      </p>
+      <div className="mt-5 flex flex-wrap gap-4 text-sm">
+        <a href={githubFileUrl()} className="underline underline-offset-4" target="_blank" rel="noreferrer">
+          data/events.csv
+        </a>
+        {events.length > 0 ? (
+          <button type="button" className="underline underline-offset-4" onClick={() => downloadCsv(events)}>
+            {t("statsDownload")}
+          </button>
+        ) : null}
+        {canSync && events.length > 0 ? (
+          <button
+            type="button"
+            className="underline underline-offset-4"
+            onClick={async () => {
+              await syncEventsToGithub();
+              setSyncState("ok");
+            }}
+          >
+            {t("statsSync")}
+          </button>
+        ) : null}
+      </div>
 
       {events.length === 0 ? (
         <p className="py-20 text-sm text-muted-foreground">{t("statsEmpty")}</p>
