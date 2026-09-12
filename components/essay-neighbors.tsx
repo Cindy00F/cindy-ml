@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { track } from "@/lib/analytics";
 import { neighbors } from "@/lib/articles";
 import { useI18n } from "@/lib/i18n";
 
@@ -18,6 +19,7 @@ export function EssayNeighbors({ slug }: { slug: string }) {
       {prev ? (
         <Link
           href={`/articles/${prev.slug}`}
+          onClick={() => track({ name: "essay_prev", from: slug, slug: prev.slug })}
           className="pointer-events-auto max-w-[46%] truncate bg-background/85 px-2.5 py-1.5 text-xs backdrop-blur-sm hover:bg-background"
         >
           <span className="flex items-center gap-1 text-muted-foreground">
@@ -32,6 +34,7 @@ export function EssayNeighbors({ slug }: { slug: string }) {
       {next ? (
         <Link
           href={`/articles/${next.slug}`}
+          onClick={() => track({ name: "essay_next", from: slug, slug: next.slug })}
           className="pointer-events-auto max-w-[46%] truncate bg-background/85 px-2.5 py-1.5 text-right text-xs backdrop-blur-sm hover:bg-background"
         >
           <span className="flex items-center justify-end gap-1 text-muted-foreground">

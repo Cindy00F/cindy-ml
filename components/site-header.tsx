@@ -36,6 +36,9 @@ export function SiteHeader({
             <Link href="/about" className="hover:opacity-60">
               {t("about")}
             </Link>
+            <Link href="/stats" className="hover:opacity-60">
+              {t("stats")}
+            </Link>
           </nav>
         ) : (
           <span className="hidden text-sm text-muted-foreground md:block">{t("brandEn")}</span>

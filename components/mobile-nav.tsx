@@ -10,6 +10,7 @@ export function MobileNav() {
       <Link href="/dashboard">{t("dashboard")}</Link>
       <Link href="/dashboard#gallery">{t("articles")}</Link>
       <Link href="/about">{t("about")}</Link>
+      <Link href="/stats">{t("stats")}</Link>
     </nav>
   );
 }

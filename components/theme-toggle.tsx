@@ -2,6 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { track } from "@/lib/analytics";
 import { persistTheme } from "@/lib/client-auth";
 import { emitCindyPrefs } from "@/lib/client-prefs";
 import type { ThemeName } from "@/lib/messages";
@@ -23,6 +24,7 @@ export function ThemeToggle({ theme }: { theme: ThemeName }) {
         document.documentElement.classList.toggle("dark", next === "dark");
         emitCindyPrefs({ theme: next });
         persistTheme(next);
+        track({ name: "theme", to: next });
       }}
       aria-label={current === "dark" ? "Switch to light" : "切换到暗色"}
       className="relative z-[1] inline-flex items-center gap-1 px-1.5 py-1 text-xs text-muted-foreground hover:text-foreground max-[700px]:min-h-9 max-[700px]:px-1"

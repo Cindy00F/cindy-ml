@@ -3,6 +3,7 @@
 import { Check } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import { track } from "@/lib/analytics";
 import {
   emptyProgress,
   loadProgress,
@@ -31,7 +32,10 @@ export function MarkReadButton({
     <button
       type="button"
       className={cn(buttonVariants({ variant: done ? "secondary" : "default" }))}
-      onClick={() => markCompleted(slug)}
+      onClick={() => {
+        markCompleted(slug);
+        track({ name: "mark_read", slug });
+      }}
     >
       <Check className="size-4" />
       {done ? doneLabel : markLabel}

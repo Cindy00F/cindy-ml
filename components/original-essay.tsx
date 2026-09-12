@@ -4,7 +4,9 @@ import { useCallback, useEffect, useRef, useState, type WheelEvent } from "react
 import Script from "next/script";
 import { EssayNeighbors } from "@/components/essay-neighbors";
 import { EssayScale } from "@/components/essay-scale";
+import { track } from "@/lib/analytics";
 import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
+import { markOpened } from "@/lib/progress";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
 import { useI18n } from "@/lib/i18n";
 import type { Locale, ThemeName } from "@/lib/messages";
@@ -245,6 +247,28 @@ export function OriginalEssay({
     const fallback = window.setTimeout(() => setReady(true), 1800);
     return () => window.clearTimeout(fallback);
   }, [folder]);
+
+  useEffect(() => {
+    if (!slug) return;
+    markOpened(slug);
+  }, [slug]);
+
+  useEffect(() => {
+    if (!slug || !activeId) return;
+    const timer = window.setTimeout(() => {
+      track({ name: "article_section", slug, section: activeId });
+    }, 800);
+    return () => window.clearTimeout(timer);
+  }, [slug, activeId]);
+
+  useEffect(() => {
+    if (!slug) return;
+    const started = Date.now();
+    return () => {
+      const seconds = Math.round((Date.now() - started) / 1000);
+      if (seconds >= 3) track({ name: "essay_dwell", slug, seconds });
+    };
+  }, [slug]);
 
   const teardown = useCallback(() => {
     for (const observer of observers.current) observer.disconnect();

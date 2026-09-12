@@ -6,6 +6,7 @@ import { ArticleSummary } from "@/components/article-summary";
 import { ArticleThumb } from "@/components/article-thumb";
 import { DeskDoodle } from "@/components/desk-doodle";
 import { EssayScale } from "@/components/essay-scale";
+import { track } from "@/lib/analytics";
 import { articles, categories, type Category } from "@/lib/articles";
 import { useI18n } from "@/lib/i18n";
 
@@ -60,6 +61,15 @@ export function DashboardHome({
   useEffect(() => {
     setQuery(q);
   }, [q]);
+
+  useEffect(() => {
+    const needle = query.trim();
+    if (!needle) return;
+    const timer = window.setTimeout(() => {
+      track({ name: "search", q: needle });
+    }, 600);
+    return () => window.clearTimeout(timer);
+  }, [query]);
 
   useEffect(() => {
     if (!filtered.some((article) => article.slug === activeId)) {
