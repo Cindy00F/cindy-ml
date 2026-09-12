@@ -13,14 +13,14 @@ export function EssayNeighbors({ slug }: { slug: string }) {
 
   return (
     <nav
-      className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-3 min-[701px]:right-[9.25rem] max-[700px]:pb-[max(0.75rem,env(safe-area-inset-bottom))]"
+      className="pointer-events-none fixed bottom-0 left-0 z-40 flex items-stretch justify-between gap-3 border-t border-foreground/15 bg-[#fcf4e8]/95 px-3 py-2 dark:bg-[#1b1814]/95 min-[701px]:right-[9.25rem] max-[700px]:pb-[max(0.5rem,env(safe-area-inset-bottom))]"
       aria-label={locale === "zh" ? "上下篇" : "Nearby essays"}
     >
       {prev ? (
         <Link
           href={`/articles/${prev.slug}`}
           onClick={() => track({ name: "essay_prev", from: slug, slug: prev.slug })}
-          className="pointer-events-auto max-w-[46%] truncate bg-background/85 px-2.5 py-1.5 text-xs backdrop-blur-sm hover:bg-background"
+          className="pointer-events-auto min-w-0 max-w-[48%] px-1 py-1 text-left text-xs hover:opacity-70"
         >
           <span className="flex items-center gap-1 text-muted-foreground">
             <ArrowLeft className="size-3 shrink-0" />
@@ -29,13 +29,13 @@ export function EssayNeighbors({ slug }: { slug: string }) {
           <span className="mt-0.5 block truncate">{prev.title[locale]}</span>
         </Link>
       ) : (
-        <span />
+        <span className="px-1 py-1 text-xs text-muted-foreground/50">{t("prev")}</span>
       )}
       {next ? (
         <Link
           href={`/articles/${next.slug}`}
           onClick={() => track({ name: "essay_next", from: slug, slug: next.slug })}
-          className="pointer-events-auto max-w-[46%] truncate bg-background/85 px-2.5 py-1.5 text-right text-xs backdrop-blur-sm hover:bg-background"
+          className="pointer-events-auto min-w-0 max-w-[48%] px-1 py-1 text-right text-xs hover:opacity-70"
         >
           <span className="flex items-center justify-end gap-1 text-muted-foreground">
             {t("next")}
@@ -43,7 +43,9 @@ export function EssayNeighbors({ slug }: { slug: string }) {
           </span>
           <span className="mt-0.5 block truncate">{next.title[locale]}</span>
         </Link>
-      ) : null}
+      ) : (
+        <span className="px-1 py-1 text-right text-xs text-muted-foreground/50">{t("next")}</span>
+      )}
     </nav>
   );
 }

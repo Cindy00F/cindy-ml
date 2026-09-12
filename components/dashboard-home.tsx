@@ -43,7 +43,22 @@ export function DashboardHome({
     return articles.filter((a) => {
       if (cat !== "all" && a.category !== cat) return false;
       if (!needle) return true;
-      const hay = `${a.title.zh} ${a.title.en} ${a.summary.zh} ${a.summary.en}`.toLowerCase();
+      const short = SHORT[a.slug];
+      const topic = categories.find((c) => c.id === a.category)?.label;
+      const hay = [
+        a.slug,
+        a.title.zh,
+        a.title.en,
+        a.summary.zh,
+        a.summary.en,
+        short?.zh,
+        short?.en,
+        topic?.zh,
+        topic?.en,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
       return hay.includes(needle);
     });
   }, [cat, query]);
@@ -57,10 +72,6 @@ export function DashboardHome({
       })),
     [filtered],
   );
-
-  useEffect(() => {
-    setQuery(q);
-  }, [q]);
 
   useEffect(() => {
     const needle = query.trim();
@@ -125,10 +136,16 @@ export function DashboardHome({
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t("search")}
+              autoComplete="off"
               className="h-9 w-48 border-b border-foreground/30 bg-transparent text-sm outline-none max-[700px]:w-full max-[700px]:max-w-[11rem]"
             />
           </form>
         </div>
+        {query.trim() ? (
+          <p className="pt-4 text-xs text-muted-foreground">
+            {filtered.length} / {articles.length}
+          </p>
+        ) : null}
         <div className="flex flex-wrap gap-5 py-6 text-xs tracking-wide">
           {categories.map((c) => {
             const href =
@@ -201,13 +218,15 @@ export function DashboardHome({
         )}
       </section>
 
-      <section className="mt-10 grid grid-cols-3 gap-2 border-t pt-10 sm:grid-cols-4 md:grid-cols-7">
-        {articles.map((article) => (
-          <Link key={article.slug} href={`/articles/${article.slug}`} title={article.title[locale]}>
-            <ArticleThumb slug={article.slug} className="h-auto w-full border border-foreground/10" />
-          </Link>
-        ))}
-      </section>
+      {filtered.length > 0 ? (
+        <section className="mt-10 grid grid-cols-3 gap-2 border-t pt-10 sm:grid-cols-4 md:grid-cols-7">
+          {filtered.map((article) => (
+            <Link key={article.slug} href={`/articles/${article.slug}`} title={article.title[locale]}>
+              <ArticleThumb slug={article.slug} className="h-auto w-full border border-foreground/10" />
+            </Link>
+          ))}
+        </section>
+      ) : null}
 
       <EssayScale
         ticks={ticks}
