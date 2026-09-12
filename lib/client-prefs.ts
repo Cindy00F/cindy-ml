@@ -8,7 +8,7 @@ export type CindyPrefs = {
 };
 
 export function writeCindyCookie(name: string, value: string) {
-  document.cookie = `${name}=${value}; Path=/; SameSite=Lax`;
+  document.cookie = `${name}=${encodeURIComponent(value)}; path=/; max-age=31536000; samesite=lax`;
 }
 
 export function emitCindyPrefs(detail: CindyPrefs) {

@@ -1,8 +1,6 @@
 import { DashboardHome } from "@/components/dashboard-home";
 import type { Category } from "@/lib/articles";
 
-export const dynamic = "force-static";
-
 export default async function DashboardPage({
   searchParams,
 }: {

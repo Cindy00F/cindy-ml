@@ -1,14 +1,11 @@
 "use client";
 
 import { Globe } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { persistLocale } from "@/lib/client-auth";
 import { emitCindyPrefs } from "@/lib/client-prefs";
 import { useI18n } from "@/lib/i18n";
-import { IS_STATIC } from "@/lib/site";
 
 export function LocaleToggle() {
-  const router = useRouter();
   const { locale } = useI18n();
   const next = locale === "zh" ? "en" : "zh";
 
@@ -19,7 +16,6 @@ export function LocaleToggle() {
         document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
         persistLocale(next);
         emitCindyPrefs({ locale: next });
-        if (!IS_STATIC) router.refresh();
       }}
       className="relative z-[2] inline-flex items-center gap-1 px-1.5 py-1 text-xs tracking-wide text-muted-foreground hover:text-foreground max-[700px]:min-h-10 max-[700px]:min-w-[4.5rem] max-[700px]:px-2"
       aria-label={locale === "zh" ? "Switch to English" : "切换到中文"}
