@@ -28,10 +28,10 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2D3142",
     sourcePath: "train-test-validation",
-    title: { zh: "怎么根据特征，自动分辨东西？", en: "How do you tell things apart from features?" },
+    title: { zh: "怎么靠几个特征，把小猫小狗分开？", en: "How do you tell a kitten from a puppy?" },
     summary: {
-      zh: "这篇拿小猫小狗举例：拿体重这些特征，区分是小猫还是小狗。正确率约等于 92%。如果有错误的区分，拜托拖拽他去正确的位置。",
-      en: "This note uses kittens and puppies: features like weight, to tell which is which. Accuracy is about 92%. If something is sorted wrong, please drag it to the right place.",
+      zh: "用体重和毛量，试着把小猫和小狗分开。正确率大概九成。\n分错了就拖到另一边，看分界线怎么跟着走。",
+      en: "Weight and fluff, used to sort kittens from puppies. Accuracy sits around nine in ten.\nIf one lands on the wrong side, drag it over and watch the boundary follow.",
     },
     sections: [
       {
@@ -99,10 +99,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#c45c26",
     sourcePath: "neural-networks",
-    title: { zh: "怎么一层层叠起来，就会自己判断？", en: "How does stacking layers start to judge?" },
+    title: { zh: "一层层叠上去，分界线怎么自己弯起来？", en: "How do stacked layers start bending the line?" },
     summary: {
-      zh: "这篇从一根神经、一个感知机讲起：先加权，再弯曲，再往下传。拜托拖一拖隐藏层，看分界线怎么从一条直线，弯成一块一块的区域。",
-      en: "This note starts from one neuron, one perceptron: weigh, bend, pass it on. Please drag the hidden layer and watch a straight boundary fold into patches.",
+      zh: "从一根神经、一个感知机讲起：先加权，再弯曲，再往下传。\n拖一拖隐藏层，看直线怎么折成一块一块的区域。",
+      en: "One neuron, one perceptron: weigh, bend, pass it on.\nDrag the hidden layer and watch a straight boundary fold into patches.",
     },
     sections: [
       {
@@ -135,10 +135,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#2f6f64",
     sourcePath: "equality-of-odds",
-    title: { zh: "准确率很高，就代表对谁都公平吗？", en: "If accuracy is high, is it fair to everyone?" },
+    title: { zh: "准确率很高，对每个群体都公平吗？", en: "If accuracy is high, is it fair to everyone?" },
     summary: {
-      zh: "这篇拿两个群体举例：同一条分数线，漏报和误报可能差一截。拜托拖一下两边的阈值，看错误会不会被压在同一群人身上。",
-      en: "This note uses two groups: the same cutoff can miss one group and over-flag the other. Please drag both thresholds and see who gets stuck with the errors.",
+      zh: "同一条分数线，两个群体的漏报和误报可能差一截。\n分别拖两边的阈值，看错误会不会都压在同一群人身上。",
+      en: "The same cutoff can miss one group and over-flag the other.\nDrag both thresholds and see who is left holding the errors.",
     },
     sections: [
       {
@@ -171,10 +171,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#3d5a99",
     sourcePath: "logistic-regression",
-    title: { zh: "怎么把一条线，变成「是不是」的概率？", en: "How does a line become a yes-or-no probability?" },
+    title: { zh: "怎么把一条线，变成「是」或「不是」？", en: "How does a line become a yes or no?" },
     summary: {
-      zh: "这篇拿气温猜晴天还是雨天：温度这些特征，压进 0 到 1。阈值大约 0.5。如果分错了，拜托拖拽阈值，看预测怎么变。",
-      en: "This note guesses rain or sun from temperature, squashed into 0 to 1. The cutoff is about 0.5. If it sorts wrong, please drag the threshold and watch the guess move.",
+      zh: "拿气温猜晴天还是雨天，把分数压进 0 到 1。门槛大概在 0.5。\n分错了就拖阈值，看预测怎么翻过来。",
+      en: "Guess rain or sun from temperature, squashed into 0 to 1. The cutoff sits near 0.5.\nIf it sorts wrong, drag the threshold and watch the guess flip.",
     },
     sections: [
       {
@@ -207,10 +207,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#b4532a",
     sourcePath: "linear-regression",
-    title: { zh: "怎么用一条直线，去猜一个数字？", en: "How do you guess a number with a straight line?" },
+    title: { zh: "怎么用一条直线，去猜一个数？", en: "How do you guess a number with a line?" },
     summary: {
-      zh: "这篇拿散点举例：找一条最贴着点的线。点离线越近，猜得越稳。拜托在图上加点，看斜率和截距跟着跑。",
-      en: "This note uses a scatter of dots: find the line that hugs them. Closer dots, stabler guesses. Please add points and watch slope and intercept run after them.",
+      zh: "一堆散点，找一条最贴着它们的线。点离线越近，猜得越稳。\n在图上加点，看斜率和截距跟着跑。",
+      en: "A scatter of dots, and a line that tries to hug them. Closer dots, steadier guesses.\nAdd a point and watch slope and intercept run after it.",
     },
     sections: [
       {
@@ -243,10 +243,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#6b4ea1",
     sourcePath: "reinforcement-learning",
-    title: { zh: "没有标准答案，怎么靠试错学会选？", en: "With no right answers, how do you learn by trying?" },
+    title: { zh: "没有标准答案，怎么边试边学会选？", en: "No right answers. How do you learn by trying?" },
     summary: {
-      zh: "这篇拿几台老虎机举例：有的臂奖多，有的少。你要一边试、一边用。拜托拉几下，看探索和利用怎么打架。",
-      en: "This note uses a few slot machines: some arms pay more. You have to try, and also use what works. Please pull a few times and watch explore fight exploit.",
+      zh: "几台老虎机，有的臂奖多，有的少。你得一边试，一边用已经摸清的。\n拉几下，看探索和利用怎么互相抢。",
+      en: "A few slot machines: some arms pay more. You have to try, and also use what already works.\nPull a few times and watch explore fight exploit.",
     },
     sections: [
       {
@@ -279,10 +279,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#8a3a4a",
     sourcePath: "roc-auc",
-    title: { zh: "换一条分数线，模型到底变好还是变差？", en: "Move the cutoff — is the model better or worse?" },
+    title: { zh: "换一条分数线，模型是变好了还是变差了？", en: "Move the cutoff. Better or worse?" },
     summary: {
-      zh: "这篇把抓住的和误报的画成一条弯弯的线。面积好看，也不等于你该用哪个阈值。拜托拖拽阈值，看工作点在曲线上跑。",
-      en: "This note plots catches against false alarms as a curve. A pretty area still does not pick your cutoff. Please drag the threshold and watch the operating point run.",
+      zh: "把抓住的和误报的连成一条弯弯的线。面积好看，也不等于该用哪个阈值。\n拖阈值，看工作点在曲线上跑。",
+      en: "Catches against false alarms, drawn as a curve. A pretty area still does not pick your cutoff.\nDrag the threshold and watch the operating point run.",
     },
     sections: [
       {
@@ -315,10 +315,10 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2d6a4f",
     sourcePath: "cross-validation",
-    title: { zh: "切一刀就信了，会不会太运气？", en: "Trust one split — or is that just luck?" },
+    title: { zh: "只切一刀就信了，会不会太运气？", en: "Trust one split — or is that just luck?" },
     summary: {
-      zh: "这篇把数据轮流当考卷：这一折藏起来打分，下一折再换。大约 5 折或 10 折最常见。拜托看色块怎么轮，别把一次划分当成全世界。",
-      en: "This note takes turns hiding a fold for scoring, then swaps. Five or ten folds is the usual. Please watch the blocks rotate — one cut is not the whole world.",
+      zh: "数据轮流当考卷：这一折藏起来打分，下一折再换。五折或十折最常见。\n看色块怎么轮，别把一次划分当成全世界。",
+      en: "Folds take turns hiding for a score, then swap. Five or ten is the usual.\nWatch the blocks rotate — one cut is not the whole world.",
     },
     sections: [
       {
@@ -351,10 +351,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#9c4a1a",
     sourcePath: "precision-recall",
-    title: { zh: "光看准确率，为什么会骗人？", en: "Why can accuracy lie to you?" },
+    title: { zh: "为什么准确率会骗人？", en: "Why does accuracy lie?" },
     summary: {
-      zh: "这篇拿癌症筛查举例：报出来的有多少是真的，真的里面找回了多少。拜托拖拽阈值，看精确率和召回率怎么互相让。",
-      en: "This note uses a cancer screen: how many raised flags are true, and how many true cases you found. Please drag the threshold and watch precision trade with recall.",
+      zh: "拿癌症筛查想：报出来的有多少是真的，真的里面又找回了多少。\n拖阈值，看精确率和召回率怎么互相让。",
+      en: "A cancer screen: how many raised flags are true, and how many true cases you still found.\nDrag the threshold and watch precision trade with recall.",
     },
     sections: [
       {
@@ -387,10 +387,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#1f6b3a",
     sourcePath: "random-forest",
-    title: { zh: "一棵树爱记错，很多棵一起投票呢？", en: "One tree memorizes. What if many trees vote?" },
+    title: { zh: "一棵树爱记死，很多棵一起投票呢？", en: "One tree memorizes. What if they vote?" },
     summary: {
-      zh: "这篇拿路牌分类举例：每棵树只看一部分数据和特征，最后少数服从多数。拜托把树加多一点，看多数表决稳不稳。",
-      en: "This note sorts road signs: each tree sees only some rows and features, then they vote. Please add more trees and see if the majority settles down.",
+      zh: "给路牌分类：每棵树只看一部分数据和特征，最后少数服从多数。\n把树加多一点，看多数表决稳不稳。",
+      en: "Sorting road signs: each tree sees only some rows and features, then they vote.\nAdd more trees and see if the majority settles down.",
     },
     sections: [
       {
@@ -422,10 +422,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#4a7c2c",
     sourcePath: "decision-tree",
-    title: { zh: "怎么一刀一刀切开，问出是什么？", en: "How do you ask your way there, one cut at a time?" },
+    title: { zh: "怎么一刀一刀问，问出它是什么？", en: "How do you get there, one question at a time?" },
     summary: {
-      zh: "这篇拿苹果、樱桃、橡树举例：问一个特征，再问下一个。切太深就会把噪声也背下来。拜托跟着重画那些分割线。",
-      en: "This note uses apples, cherries, and oaks: ask one feature, then the next. Cut too deep and you memorize noise. Please watch those partition lines get redrawn.",
+      zh: "苹果、樱桃、橡树：问一个特征，再问下一个。切太深，噪声也会被背下来。\n跟着那些分割线重画一遍。",
+      en: "Apples, cherries, oaks: ask one feature, then the next. Cut too deep and you memorize noise.\nWatch those partition lines get redrawn.",
     },
     sections: [
       {
@@ -458,10 +458,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#7a3e6d",
     sourcePath: "bias-variance",
-    title: { zh: "模型太傻和太精，哪边更伤？", en: "Too simple or too sharp — which one hurts more?" },
+    title: { zh: "模型太傻或太精，哪边更伤？", en: "Too simple or too sharp — which hurts more?" },
     summary: {
-      zh: "这篇拿打靶举例：老瞄偏是偏差，换一批数据就乱跳是方差。中间有个谷。拜托拖复杂度，看测试误差怎么先降再升。",
-      en: "This note uses a dartboard: always missing the same way is bias; jumping when the data changes is variance. There is a valley in the middle. Please drag complexity and watch test error fall, then rise.",
+      zh: "打靶：老瞄偏是偏差，换一批数据就乱跳是方差。中间有个谷。\n拖复杂度，看测试误差怎么先降再升。",
+      en: "A dartboard: always missing the same way is bias; jumping when the data changes is variance. There is a valley in the middle.\nDrag complexity and watch test error fall, then rise.",
     },
     sections: [
       {
@@ -494,10 +494,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#1f4e79",
     sourcePath: "double-descent",
-    title: { zh: "过拟合之后，误差为什么还能再掉一次？", en: "After overfitting, why can error fall again?" },
+    title: { zh: "过拟合之后，误差怎么还会再掉一次？", en: "After overfitting, why does error fall again?" },
     summary: {
-      zh: "这篇画了一条怪曲线：误差先降，在插值点附近鼓起来，再往下掉。拜托盯着那条峰，看「越复杂越糟」在哪里说不通。",
-      en: "This note draws a weird curve: error falls, humps near interpolation, then falls again. Please watch that peak — that is where “more complex is worse” stops making sense.",
+      zh: "一条怪曲线：误差先降，在插值点附近鼓起来，再往下掉。\n盯着那座峰，「越复杂越糟」就在那里说不通。",
+      en: "A weird curve: error falls, humps near interpolation, then falls again.\nWatch that peak — that is where “more complex is worse” stops making sense.",
     },
     sections: [
       {
@@ -529,10 +529,10 @@ export const articles: Article[] = [
     minutes: 13,
     accent: "#153e66",
     sourcePath: "double-descent2",
-    title: { zh: "刚好记满训练点，为什么反而是最晃的时候？", en: "Why is a perfect fit the wobbliest moment?" },
+    title: { zh: "刚好记满每个点，为什么反而是最晃的时候？", en: "Why is a perfect fit the wobbliest moment?" },
     summary: {
-      zh: "这篇拿多项式拟合举例：次数刚好够穿过每个点时，线会抖得很凶。再高一点，反而更稳。拜托拖次数，看测试误差在插值点附近鼓包。",
-      en: "This note fits a polynomial: when the degree just threads every point, the line thrashes. A little higher, and it calms down. Please drag the degree and watch test error hump near interpolation.",
+      zh: "多项式拟合：次数刚好够穿过每个点时，线会抖得很凶。再高一点，反而更稳。\n拖次数，看测试误差在插值点附近鼓包。",
+      en: "A polynomial: when the degree just threads every point, the line thrashes. A little higher, and it calms down.\nDrag the degree and watch test error hump near interpolation.",
     },
     sections: [
       {
@@ -562,11 +562,11 @@ export const articles: Article[] = [
 ];
 
 export const categories: { id: Category | "all"; label: LocaleText }[] = [
-  { id: "all", label: { zh: "全部主题", en: "All topics" } },
+  { id: "all", label: { zh: "全部", en: "All" } },
   { id: "models", label: { zh: "模型", en: "Models" } },
   { id: "evaluation", label: { zh: "评估", en: "Evaluation" } },
   { id: "theory", label: { zh: "理论", en: "Theory" } },
-  { id: "deep", label: { zh: "深度 / RL", en: "Depth / RL" } },
+  { id: "deep", label: { zh: "深度", en: "Depth" } },
   { id: "fairness", label: { zh: "公平", en: "Fairness" } },
 ];
 

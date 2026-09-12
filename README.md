@@ -1,10 +1,10 @@
 # Cindy 在学习机器学习
 
-14 篇可以点进去玩的机器学习可视化笔记。图和交互按 CC BY-SA 4.0 改编。
+十四篇可以点进去拖一拖的机器学习笔记。图和交互按 CC BY-SA 4.0 改编。
 
 **线上地址：** [https://cindy00f.github.io/cindy-ml/](https://cindy00f.github.io/cindy-ml/)
 
-语言切换、亮/暗主题始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。顶栏「埋点」看打开、搜索和停留；记录会写成 CSV，放在仓库 `data/events.csv`。线上要把访客事件写进这份 CSV，到仓库 Settings → Secrets 增加 `ANALYTICS_DISPATCH_TOKEN`（Fine-grained PAT，勾选 Actions: write）。GitHub Pages 上的站点不需要登录。
+语言切换、亮/暗主题始终固定在每一页最顶部。文章目录在右侧，做成类似 Time Machine / Codex 的刻度滑轮。顶栏「足迹」看打开、搜索和停留；记录会写成 CSV，放在仓库 `data/events.csv`。线上要把访客事件写进这份 CSV，到仓库 Settings → Secrets 增加 `ANALYTICS_DISPATCH_TOKEN`（Fine-grained PAT，勾选 Actions: write）。GitHub Pages 上的站点不需要登录。
 
 如果这个链接还是 404，到仓库 **Settings → Pages**：Source 选 **Deploy from a branch**，Branch 选 **`gh-pages`**，文件夹选 **`/` (root)**，保存后再等一两分钟。
 

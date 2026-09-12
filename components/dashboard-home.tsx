@@ -13,18 +13,18 @@ import { useI18n } from "@/lib/i18n";
 const SHORT: Record<string, { zh: string; en: string }> = {
   "train-test-validation": { zh: "小猫小狗", en: "Cats & dogs" },
   "neural-networks": { zh: "神经网络", en: "Networks" },
-  "equality-of-odds": { zh: "公平", en: "Fairness" },
+  "equality-of-odds": { zh: "几率均等", en: "Odds" },
   "logistic-regression": { zh: "逻辑回归", en: "Logistic" },
   "linear-regression": { zh: "线性回归", en: "Linear" },
   "reinforcement-learning": { zh: "强化学习", en: "RL" },
   "roc-auc": { zh: "ROC", en: "ROC" },
   "cross-validation": { zh: "交叉验证", en: "CV" },
-  "precision-recall": { zh: "精确召回", en: "P & R" },
+  "precision-recall": { zh: "精确 / 召回", en: "P / R" },
   "random-forest": { zh: "随机森林", en: "Forest" },
   "decision-tree": { zh: "决策树", en: "Trees" },
-  "bias-variance": { zh: "偏差方差", en: "Bias" },
+  "bias-variance": { zh: "偏差 · 方差", en: "Bias" },
   "double-descent": { zh: "双重下降", en: "Descent" },
-  "double-descent-2": { zh: "下降数学", en: "Descent 2" },
+  "double-descent-2": { zh: "插值点", en: "Interpolate" },
 };
 
 export function DashboardHome({

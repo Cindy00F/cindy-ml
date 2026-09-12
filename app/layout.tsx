@@ -25,7 +25,7 @@ const notoSansSC = Noto_Sans_SC({
 
 export const metadata: Metadata = {
   title: "Cindy 在学习机器学习",
-  description: "Cindy 在学习机器学习。14 篇可以点进去玩的可视化笔记。",
+  description: "Cindy 在学习机器学习。十四篇可以点进去拖一拖的笔记。",
   icons: { icon: `${BASE_PATH}/favicon.svg` },
 };
 
