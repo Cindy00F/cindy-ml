@@ -4,6 +4,7 @@ import { useId, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { PetCluster } from "@/components/pet-icons";
 import { articles } from "@/lib/articles";
+import { useI18n } from "@/lib/i18n";
 import { withBase } from "@/lib/site";
 
 const FIGURES: Record<string, string> = {
@@ -65,6 +66,7 @@ export function ArticleThumb({
   href?: string;
 }) {
   const router = useRouter();
+  const { locale } = useI18n();
   const article = articles.find((a) => a.slug === slug);
   const clipId = useId().replace(/:/g, "");
   const draggedAt = useRef(0);
@@ -86,7 +88,7 @@ export function ArticleThumb({
     return (
       <img
         src={withBase(figure)}
-        alt={article?.title.zh ?? ""}
+        alt={article?.title[locale] ?? ""}
         className={`bg-[#fcf4e8] object-cover ${className}`}
         style={{ aspectRatio: "520 / 300" }}
         onClick={go}

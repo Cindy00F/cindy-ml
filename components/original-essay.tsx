@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type WheelEvent } from "react";
 import Script from "next/script";
+import { EssayNeighbors } from "@/components/essay-neighbors";
 import { EssayScale } from "@/components/essay-scale";
 import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
 import { cleanHeading, shouldSkipTick, type EssayTick } from "@/lib/essay-labels";
@@ -120,11 +121,11 @@ function installCindyBridge(doc: Document) {
   if (doc.querySelector("script[src*='cindy-bridge.js']")) return;
   const host = doc.body ?? doc.documentElement;
   const i18n = doc.createElement("script");
-  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=default-zh-1`;
+  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=polish-1`;
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=default-zh-1`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=polish-1`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
@@ -183,10 +184,12 @@ function sendGo(win: Window, id: string) {
 
 export function OriginalEssay({
   folder,
+  slug,
   locale: _locale,
   theme,
 }: {
   folder: string;
+  slug?: string;
   locale: "zh" | "en";
   theme: ThemeName;
 }) {
@@ -199,6 +202,7 @@ export function OriginalEssay({
   const [ticks, setTicks] = useState<EssayTick[]>(known);
   const [activeId, setActiveId] = useState<string | null>(known[0]?.id ?? null);
   const [prefs, setPrefs] = useState({ locale: liveLocale, theme });
+  const [ready, setReady] = useState(false);
   const observers = useRef<Array<{ disconnect: () => void }>>([]);
 
   prefsRef.current = prefs;
@@ -231,10 +235,16 @@ export function OriginalEssay({
       if (event.data?.type === "cindy-tick" && typeof event.data.id === "string") {
         setActiveId(event.data.id);
       }
+      if (event.data?.type === "cindy-ready") setReady(true);
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
   }, []);
+
+  useEffect(() => {
+    const fallback = window.setTimeout(() => setReady(true), 1800);
+    return () => window.clearTimeout(fallback);
+  }, [folder]);
 
   const teardown = useCallback(() => {
     for (const observer of observers.current) observer.disconnect();
@@ -422,8 +432,17 @@ export function OriginalEssay({
         ref={iframeRef}
         title="Essay"
         src={srcRef.current}
-        className="absolute inset-y-0 left-0 z-0 h-full w-full border-0 bg-[#fcf4e8] min-[701px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814]"
+        className={`absolute inset-y-0 left-0 z-0 h-full w-full border-0 bg-[#fcf4e8] transition-opacity duration-200 min-[701px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814] ${
+          ready ? "opacity-100" : "opacity-0"
+        }`}
       />
+      {!ready ? (
+        <div
+          className="absolute inset-y-0 left-0 z-10 bg-[#fcf4e8] min-[701px]:w-[calc(100%-9.25rem)] dark:bg-[#1b1814]"
+          aria-hidden
+        />
+      ) : null}
+      {slug ? <EssayNeighbors slug={slug} /> : null}
       <EssayScale
         ticks={ticks}
         activeId={activeId}

@@ -27,6 +27,7 @@
   var headingOriginals = typeof WeakMap === "function" ? new WeakMap() : null;
   var applying = false;
   var scheduled = null;
+  var announcedReady = false;
 
   var EXTRA = window.__cindyI18n || {};
 
@@ -385,6 +386,12 @@
     }
   }
 
+  function announceReady() {
+    if (announcedReady || window.parent === window) return;
+    announcedReady = true;
+    window.parent.postMessage({ type: "cindy-ready" }, "*");
+  }
+
   function applyAll() {
     if (applying) return;
     applying = true;
@@ -395,6 +402,7 @@
       applyLocale(currentLocale);
       hideAuthorByline();
       fitChartLabels();
+      announceReady();
     } finally {
       applying = false;
     }

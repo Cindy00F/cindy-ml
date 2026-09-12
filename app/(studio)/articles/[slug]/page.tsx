@@ -30,7 +30,7 @@ export default async function ArticlePage({
 
   const folder = originalEssayFolder(article.slug);
   if (folder) {
-    return <OriginalEssay folder={folder} locale={locale} theme={theme} />;
+    return <OriginalEssay folder={folder} slug={article.slug} locale={locale} theme={theme} />;
   }
 
   return (

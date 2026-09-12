@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Noto_Sans_SC, Outfit } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { getLocale, getTheme } from "@/lib/session";
-import { BASE_PATH, IS_STATIC } from "@/lib/site";
+import { BASE_PATH } from "@/lib/site";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -57,13 +57,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           ["--font-heading" as string]: FONT_STACK,
         }}
       >
-        {IS_STATIC ? (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `try{if(localStorage.getItem("cindy-theme")==="dark")document.documentElement.classList.add("dark");var l=localStorage.getItem("cindy-locale");if(l==="en"||l==="zh")document.documentElement.lang=l==="zh"?"zh-CN":"en"}catch(e){}`,
-            }}
-          />
-        ) : null}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem("cindy-theme")==="dark")document.documentElement.classList.add("dark");var l=localStorage.getItem("cindy-locale");document.documentElement.lang=l==="en"?"en":"zh-CN"}catch(e){}`,
+          }}
+        />
         <Providers locale={locale}>{children}</Providers>
       </body>
     </html>

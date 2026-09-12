@@ -34,27 +34,41 @@ export function DashboardHome({
   cat: Category | "all";
 }) {
   const { locale, t } = useI18n();
+  const [query, setQuery] = useState(q);
   const [activeId, setActiveId] = useState(articles[0]?.slug ?? null);
+
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return articles.filter((a) => {
+      if (cat !== "all" && a.category !== cat) return false;
+      if (!needle) return true;
+      const hay = `${a.title.zh} ${a.title.en} ${a.summary.zh} ${a.summary.en}`.toLowerCase();
+      return hay.includes(needle);
+    });
+  }, [cat, query]);
 
   const ticks = useMemo(
     () =>
-      articles.map((article) => ({
+      filtered.map((article) => ({
         id: article.slug,
         en: SHORT[article.slug]?.en ?? article.title.en,
         zh: SHORT[article.slug]?.zh ?? article.title.zh,
       })),
-    [],
+    [filtered],
   );
 
-  const filtered = articles.filter((a) => {
-    if (cat !== "all" && a.category !== cat) return false;
-    if (!q) return true;
-    const hay = `${a.title.zh} ${a.title.en} ${a.summary.zh} ${a.summary.en}`.toLowerCase();
-    return hay.includes(q.toLowerCase());
-  });
+  useEffect(() => {
+    setQuery(q);
+  }, [q]);
 
   useEffect(() => {
-    const nodes = articles
+    if (!filtered.some((article) => article.slug === activeId)) {
+      setActiveId(filtered[0]?.slug ?? null);
+    }
+  }, [filtered, activeId]);
+
+  useEffect(() => {
+    const nodes = filtered
       .map((article) => document.getElementById(`card-${article.slug}`))
       .filter((node): node is HTMLElement => Boolean(node));
     if (!nodes.length) return;
@@ -70,7 +84,7 @@ export function DashboardHome({
     );
     for (const node of nodes) io.observe(node);
     return () => io.disconnect();
-  }, [filtered.length]);
+  }, [filtered]);
 
   const jump = (id: string) => {
     const node = document.getElementById(`card-${id}`);
@@ -92,11 +106,14 @@ export function DashboardHome({
       <section id="gallery" className="scroll-mt-8">
         <div className="flex flex-wrap items-end justify-between gap-4 border-y py-6">
           <h2 className="font-heading text-3xl">{t("articles")}</h2>
-          <form>
-            {cat !== "all" ? <input type="hidden" name="cat" value={cat} /> : null}
+          <form
+            role="search"
+            onSubmit={(event) => event.preventDefault()}
+          >
             <input
               name="q"
-              defaultValue={q}
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
               placeholder={t("search")}
               className="h-9 w-48 border-b border-foreground/30 bg-transparent text-sm outline-none max-[700px]:w-full max-[700px]:max-w-[11rem]"
             />
@@ -106,10 +123,10 @@ export function DashboardHome({
           {categories.map((c) => {
             const href =
               c.id === "all"
-                ? q
-                  ? `/dashboard?q=${encodeURIComponent(q)}`
+                ? query.trim()
+                  ? `/dashboard?q=${encodeURIComponent(query.trim())}`
                   : "/dashboard"
-                : `/dashboard?cat=${c.id}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
+                : `/dashboard?cat=${c.id}${query.trim() ? `&q=${encodeURIComponent(query.trim())}` : ""}`;
             return (
               <Link
                 key={c.id}
