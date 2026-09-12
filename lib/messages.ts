@@ -1,5 +1,6 @@
 export type Locale = "zh" | "en";
 export type ThemeName = "light" | "dark";
+export const DEFAULT_LOCALE: Locale = "zh";
 
 export const DEMO_ACCOUNT = {
   email: "xinyi00f@outlook.com",

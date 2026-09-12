@@ -25,7 +25,7 @@ const notoSansSC = Noto_Sans_SC({
 
 export const metadata: Metadata = {
   title: "Cindy 在学习机器学习",
-  description: "Fourteen visual essays on machine learning.",
+  description: "Cindy 在学习机器学习。14 篇可以点进去玩的可视化笔记。",
   icons: { icon: `${BASE_PATH}/favicon.svg` },
 };
 
@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 
   return (
     <html
-      lang={locale === "zh" ? "zh-CN" : "en"}
+      lang={locale === "en" ? "en" : "zh-CN"}
       className={`${outfit.variable} ${notoSansSC.variable} ${geistMono.variable} h-full antialiased ${theme === "dark" ? "dark" : ""}`}
       suppressHydrationWarning
     >

@@ -467,8 +467,10 @@
   );
 
   var query = new URLSearchParams(window.location.search);
-  currentLocale = readCookie("cindy-locale") || query.get("lang") || currentLocale;
-  currentTheme = readCookie("cindy-theme") || query.get("theme") || currentTheme;
+  currentLocale =
+    readCookie("cindy-locale") === "en" || query.get("lang") === "en" ? "en" : "zh";
+  currentTheme =
+    readCookie("cindy-theme") === "dark" || query.get("theme") === "dark" ? "dark" : "light";
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", applyAll);

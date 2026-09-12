@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { DEMO_ACCOUNT, type Locale, type Session, type ThemeName } from "@/lib/messages";
+import { DEFAULT_LOCALE, DEMO_ACCOUNT, type Locale, type Session, type ThemeName } from "@/lib/messages";
 import { IS_STATIC } from "@/lib/site";
 
 export const SESSION_COOKIE = "cindy-session";
@@ -34,8 +34,8 @@ export async function clearSessionCookie() {
 }
 
 export async function getLocale(): Promise<Locale> {
-  if (IS_STATIC) return "zh";
-  return (await cookies()).get(LOCALE_COOKIE)?.value === "en" ? "en" : "zh";
+  if (IS_STATIC) return DEFAULT_LOCALE;
+  return (await cookies()).get(LOCALE_COOKIE)?.value === "en" ? "en" : DEFAULT_LOCALE;
 }
 
 export async function getTheme(): Promise<ThemeName> {

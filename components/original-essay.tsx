@@ -120,11 +120,11 @@ function installCindyBridge(doc: Document) {
   if (doc.querySelector("script[src*='cindy-bridge.js']")) return;
   const host = doc.body ?? doc.documentElement;
   const i18n = doc.createElement("script");
-  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=mobile-fix-1`;
+  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=default-zh-1`;
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=mobile-fix-1`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=default-zh-1`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
