@@ -1,11 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { CINDY_PREFS_EVENT, emitCindyPrefs, type CindyPrefs } from "@/lib/client-prefs";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { CINDY_PREFS_EVENT, type CindyPrefs } from "@/lib/client-prefs";
 import { DEFAULT_LOCALE, messages, type Locale, type MessageKey } from "@/lib/messages";
 
 type I18nContextValue = {
   locale: Locale;
+  setLocale: (next: Locale) => void;
   t: (key: MessageKey) => string;
 };
 
@@ -27,6 +28,10 @@ function readStoredLocale(fallback: Locale): Locale {
   return fallback;
 }
 
+function applyLang(next: Locale) {
+  document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
+}
+
 export function I18nProvider({
   locale,
   children,
@@ -34,33 +39,38 @@ export function I18nProvider({
   locale: Locale;
   children: React.ReactNode;
 }) {
-  const [current, setCurrent] = useState<Locale>(DEFAULT_LOCALE);
+  const [current, setCurrent] = useState<Locale>(locale);
+
+  const setLocale = useCallback((next: Locale) => {
+    setCurrent(next);
+    applyLang(next);
+  }, []);
 
   useEffect(() => {
-    const stored = readStoredLocale(DEFAULT_LOCALE);
-    setCurrent(stored);
-    emitCindyPrefs({ locale: stored });
+    const stored = readStoredLocale(locale);
+    setCurrent((now) => (stored === now ? now : stored));
   }, [locale]);
 
   useEffect(() => {
     const onPrefs = (event: Event) => {
       const next = (event as CustomEvent<CindyPrefs>).detail?.locale;
-      if (next) setCurrent(next);
+      if (next) setLocale(next);
     };
     window.addEventListener(CINDY_PREFS_EVENT, onPrefs);
     return () => window.removeEventListener(CINDY_PREFS_EVENT, onPrefs);
-  }, []);
+  }, [setLocale]);
 
   useEffect(() => {
-    document.documentElement.lang = current === "zh" ? "zh-CN" : "en";
+    applyLang(current);
   }, [current]);
 
   const value = useMemo(
     () => ({
       locale: current,
+      setLocale,
       t: (key: MessageKey) => messages[current][key],
     }),
-    [current],
+    [current, setLocale],
   );
   return (
     <I18nContext.Provider value={value}>
@@ -75,5 +85,5 @@ export function useI18n() {
   return ctx;
 }
 
-export { messages };
+export { messages, DEFAULT_LOCALE };
 export type { Locale, MessageKey };

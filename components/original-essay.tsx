@@ -127,7 +127,7 @@ function installCindyBridge(doc: Document) {
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=polish-1`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=locale-1`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
@@ -203,34 +203,38 @@ export function OriginalEssay({
   const known = originalEssayTicks[folder] ?? EMPTY_TICKS;
   const [ticks, setTicks] = useState<EssayTick[]>(known);
   const [activeId, setActiveId] = useState<string | null>(known[0]?.id ?? null);
-  const [prefs, setPrefs] = useState({ locale: liveLocale, theme });
   const [ready, setReady] = useState(false);
   const observers = useRef<Array<{ disconnect: () => void }>>([]);
+  const lastSent = useRef("");
 
-  prefsRef.current = prefs;
+  const pushPrefs = useCallback((next: { locale: Locale; theme: ThemeName }) => {
+    prefsRef.current = next;
+    const win = iframeRef.current?.contentWindow ?? null;
+    const key = `${next.locale}|${next.theme}`;
+    if (lastSent.current === key && win) return;
+    if (win) lastSent.current = key;
+    sendPrefs(win, next.locale, next.theme);
+  }, []);
 
   useEffect(() => {
-    setPrefs((current) => ({
-      locale: liveLocale,
-      theme: current.theme,
-    }));
-  }, [liveLocale]);
+    pushPrefs({ locale: liveLocale, theme: prefsRef.current.theme });
+  }, [liveLocale, pushPrefs]);
 
   useEffect(() => {
-    setPrefs((current) => ({ ...current, theme }));
-  }, [theme]);
+    pushPrefs({ locale: prefsRef.current.locale, theme });
+  }, [theme, pushPrefs]);
 
   useEffect(() => {
     const onPrefs = (event: Event) => {
       const detail = (event as CustomEvent<CindyPrefs>).detail ?? {};
-      setPrefs((current) => ({
-        locale: detail.locale ?? current.locale,
-        theme: detail.theme ?? current.theme,
-      }));
+      pushPrefs({
+        locale: detail.locale ?? prefsRef.current.locale,
+        theme: detail.theme ?? prefsRef.current.theme,
+      });
     };
     window.addEventListener(CINDY_PREFS_EVENT, onPrefs);
     return () => window.removeEventListener(CINDY_PREFS_EVENT, onPrefs);
-  }, []);
+  }, [pushPrefs]);
 
   useEffect(() => {
     const onMessage = (event: MessageEvent) => {
@@ -285,15 +289,14 @@ export function OriginalEssay({
       return;
     }
     if (!doc?.body || !doc.head) return;
-
-    hideOriginalChrome(doc);
-    sendPrefs(iframe?.contentWindow ?? null, prefsRef.current.locale, prefsRef.current.theme);
-
     if (boundDoc.current === doc) return;
+
     teardown();
     boundDoc.current = doc;
     hideOriginalChrome(doc);
+    lastSent.current = "";
     sendPrefs(iframe?.contentWindow ?? null, prefsRef.current.locale, prefsRef.current.theme);
+    lastSent.current = `${prefsRef.current.locale}|${prefsRef.current.theme}`;
 
     const onClick = (event: Event) => {
       const target = event.target as HTMLElement | null;
@@ -388,10 +391,6 @@ export function OriginalEssay({
   useEffect(() => {
     document.documentElement.dataset.cindyEssay = "hydrated";
   }, []);
-
-  useEffect(() => {
-    sendPrefs(iframeRef.current?.contentWindow ?? null, prefs.locale, prefs.theme);
-  }, [prefs]);
 
   const onSelect = useCallback((id: string) => {
     const iframe = iframeRef.current;

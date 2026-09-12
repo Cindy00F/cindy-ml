@@ -28,6 +28,8 @@
   var applying = false;
   var scheduled = null;
   var announcedReady = false;
+  var coolUntil = 0;
+  var lastApplied = "";
 
   var EXTRA = window.__cindyI18n || {};
 
@@ -285,7 +287,8 @@
     }
     if (node.nodeType !== 1) return;
     var tag = node.nodeName;
-    if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEXTAREA") return;
+    if (tag === "SCRIPT" || tag === "STYLE" || tag === "TEXTAREA" || tag === "CODE" || tag === "PRE") return;
+    if (node.classList && (node.classList.contains("katex") || node.classList.contains("katex-html"))) return;
     for (var child = node.firstChild; child; child = child.nextSibling) walk(child, visit);
   }
 
@@ -392,27 +395,38 @@
     window.parent.postMessage({ type: "cindy-ready" }, "*");
   }
 
-  function applyAll() {
+  function applyAll(opts) {
     if (applying) return;
+    var localeOnly = opts && opts.localeOnly;
+    var force = opts && opts.force;
+    var key = currentLocale + "|" + currentTheme;
+    if (!force && !localeOnly && lastApplied === key && Date.now() < coolUntil) return;
     applying = true;
     try {
       applyTheme(currentTheme);
-      hideAuthorByline();
-      retargetPromo();
+      if (!localeOnly) {
+        hideAuthorByline();
+        retargetPromo();
+      }
       applyLocale(currentLocale);
-      hideAuthorByline();
-      fitChartLabels();
+      if (!localeOnly) {
+        hideAuthorByline();
+        fitChartLabels();
+      }
+      lastApplied = key;
       announceReady();
     } finally {
       applying = false;
+      coolUntil = Date.now() + 80;
     }
   }
 
   function scheduleApply() {
-    if (scheduled) return;
+    if (scheduled || applying || Date.now() < coolUntil) return;
     scheduled = setTimeout(function () {
       scheduled = null;
-      applyAll();
+      if (applying || Date.now() < coolUntil) return;
+      applyAll({ force: true });
     }, 30);
   }
 
@@ -460,9 +474,19 @@
     var data = event.data || {};
     if (data.type === "cindy-go") go(data.id);
     if (data.type === "cindy-prefs") {
-      if (data.locale) currentLocale = data.locale;
-      if (data.theme) currentTheme = data.theme;
-      applyAll();
+      var nextLocale = data.locale ? (data.locale === "en" ? "en" : "zh") : currentLocale;
+      var nextTheme = data.theme ? (data.theme === "dark" ? "dark" : "light") : currentTheme;
+      var localeChanged = nextLocale !== currentLocale;
+      var themeChanged = nextTheme !== currentTheme;
+      currentLocale = nextLocale;
+      currentTheme = nextTheme;
+      if (!localeChanged && !themeChanged) return;
+      if (scheduled) {
+        clearTimeout(scheduled);
+        scheduled = null;
+      }
+      if (localeChanged && !themeChanged) applyAll({ localeOnly: true, force: true });
+      else applyAll({ force: true });
     }
   });
 
@@ -495,7 +519,7 @@
 
   if (document.body && typeof MutationObserver === "function") {
     new MutationObserver(function () {
-      if (applying) return;
+      if (applying || Date.now() < coolUntil) return;
       scheduleApply();
     }).observe(document.body, { childList: true, subtree: true });
   }
@@ -563,8 +587,10 @@
 
   compactIntroBreaks();
   scheduleFit();
-  [80, 250, 800, 2000].forEach(function (ms) {
-    window.setTimeout(applyAll, ms);
+  [120, 500].forEach(function (ms) {
+    window.setTimeout(function () {
+      applyAll({ force: true });
+    }, ms);
   });
   window.addEventListener("resize", scheduleFit, { passive: true });
   if (typeof ResizeObserver === "function") {
