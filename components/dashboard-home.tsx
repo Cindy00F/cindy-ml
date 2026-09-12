@@ -25,6 +25,8 @@ const SHORT: Record<string, { zh: string; en: string }> = {
   "bias-variance": { zh: "偏差 · 方差", en: "Bias" },
   "double-descent": { zh: "双重下降", en: "Descent" },
   "double-descent-2": { zh: "插值点", en: "Interpolate" },
+  "rfm-pharmacy": { zh: "药店 RFM", en: "RFM" },
+  "kmeans-territory": { zh: "代表辖区", en: "Territory" },
 };
 
 export function DashboardHome({

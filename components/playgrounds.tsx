@@ -4,7 +4,9 @@ import { useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { PlaygroundFrame } from "@/components/playground-frame";
+import { KmeansPlayground } from "@/components/kmeans-playground";
 import { PetClassifier } from "@/components/pet-classifier";
+import { RfmPlayground } from "@/components/rfm-playground";
 import { useI18n } from "@/lib/i18n";
 import {
   binomialMajority,
@@ -1051,6 +1053,8 @@ const registry: Record<string, () => React.ReactNode> = {
   "neural-networks": () => <NetworkPlayground />,
   "reinforcement-learning": () => <BanditPlayground />,
   "equality-of-odds": () => <FairnessPlayground />,
+  "rfm-pharmacy": () => <RfmPlayground />,
+  "kmeans-territory": () => <KmeansPlayground />,
 };
 
 export function ArticlePlayground({ slug }: { slug: string }) {

@@ -66,6 +66,14 @@ const byId: Record<string, { zh: string; en: string }> = {
   "accuracy-is-not-enough": { zh: "准确率不够", en: "Accuracy Is Not Enough" },
   "the-f1-score": { zh: "F1 分数", en: "F1 Score" },
   "the-tradeoff-again": { zh: "权衡又来了", en: "The Tradeoff" },
+  "rfm-intro": { zh: "药店当客户", en: "Stores as customers" },
+  "rfm-score": { zh: "打分", en: "Scoring" },
+  "rfm-seg": { zh: "分层", en: "Segments" },
+  "rfm-try": { zh: "十六家店", en: "Sixteen stores" },
+  "km-intro": { zh: "辖区", en: "Territory" },
+  "km-algo": { zh: "两步", en: "Two steps" },
+  "km-try": { zh: "示意城", en: "A city" },
+  "km-limit": { zh: "做不到的", en: "Limits" },
 };
 
 const byTitle: Record<string, { zh: string; en: string }> = {

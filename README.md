@@ -1,6 +1,6 @@
 # Cindy 在学习机器学习
 
-十四篇可以点进去拖一拖的机器学习笔记。图和交互按 CC BY-SA 4.0 改编。
+可以点进去拖一拖的机器学习笔记，也包括 RFM 药店分层和 K-means 辖区。图和交互按 CC BY-SA 4.0 改编；应用篇是自己写的。
 
 **线上地址：** [https://cindy00f.github.io/cindy-ml/](https://cindy00f.github.io/cindy-ml/)
 

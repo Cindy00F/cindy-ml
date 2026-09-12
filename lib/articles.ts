@@ -1,4 +1,4 @@
-export type Category = "models" | "evaluation" | "theory" | "fairness" | "deep";
+export type Category = "models" | "evaluation" | "theory" | "fairness" | "deep" | "applied";
 
 export type LocaleText = { zh: string; en: string };
 
@@ -559,6 +559,102 @@ export const articles: Article[] = [
       },
     ],
   },
+  {
+    slug: "rfm-pharmacy",
+    category: "applied",
+    minutes: 10,
+    accent: "#2f6f64",
+    sourcePath: "rfm-pharmacy",
+    title: { zh: "RFM 怎么给中国零售药店做价值分层？", en: "How does RFM rank retail pharmacies in China?" },
+    summary: {
+      zh: "把每家店看成一个客户：R 是最近一次进货隔了几天，F 是一年进了几次，M 是进货金额。三个分数各打 1 到 5，用来分开核心店、潜力店、沉睡大户和边缘店。\n点一家店看 RFM 码；把日期往后推，看分层怎么变。",
+      en: "Treat each pharmacy as a customer: Recency is days since the last order, Frequency is orders per year, Monetary is purchase amount. Each gets a 1–5 score, then stores split into core, grow, sleeping, and edge.\nClick a store for its RFM code; shift the calendar and watch segments move.",
+    },
+    sections: [
+      {
+        id: "rfm-intro",
+        heading: { zh: "药店也可以是「客户」", en: "A pharmacy is also a customer" },
+        body: {
+          zh: "药企或商业公司看零售药店，和药店看会员，用的是同一套账。RFM 只问三件事：最近一次买是什么时候（Recency），买了多少次（Frequency），花了多少钱（Monetary）。\n在中国零售药店里，这三列常常来自流向或订单：最近一次开单日期、年内订单次数、年内回款或开票金额。连锁总部和单体店要分开看，因为连锁的 F 和 M 往往被集中采购抬高，并不等于门店自己更勤。",
+          en: "A manufacturer or wholesaler looking at retail pharmacies is doing the same job as a pharmacy looking at members. RFM asks three things: how recently they bought, how often, and how much.\nIn China that usually comes from chargeback or order files: last invoice date, orders in the year, and amount. Chains and independents should be read apart: a chain’s F and M are often inflated by central purchasing.",
+        },
+      },
+      {
+        id: "rfm-score",
+        heading: { zh: "三个数怎么打成 1 到 5", en: "How three numbers become 1 to 5" },
+        body: {
+          zh: "每一列在当批药店里排序，再切成五段。金额高、次数多，分数高。最近进货正好相反：间隔越短，R 越高。常见写法是三个分数连在一起，比如 545，而不是先加总成一个数。加总会把「很久没来的大户」和「刚来的小单」混成相近的总分，分层就糊了。",
+          en: "Each column is ranked in the current batch and cut into five bins. Higher money and frequency score higher. Recency is reversed: fewer days since the last order scores higher. The usual code is the three digits together, such as 545, not a single sum. A sum can make a lapsed big buyer look like a new small one.",
+        },
+        formula: "R, F, M ∈ {1,2,3,4,5}    码 = R||F||M",
+      },
+      {
+        id: "rfm-seg",
+        heading: { zh: "分层对应什么动作", en: "What each segment is for" },
+        body: {
+          zh: "核心药店：近、勤、金额大，适合稳住首推和库存深度。潜力药店：近、金额不小，但次数偏少，值得加拜访或补品种。沉睡大户：金额或次数曾经高，但已经很久没进货，先问断货原因，而不是继续压指标。边缘药店：又远又少又小，不一定要和核心店用同一套政策。\n医保定点、慢病续方会把 F 和 M 托起来；旅游店、新开业店的 R 很好，却不能当成核心。分数只是排序，不是利润。",
+          en: "Core stores are recent, frequent, and large — hold the primary SKU and depth. Grow stores are recent and sizable but infrequent — more calls or a broader list. Sleeping accounts used to be large and have gone quiet — ask why before pushing a quota. Edge stores are distant, rare, and small; they do not need the core policy.\nNRDL / chronic refill can lift F and M; a tourist shop or a new opening can look recent without being core. The scores rank; they are not profit.",
+        },
+      },
+      {
+        id: "rfm-try",
+        heading: { zh: "十六家店", en: "Sixteen stores" },
+        body: {
+          zh: "下面是一组示意数据，不是某家公司的真实流向。点店名看三个分数；把「今天」往后推，所有店的 R 都会变差，核心店会往下掉。",
+          en: "The table is a sketch, not a real chargeback file. Click a store to see the three scores. Push the calendar forward and every R worsens; core stores slip.",
+        },
+        playground: true,
+      },
+    ],
+  },
+  {
+    slug: "kmeans-territory",
+    category: "applied",
+    minutes: 10,
+    accent: "#c45c26",
+    sourcePath: "kmeans-territory",
+    title: { zh: "K-means 怎么给医药代表划辖区？", en: "How can K-means cut sales territories for pharma reps?" },
+    summary: {
+      zh: "把医院和药店看成地图上的点，K 是代表人数。算法把每家机构分给最近的中心，再把中心挪到该组的平均位置，重复到不再动。\n拖机构、改人数，看片区怎么裂开；也看各片点的数量并不均匀。",
+      en: "Treat hospitals and pharmacies as points, and K as the number of reps. The algorithm assigns each site to the nearest center, moves the center to the group mean, and repeats.\nDrag sites or change K and watch territories split; the counts will not stay even.",
+    },
+    sections: [
+      {
+        id: "km-intro",
+        heading: { zh: "辖区先是一张距离图", en: "A territory starts as a distance map" },
+        body: {
+          zh: "医药代表的辖区，本质是：这些医院和药店由谁覆盖。手工划片常按行政区、熟人或历史配额，结果是有人跑不完，有人吃不饱。K-means 的输入很瘦：每个点的坐标，以及你打算设几个中心。这里的中心可以理解成代表的驻点。",
+          en: "A rep territory is the question of who covers which hospitals and pharmacies. Hand-drawn maps follow districts, relationships, or old quotas, and one person is overloaded while another is idle. K-means takes little: coordinates, and how many centers you want. A center can be read as a rep’s base.",
+        },
+      },
+      {
+        id: "km-algo",
+        heading: { zh: "两步循环：先分人，再挪驻点", en: "Two steps: assign, then move" },
+        body: {
+          zh: "先随便（或尽量分散地）放 K 个中心。第一步：每家机构归最近的中心。第二步：每个中心挪到自己名下那些点的平均位置。两步轮流做，直到分组不再变。它最小化的是组内距离的平方和，不是开车时间，也不是各人的工作量。",
+          en: "Place K centers, preferably spread out. Assign every site to the nearest center, then move each center to the mean of its sites. Repeat until the groups stop changing. The thing being minimized is within-cluster sum of squares — not drive time, and not workload.",
+        },
+        formula: "argmin_{C,S}  Σ_k Σ_{x∈S_k} ||x − c_k||²",
+      },
+      {
+        id: "km-try",
+        heading: { zh: "一座示意的城", en: "A sketch of a city" },
+        body: {
+          zh: "图上有医院（大点）和药店（小点），大致落在老城、大学城、开发区和江北。改代表人数，或把一家店拖过江，片区会重算。方块是算法给出的驻点。",
+          en: "Hospitals are the larger dots, pharmacies the smaller ones, roughly in the old town, campus, development zone, and the north bank. Change the number of reps, or drag a store across the river, and the map recomputes. Squares are the implied bases.",
+        },
+        playground: true,
+      },
+      {
+        id: "km-limit",
+        heading: { zh: "它不会替你做的事", en: "What it will not do for you" },
+        body: {
+          zh: "直线近，过江可能要绕桥；三甲医院和单体店的工作量也不一样。K-means 默认各片差不多圆，对初始中心也敏感，所以同一张图多跑几次，片区会跳。真正落地还要加约束：尽量不拆同一连锁、工作量接近、少跨区。算法给出的是一张距离草稿，不是最后的人事命令。",
+          en: "A short straight line can still mean a long bridge. A tertiary hospital is not the same workload as an independent shop. K-means likes round blobs and jumps when you reseed. A real map still needs constraints: keep a chain together, even the load, avoid crossing districts. The algorithm drafts a distance map; it does not issue the roster.",
+        },
+      },
+    ],
+  },
 ];
 
 export const categories: { id: Category | "all"; label: LocaleText }[] = [
@@ -568,6 +664,7 @@ export const categories: { id: Category | "all"; label: LocaleText }[] = [
   { id: "theory", label: { zh: "理论", en: "Theory" } },
   { id: "deep", label: { zh: "深度", en: "Depth" } },
   { id: "fairness", label: { zh: "公平", en: "Fairness" } },
+  { id: "applied", label: { zh: "应用", en: "Applied" } },
 ];
 
 export function getArticle(slug: string) {
