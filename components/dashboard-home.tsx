@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { ArticleSummary } from "@/components/article-summary";
 import { ArticleThumb } from "@/components/article-thumb";
@@ -29,15 +30,11 @@ const SHORT: Record<string, { zh: string; en: string }> = {
   "kmeans-territory": { zh: "代表辖区", en: "Territory" },
 };
 
-export function DashboardHome({
-  q,
-  cat,
-}: {
-  q: string;
-  cat: Category | "all";
-}) {
+export function DashboardHome() {
   const { locale, t } = useI18n();
-  const [query, setQuery] = useState(q);
+  const params = useSearchParams();
+  const cat = (params.get("cat") ?? "all") as Category | "all";
+  const [query, setQuery] = useState(() => (params.get("q") ?? "").trim());
   const [activeId, setActiveId] = useState(articles[0]?.slug ?? null);
 
   const filtered = useMemo(() => {
