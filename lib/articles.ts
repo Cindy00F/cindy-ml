@@ -110,10 +110,10 @@ export const articles: Article[] = [
       },
       {
         id: "km-limit",
-        heading: { zh: "它不会替你做的事", en: "What it will not do for you" },
+        heading: { zh: "从距离草稿到可执行辖区", en: "From a distance sketch to a workable territory" },
         body: {
-          zh: "直线近，过江可能要绕桥；三甲医院和单体店的工作量也不一样。K-means 默认各片差不多圆，对初始中心也敏感，所以同一张图多跑几次，片区会跳。真正落地还要加约束：尽量不拆同一连锁、工作量接近、少跨区。算法给出的是一张距离草稿，不是最后的人事命令。",
-          en: "A short straight line can still mean a long bridge. A tertiary hospital is not the same workload as an independent shop. K-means likes round blobs and jumps when you reseed. A real map still needs constraints: keep a chain together, even the load, avoid crossing districts. The algorithm drafts a distance map; it does not issue the roster.",
+          zh: "过桥绕江，不要再用经纬度直线距离：先用驾车时间或路网距离做成本矩阵，给跨江、拥堵和禁行路段加上真实代价。这样算法比较的是“这家店要跑多久”，而不是“地图上离得多近”。\n\n三甲医院、普通医院和药店也不能各算一个点。可以把机构先换成工作量：医院按等级、科室数和预计拜访频次设权重；药店则接上 RFM-pharmacy，把最近进货（R）、进货频次（F）和金额（M）合成价值分层。核心店提高拜访权重，沉睡店降低频次但保留唤醒任务；连锁的 RFM 要按门店看，不能让总部集中采购把整条链的工作量虚增。单体店没有连锁协同，通常还要额外计入覆盖成本。\n\n实际做法是：先用 K-means 生成候选片区，再把路网时间、工作量上限、同一连锁不拆分、尽量不跨江等规则放进二次调整。若某片超载，就把边界上的低成本机构移给邻片；若跨江只为一两家高价值店，再比较“增加一名代表”与“保留跨江拜访”的成本。最后多换几组初始中心，选择路程、覆盖价值和负载最均衡的一版。K-means 给的是起点，RFM 和业务约束才把它变成可执行的人事方案。",
+          en: "Do not use straight-line coordinates for a bridge or river. Build a cost matrix from driving time or a road network, adding the real cost of crossings, congestion, and restricted roads. The model should compare how long a visit takes, not how close two points look on a map.\n\nA tertiary hospital, a regular hospital, and a pharmacy are not equal points. Turn sites into workload first: weight hospitals by tier, departments, and expected visit frequency; for pharmacies, connect the territory model to RFM-pharmacy. Use recency, frequency, and monetary value to set visit intensity: raise the weight of core stores, lower the cadence for dormant stores while keeping a reactivation task, and score chain stores at the outlet level so central purchasing does not inflate the whole chain. An independent store may need extra coverage cost because it has no chain-level coordination.\n\nIn practice, use K-means to create candidate territories, then adjust them with road time, workload caps, chain indivisibility, and a preference not to cross the river. When a territory is overloaded, move boundary sites with low travel cost to a neighbor. When a river crossing serves only one high-value store, compare adding a rep with keeping that visit across the river. Reseed several times and keep the version with the best balance of travel, covered value, and workload. K-means is the starting point; RFM and business constraints turn it into a workable staffing plan.",
         },
       },
     ],
