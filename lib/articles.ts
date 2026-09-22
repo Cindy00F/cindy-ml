@@ -23,6 +23,111 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    slug: "bulk-rna-seq-pipeline",
+    category: "applied",
+    minutes: 18,
+    accent: "#2f6f64",
+    sourcePath: "bulk-rna-seq-pipeline",
+    title: {
+      zh: "不会写代码，也能看懂一套 bulk RNA-seq 分析流程",
+      en: "How to read a bulk RNA-seq workflow without being a coder",
+    },
+    summary: {
+      zh: "把一套常见的 bulk RNA-seq 研究拆成九个模块：从数据下载、差异基因、Venn 交集，到富集、PPI、机器学习、表达验证、免疫浸润和 GSEA。\n这不是把按钮按一遍就得到结论，而是学会每一步在回答什么问题、需要什么输入、输出能支持什么决策，以及哪里最容易误读。",
+      en: "A common bulk RNA-seq study can be read as nine modules: download and preprocessing, differential genes, Venn overlap, enrichment, PPI, machine-learning feature selection, expression validation, immune infiltration, and GSEA.\nThis is not a button-clicking recipe. It is a way to understand the question, input, output, decision value, and failure mode of every step.",
+    },
+    sections: [
+      {
+        id: "bulk-start",
+        heading: { zh: "先别急着跑：这条流水线要回答什么", en: "Start with the question, not the software" },
+        body: {
+          zh: "bulk RNA-seq 可以理解成：把一批样本里的基因表达量放在一起比较。它通常不直接告诉你“哪个基因就是病因”，而是帮助你逐层缩小范围：哪些基因在两组之间变化？这些基因集中在哪些生物过程？哪些蛋白可能互相作用？能不能找到一小组稳定的候选标志物？它们在独立数据里是否还成立？\n\n所以这套流程更像一条证据链，而不是九张漂亮图片。前面的统计结果决定后面分析的入口；后面的网络和机器学习可以帮助排序，但不能把弱数据变成强结论。最有价值的交付物通常不是“筛出 10 个基因”，而是一个可复现的候选清单：每个候选基因为什么入选、在哪些数据中出现、证据是否独立、下一步要花什么成本验证。",
+          en: "Bulk RNA-seq compares gene-expression measurements across a set of samples. It rarely proves that one gene is the cause. Instead, it narrows the search: which genes differ, which biological processes contain them, which proteins may interact, whether a smaller marker panel can be learned, and whether it survives independent data.\n\nThink of the workflow as an evidence chain, not nine attractive figures. Early statistical choices define later inputs. Networks and machine learning can prioritize candidates, but they cannot turn weak data into strong claims. The valuable deliverable is a reproducible candidate list: why each gene was selected, where it appeared, whether the evidence is independent, and what validation will cost next.",
+        },
+      },
+      {
+        id: "bulk-data",
+        heading: { zh: "模块 1：数据下载与预处理，先确认“账本”没错", en: "Module 1: download and preprocessing" },
+        body: {
+          zh: "先明确物种、组织、疾病或处理条件、对照组和病例组，以及每个样本的编号。下载的数据可能是原始测序 reads、基因层面的 count matrix，或已经标准化的表达矩阵；它们不能混着当成同一种输入。原始 counts 才适合交给 DESeq2、edgeR 这类模型做测序深度和离散度处理，TPM 或 FPKM 更适合展示，不应直接替代 count-based 差异分析。\n\n预处理的重点不是把图画得更平滑，而是检查样本是否可靠：样本总 reads、检测到的基因数、异常样本、批次、重复设计和分组标签。批次效应如果和病例/对照完全重合，统计模型很难把它们分开；这不是换一个画图配色能解决的问题。建议把样本信息表、过滤规则、基因注释版本和软件版本一起保存，后面每一步都从固定文件读入。",
+          en: "First confirm species, tissue, condition, case/control labels, and sample IDs. Downloaded data may be raw reads, gene-level counts, or an already normalized matrix; they are not interchangeable. Raw counts can be modeled by DESeq2 or edgeR for library size and dispersion. TPM or FPKM is useful for display, but should not replace count-based differential testing.\n\nPreprocessing is quality control, not cosmetic smoothing. Check library size, detected genes, outliers, batch, replicate design, and labels. If batch and disease status are perfectly confounded, a model cannot reliably separate them. Save the sample sheet, filtering rule, annotation release, and software versions so every later step reads from fixed inputs.",
+        },
+      },
+      {
+        id: "bulk-deg",
+        heading: { zh: "模块 2：差异基因分析，先问“变化是否超过噪声”", en: "Module 2: differential expression" },
+        body: {
+          zh: "差异分析比较的是两组或多组的表达分布，不是挑出两组平均值最大的基因。常见输出包括 log2 Fold Change、P 值、调整后 P 值（通常是 FDR）和表达量。火山图里，横轴表示变化方向和幅度，纵轴表示统计证据；点越靠上不等于生物学影响一定越大，样本量、离散度和多重检验都会影响结果。\n\n阈值要在看结果前写下来，例如 FDR < 0.05，再结合 |log2FC| 和最低表达量。不要为了得到“刚好 20 个基因”而反复调阈值。还要保留完整结果表，因为“未达到阈值”不等于“没有变化”，而是当前样本和噪声下证据还不够。",
+          en: "Differential expression compares distributions, not just the largest difference between two means. Typical outputs include log2 fold change, P value, adjusted P value (often FDR), and expression level. In a volcano plot, the x-axis shows direction and magnitude; the y-axis shows statistical evidence. A high point is not automatically a large biological effect.\n\nWrite thresholds before looking at the results, for example FDR < 0.05 together with a |log2FC| and minimum-expression rule. Do not keep changing cutoffs until exactly 20 genes remain. Keep the full table: failing a threshold means the current evidence is insufficient, not that the gene never changes.",
+        },
+      },
+      {
+        id: "bulk-venn",
+        heading: { zh: "模块 3：Venn 交集，交集是候选入口，不是“真理名单”", en: "Module 3: Venn overlap" },
+        body: {
+          zh: "Venn 图适合回答一个直观问题：疾病差异基因、某个应激相关基因集、以及其他先验清单之间，有哪些共同成员？图中的交集越小，不代表生物学关系越弱；它也可能只是不同数据集、阈值和注释版本造成的结果。把一个基因放进或移出 Venn，往往只需要改变一个 cutoff。\n\n更稳妥的做法是同时保存“严格交集”和“排名/富集层面的重叠”。如果两个列表方向相反，还要区分上调和下调，不能只按基因名去重。Venn 负责缩小搜索空间，不负责证明这些基因共同驱动了疾病。",
+          en: "A Venn plot answers a simple question: which genes are shared by the disease DEG list, a stress-related gene set, and another prior list? A small overlap does not prove a weak relationship. It may reflect different datasets, cutoffs, or annotation versions; one cutoff change can move a gene across the boundary.\n\nKeep both a strict overlap and a rank- or enrichment-based overlap. If directions disagree, separate up- and down-regulated genes instead of matching names only. Venn narrows the search space; it does not prove that the shared genes drive the disease.",
+        },
+      },
+      {
+        id: "bulk-enrichment",
+        heading: { zh: "模块 4：富集分析，把基因名单翻译成生物过程", en: "Module 4: enrichment analysis" },
+        body: {
+          zh: "富集分析解决的是“这些基因集中在什么功能里”。GO 常按 BP（生物过程）、CC（细胞组分）、MF（分子功能）组织；KEGG 更像通路地图。点图里常见的 GeneRatio 表示命中基因占输入基因的比例，Count 是命中数量，颜色通常表示调整后 P 值。一个通路点很大，不一定比另一个通路更可信，要同时看背景基因集、FDR、命中数和基因方向。\n\n背景集很重要：如果你的实验只检测到一部分基因，却拿全基因组做背景，富集结果可能被系统性扭曲。相似的 GO term 也常常是同一个信号的不同描述，应该做语义去冗余后再讲故事。富集结果适合生成机制假设，不等同于通路被实验直接激活。",
+          en: "Enrichment translates a gene list into biological processes. GO is organized into BP, CC, and MF; KEGG is closer to a pathway map. In a dot plot, GeneRatio is the fraction of input genes that hit a term, Count is the hit count, and color often represents adjusted P value. A large dot is not automatically more credible: inspect the background, FDR, hit count, and direction.\n\nThe background matters. If your experiment could detect only a subset of genes but you use the whole genome as background, enrichment can be biased. Similar GO terms may describe one signal in different words, so reduce redundancy before writing the story. Enrichment generates mechanism hypotheses; it does not directly prove pathway activation.",
+        },
+      },
+      {
+        id: "bulk-ppi",
+        heading: { zh: "模块 5：PPI 网络，从“共同出现”走向“可能相互作用”", en: "Module 5: PPI networks" },
+        body: {
+          zh: "PPI 网络把候选蛋白和已知或预测的相互作用连起来。节点越大、连线越多，通常表示网络中心性更高；STRING score 越高，代表数据库对这条关联的支持更强。但网络边可能来自实验、数据库整理、共表达或文本挖掘，不能直接翻译成“两个蛋白在你的样本里发生了物理结合”。\n\n因此 PPI 的商业和科研价值都在于优先级：它可以帮助你决定先验证哪几个节点、先买哪类抗体或先做哪组实验，而不是替你宣布一个新机制。记录物种、STRING 版本、置信度阈值和孤立节点处理方式，才能让网络可以复查。",
+          en: "A PPI network connects candidate proteins using known or predicted interactions. A node with many edges may have high network centrality; a higher STRING score means stronger database support. But edges can come from experiments, curation, co-expression, or text mining. They do not prove that two proteins physically bind in your samples.\n\nThe value of PPI is prioritization: which nodes should be validated first, which reagents to buy, or which experiment to run next. It should not announce a new mechanism by itself. Record species, STRING version, confidence cutoff, and how isolated nodes were handled.",
+        },
+      },
+      {
+        id: "bulk-ml",
+        heading: { zh: "模块 6：机器学习筛特征，预测能力和机制不是一回事", en: "Module 6: machine-learning feature selection" },
+        body: {
+          zh: "LASSO、随机森林、XGBoost、SVM-RFE 解决的是“在一堆候选基因里，哪些组合更有助于区分病例和对照”。LASSO 会把部分系数压到 0；树模型按分裂带来的信息贡献排序；SVM-RFE 逐步删掉影响较小的特征。它们是不同的筛选视角，不是三位专家投票就自动得到真基因。\n\n最危险的错误是数据泄漏：先用全部样本筛基因，再把筛后的数据交叉验证，准确率会虚高。特征筛选、标准化和模型调参都必须放在训练折里，测试集或独立队列只能最后使用。样本数很小时，模型可能只记住批次和队列；所以同时报告交叉验证、特征数量、随机种子、类别平衡和独立验证结果。机器学习筛的是预测候选，不能单独证明因果机制。",
+          en: "LASSO, random forest, XGBoost, and SVM-RFE ask which candidate genes help separate cases from controls. LASSO shrinks some coefficients to zero; tree models rank split-based contribution; SVM-RFE removes weaker features step by step. They are different selection views, not three votes that automatically reveal causal genes.\n\nThe most dangerous mistake is leakage: select genes on all samples, then cross-validate the already-selected matrix. Feature selection, scaling, and tuning must happen inside each training fold; a test set or independent cohort is opened only at the end. With few samples, a model can memorize batch or cohort. Report cross-validation, feature count, seed, class balance, and independent validation. Machine learning prioritizes predictive candidates; it does not prove mechanism.",
+        },
+      },
+      {
+        id: "bulk-validation",
+        heading: { zh: "模块 7：Hub gene 表达验证，问“换一批样本还成立吗”", en: "Module 7: validate hub-gene expression" },
+        body: {
+          zh: "Hub gene 往往是根据 PPI 中心性、机器学习入选或多种结果交集得到的候选。表达验证要回到样本层面：在独立队列或留出的测试集里画每个基因的分布，而不是只展示两组均值。箱线图、散点、效应量、置信区间和 P 值要一起看，还要确认方向是否一致。\n\n如果最终目标是诊断或分层，单看 P 值远远不够，还要看 AUC、敏感度、特异度、校准和决策阈值。外部验证的价值在于模拟真实采购和上线场景：换平台、换中心、换人群后，模型是否仍然可用？如果不能，下一步可能是收窄适用人群，而不是继续堆更多基因。",
+          en: "Hub genes are often candidates selected by PPI centrality, machine learning, or overlap across analyses. Validation returns to the sample level: use an independent cohort or held-out test set and show distributions, not only group means. Read boxplots, points, effect size, confidence intervals, and P values together, and check whether the direction is consistent.\n\nIf the goal is diagnosis or stratification, P values are not enough. Report AUC, sensitivity, specificity, calibration, and decision thresholds. External validation simulates the real deployment setting: does the model survive a new platform, site, or population? If not, narrow the intended population instead of adding more genes.",
+        },
+      },
+      {
+        id: "bulk-immune",
+        heading: { zh: "模块 8：免疫浸润，表达矩阵不是细胞计数器", en: "Module 8: immune infiltration" },
+        body: {
+          zh: "免疫浸润分析根据 bulk 表达矩阵和参考 signature，估计不同免疫细胞的相对丰度。相关性热图可以帮助发现细胞群之间的共变关系，但“估计比例”不是病理切片里的真实细胞数。肿瘤纯度、组织组成、平台差异和 signature 选择都会影响结果。\n\n因此不要只挑一格显著相关就写成“某细胞促进了某基因”。先说明算法和参考集，再检查关键细胞类型是否有合理的生物学方向，并尽量用流式、免疫组化或单细胞数据验证。对项目决策而言，免疫浸润更适合帮助分层和提出验证假设，不适合单独决定治疗方案。",
+          en: "Immune-infiltration tools estimate relative cell abundance from bulk expression and reference signatures. A correlation heatmap can reveal co-varying cell programs, but an estimated proportion is not a cell count from a tissue slide. Tumor purity, tissue composition, platform, and signature choice all matter.\n\nDo not turn one significant cell–gene correlation into a causal statement. State the algorithm and reference set, check whether key cell types have plausible directions, and validate with flow cytometry, immunohistochemistry, or single-cell data when possible. For decisions, infiltration analysis is useful for stratification and hypothesis generation, not as a stand-alone treatment rule.",
+        },
+      },
+      {
+        id: "bulk-gsea",
+        heading: { zh: "模块 9：GSEA，不只看“过线的基因”", en: "Module 9: GSEA looks beyond a cutoff" },
+        body: {
+          zh: "ORA/GO 富集通常先把基因切成“显著”和“不显著”；GSEA 则把所有基因按统计量排序，问某个基因集是否集中出现在列表顶部或底部。富集曲线的峰值是 running enrichment score，底部的 ranked list 显示基因排序方向。它特别适合样本量不大、单个基因变化不够显著但整体通路有一致偏移的场景。\n\nGSEA 也会继承排序统计量和基因集定义的偏差。要报告排序指标、基因集数据库版本、置换方式、NES 和 FDR；不要把一条曲线写成“通路被激活”，除非方向和实验背景一致。GSEA 和 ORA 互补：一个看全排名的整体趋势，一个看阈值后的命中集合。",
+          en: "ORA or GO enrichment first cuts genes into significant and non-significant lists. GSEA ranks all genes by a statistic and asks whether a gene set accumulates near the top or bottom. The peak is the running enrichment score; the ranked-list panel shows direction. This is useful when individual genes miss a cutoff but a pathway shifts coherently.\n\nGSEA still inherits bias from the ranking statistic and gene-set definition. Report the ranking metric, gene-set database version, permutation method, NES, and FDR. Do not call a curve “pathway activation” without checking direction and biological context. GSEA and ORA are complementary: one sees a whole-ranked-list trend, the other sees a thresholded hit set.",
+        },
+      },
+      {
+        id: "bulk-delivery",
+        heading: { zh: "最后怎么交付：让结果能复现、能解释、能继续投资", en: "How to deliver a result others can trust" },
+        body: {
+          zh: "建议把每个模块固定成三类文件：输入清单、参数与日志、可审计输出。输入清单回答“用了哪些样本和数据库”；参数与日志回答“为什么得到这个结果”；输出表回答“哪些候选值得下一步验证”。图只是摘要，完整的 DEG 表、富集表、PPI 边表、模型系数和验证指标才是资产。\n\n一个适合新手的执行顺序是：先跑通一套小数据，确认每个模块的输入输出，再替换成自己的队列；每完成一步就保存版本，不要把九个模块塞进一段无法重跑的脚本。每次换数据集时，优先检查样本设计、物种和基因 ID、批次、平台及外部验证条件。这样你得到的不是一次性的“生信图片包”，而是一条可复用的分析产品线：发现信号、排序候选、估算验证成本，再决定是否进入实验或临床研究。",
+          en: "For every module, keep three kinds of files: an input manifest, parameters and logs, and auditable outputs. The manifest says which samples and databases were used; the log explains why the result looks this way; the tables say which candidates deserve validation. Figures summarize the work, but the full DEG, enrichment, PPI, model-coefficient, and validation tables are the reusable assets.\n\nA beginner-friendly execution order is to run a small example first, verify every input and output, then replace the dataset. Save a version after each module instead of putting nine opaque steps in one script. When changing cohorts, check design, species and gene IDs, batch, platform, and external-validation conditions first. The result is not a one-off figure pack but a reusable analysis product line: discover signals, prioritize candidates, estimate validation cost, and decide whether to invest in experiments or clinical research.",
+        },
+      },
+    ],
+  },
+  {
     slug: "rfm-pharmacy",
     category: "applied",
     minutes: 10,
