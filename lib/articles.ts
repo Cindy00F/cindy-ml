@@ -229,7 +229,7 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2D3142",
     sourcePath: "train-test-validation",
-    title: { zh: "数据为什么要切成训练、验证和测试？", en: "Why split data into train, validation, and test?" },
+    title: { zh: "模型考试公平吗？", en: "Is the model’s test fair?" },
     summary: {
       zh: "拿小猫小狗来练：用体重和毛量分猫狗。只看训练分数会偏高，所以要另留验证集来选模型，再留测试集估一次没见过的数据。这里正确率大概 92%。\n分错的小动物可以拖过去，分界线会重新算。",
       en: "A kitten-and-puppy task, using weight and fluff. Training accuracy runs high if you tune on it, so we hold out validation to pick a model and a test set for unseen data. Accuracy here is about 92%.\nDrag a misplaced animal and the boundary recomputes.",
@@ -290,6 +290,88 @@ export const articles: Article[] = [
         body: {
           zh: "你可能会看到：只看毛量的模型在测试集上比「两个特征都用」更高，尽管验证集选的是后者。验证和测试不完全一致，这并不坏。测试分数不是拿来优化的数字，而是对未来表现的估计。\n记住三份数据的分工。训练集：学。验证集：无偏地比较。测试集：最终评估。这样我们对模型有更现实的预期，也更有机会做出能泛化的模型。🐾",
           en: "You may notice the fluffiness-only model scoring higher on test than the both-features model, even if validation picked both. That mismatch can happen, and it is not a failure. Test accuracy is not a number to optimize — it estimates future performance.\nKeep the three roles: train to learn, validate to compare without bias, test to evaluate at the end. That is how we get a realistic picture, and a model that might actually generalize. 🐾",
+        },
+      },
+    ],
+  },
+  {
+    slug: "game-theory-house",
+    category: "applied",
+    minutes: 14,
+    accent: "#8a3a4a",
+    sourcePath: "game-theory-house",
+    title: {
+      zh: "和对象一起买房，理性的人为什么反而不买？",
+      en: "Why might rational partners both choose not to buy?",
+    },
+    summary: {
+      zh: "用“要不要和对象一起买房”这个生活问题，认识博弈论里的收益、占优策略、纳什均衡和帕累托改进。\n数字是为了看清决策结构，不是房价预测或买房建议。学会这套问法，也能看懂谈判、定价和竞争里的相互影响。",
+      en: "Use the everyday question of buying a home with a partner to understand payoffs, dominant strategies, Nash equilibrium, and Pareto improvement.\nThe numbers illustrate a decision structure; they are not a housing forecast or financial advice. The same reasoning helps analyze negotiation, pricing, and competition.",
+    },
+    sections: [
+      {
+        id: "game-question",
+        heading: { zh: "一个人做选择，为什么要想别人？", en: "Why does another person change my decision?" },
+        body: {
+          zh: "如果买不买只影响你自己，这是个人决策；如果结果还取决于对象买不买，它就成了策略互动。博弈论研究的正是这种情况：参与者各自做选择，每个人的结果都受到自己和别人选择的共同影响。\n\n房子只是一个好懂的故事。这里先假设两个人同时决定买或不买，暂时不考虑首付来源、贷款资格、房屋产权和市场涨跌。真实决策当然复杂得多；我们用一个简化模型，不是替任何人做买房建议，而是看清“我的最好选择，为什么会随着你的选择改变”。",
+          en: "If buying affects only you, it is an individual decision. If the outcome also depends on whether your partner buys, it becomes a strategic interaction. Game theory studies situations like this: each participant chooses, and everyone’s outcome depends on the combination of choices.\n\nA home is just an intuitive story. For now, assume both people decide simultaneously to buy or not buy, and set aside down payment, mortgage eligibility, ownership, and market changes. Real decisions are more complex. This simplified model is not financial advice; it helps us see why my best move can depend on yours.",
+        },
+      },
+      {
+        id: "game-payoff",
+        heading: { zh: "先把“值不值得”写成收益表", en: "Turn “is it worth it?” into a payoff table" },
+        body: {
+          zh: "博弈论里的收益，不一定是钱，而是一个人认为结果有多好。它可以同时包含居住便利、月供压力、流动性、家庭关系和情绪价值。下面每格按“你，伴侣”的顺序写两个示意分数；分数只表达各自的偏好排序，不是人民币，也不是客观测量。\n\n假设两个人都买，双方各得 2；只有一人买，买的人承担较重负担得 −1，暂时不买的一方因仍能共享居住便利得 4；两个人都不买，各得 0。这个设定很简化，也不一定适合你的情况，但足以演示分析方法。",
+          en: "A payoff in game theory is not necessarily money. It represents how much a person values an outcome and can combine convenience, mortgage burden, liquidity, family expectations, and emotional value. Each pair below is ordered as “you, partner.” These illustrative scores express preferences, not yuan or objective measurements.\n\nSuppose both buying gives each person 2. If only one buys, the buyer bears a heavy burden and gets −1, while the other can still share some housing benefit and gets 4. If neither buys, both get 0. This is deliberately simple and may not fit your situation; it is enough to show the method.",
+        },
+        formula: "                         伴侣买        伴侣不买\n你买                     (2, 2)        (−1, 4)\n你不买                   (4, −1)       (0, 0)",
+      },
+      {
+        id: "game-dominant",
+        heading: { zh: "占优策略：不管对方怎么选，我都不吃亏吗？", en: "Dominant strategy: is one move better either way?" },
+        body: {
+          zh: "先只看你的收益。假如伴侣买，你不买得 4，自己也买得 2；假如伴侣不买，你不买得 0，自己买得 −1。按这张示意表，无论伴侣选什么，“不买”都比“买”对你更好，所以“不买”是你的严格占优策略。若伴侣的偏好完全对称，对伴侣也一样。\n\n这不是说现实中总该不买，而是说结论由收益表的假设推出来。把月供压力调低、给共同居住赋予更高价值，或者把产权和风险安排写进合同，收益表就会变，策略也可能跟着变。先问“这些分数从哪里来”，比背“理性人总选不买”重要得多。",
+          en: "Look only at your payoff. If your partner buys, not buying gives you 4 versus 2 if you also buy. If your partner does not buy, not buying gives you 0 versus −1 if you buy. Under this illustrative table, “not buy” is better no matter what your partner chooses, so it is your strictly dominant strategy. If your partner’s preferences are symmetric, it is theirs too.\n\nThis does not mean people should never buy. The conclusion follows from the assumptions in the table. Lower mortgage pressure, greater value placed on living together, or a contract that changes ownership and risk can change the payoffs and the strategy. Asking where the scores came from matters more than memorizing “rational people do not buy.”",
+        },
+      },
+      {
+        id: "game-equilibrium",
+        heading: { zh: "纳什均衡：稳定，不等于两个人都最满意", en: "Nash equilibrium: stable does not mean best for both" },
+        body: {
+          zh: "如果两个人都按这套偏好选择“不买”，结果是 (0, 0)。这叫纳什均衡：在对方的选择不变时，任何一个人单独改变策略，都不能让自己过得更好。它描述的是一种稳定状态，不是道德判断，也不是社会总收益最高的状态。\n\n注意，两个人一起买得到 (2, 2)，对双方都比 (0, 0) 好；这个结果对双方构成帕累托改进。但如果每个人单独买都会承担 −1，而对方不买时自己得到 0，那么只靠“总收益更高”不足以让任何一方先承担风险。两个人想抵达更好的结果，可能需要可信承诺、共同预算、产权约定或分担风险的协议。合作不是一句“应该”，它需要可执行的安排。",
+          en: "If both follow these preferences and choose not to buy, the outcome is (0, 0). This is a Nash equilibrium: holding the other person’s choice fixed, neither can improve by changing strategy alone. It describes stability, not morality or the outcome with the highest total payoff.\n\nBoth buying gives (2, 2), which is better for each than (0, 0); it is a Pareto improvement. But if buying alone costs −1 while not buying when the other does not buy gives 0, a higher combined payoff does not make either person willing to take the risk first. Reaching the better outcome may require credible commitment, a shared budget, clear ownership, or an agreement on risk. Cooperation needs an enforceable arrangement, not just good intentions.",
+        },
+      },
+      {
+        id: "game-beliefs",
+        heading: { zh: "别只猜对方是什么人：把“我相信”说出来", en: "Make your beliefs explicit instead of guessing personalities" },
+        body: {
+          zh: "生活故事里常把人分成“精于计算”和“愿意为爱付出”。博弈论不必给人贴标签；更有用的问题是：对方重视什么、掌握什么信息、相信我会怎么做？如果你只改对方的收益，不改自己的收益，你直接比较自己两种选择的数字通常不会变；但你对对方反应的预测可能改变，尤其当你的选择会影响对方的选择时。\n\n若真实偏好未知，就不是“大家都知道收益表”的完全信息模型，而要考虑类型和信念：你认为对方有多大概率愿意共同承担？对方又如何判断你？把不确定性写成几个情景或概率，再看结论是否稳健，比武断地说“站在对方立场想”更可操作。现实里，沟通和承诺还可能改变收益本身。",
+          en: "Everyday stories may label someone “calculating” or “willing to sacrifice for love.” Game theory does not need those labels. Ask instead: what does the other person value, what information do they have, and what do they believe you will do? If only their payoff changes while yours stays fixed, your direct comparison between your own two moves usually does not change. But your prediction of their response may change, especially when your move affects theirs.\n\nIf preferences are unknown, the game has incomplete information: players have beliefs about one another’s types. Represent uncertainty with scenarios or probabilities, then test whether the conclusion is robust. That is more useful than casually saying “put yourself in their shoes.” Communication and commitments can also change payoffs.",
+        },
+      },
+      {
+        id: "game-business",
+        heading: { zh: "商业里也有“买不买”：定价、谈判和竞争", en: "The same structure appears in pricing and negotiation" },
+        body: {
+          zh: "企业也会遇到类似互动：两家竞争者要不要降价，供应商和采购方要不要让步，平台和商家要不要共同补贴，新品上市时竞品会不会跟进。每一方都不只在问“这一步赚不赚钱”，还在问“对手看到后会怎么回应”。\n\n用收益表做商业分析，可以把讨论从“我觉得对方会降价”变成可检验的情景：谁是参与者？各自有哪些可选动作？利润、份额、客户留存和现金流分别如何变化？哪些收益是短期的，哪些会在重复交易中累积？接着再检查均衡是否稳健，以及承诺是否可信。收益表不能替代市场数据，但可以帮助团队发现：看似合理的单方策略，是否会把双方都拖进低价、低利润的局面。",
+          en: "Companies face similar interactions: whether two competitors cut prices, whether a supplier or buyer concedes, whether a platform and sellers co-fund a promotion, or whether a rival responds to a launch. Each side asks not only “does this move pay?” but also “how will the other side react?”\n\nA payoff table turns “I think they will cut prices” into testable scenarios. Who are the players? What actions can each take? How do profit, share, retention, and cash flow change? Which gains are short-term, and which compound over repeated transactions? Then check whether the equilibrium is robust and commitments credible. A payoff table cannot replace market data, but it can reveal when individually sensible moves push everyone into a low-price, low-margin outcome.",
+        },
+      },
+      {
+        id: "game-checklist",
+        heading: { zh: "自己分析一场博弈，可以从四个问题开始", en: "A four-question checklist for your next decision" },
+        body: {
+          zh: "第一，谁在做决定？把受结果影响的人和机构写全。第二，每个人真的能选什么？区分可控动作和外部条件。第三，各种组合对每个人意味着什么？把金钱、时间、风险、关系和长期影响分开列，再说明哪些是事实、哪些是估计。第四，在别人按自己的偏好行动时，我的最佳回应是什么？逐格找最佳回应，看看有没有占优策略和纳什均衡。\n\n然后做敏感性检查：把最不确定的收益上下调一档，结论还成立吗？如果一变就翻转，答案就不是“模型告诉我该怎么做”，而是“我需要先弄清这个关键假设”。这一步能把分析变成下一项行动：去问、去谈、查数据，或设计一个更安全的试验。",
+          en: "First, who makes decisions? Include everyone affected by the outcome. Second, what can each person actually choose? Separate controllable actions from outside conditions. Third, what does each combination mean for each person? List money, time, risk, relationships, and long-term effects, and label facts separately from estimates. Fourth, what is my best response when others act according to their own preferences? Mark best responses and look for dominant strategies and Nash equilibria.\n\nThen test sensitivity: move the most uncertain payoff up or down. Does the conclusion change? If a small change flips it, the model is not telling you what to do; it is telling you which assumption to investigate. That points to a next action: ask, negotiate, gather data, or run a safer pilot.",
+        },
+      },
+      {
+        id: "game-limits",
+        heading: { zh: "模型帮你想清楚，不替你过日子", en: "A model can clarify a choice; it cannot live it for you" },
+        body: {
+          zh: "博弈论的结论只对写进模型的参与者、选项、信息和收益负责。一次性的静态收益表，装不下感情、法规、贷款风险和多年后的生活变化；真实的人也未必完全理性，承诺更不一定可信。买房这种重大决策还需要独立核实财务承受能力、产权、合同和风险，不能因为一个示意矩阵就下结论。\n\n它真正给新手的能力，是把“我觉得应该这样”拆成几条可以讨论的假设：我想要什么？对方想要什么？什么安排能让合作可信？结果对关键假设有多敏感？学会提出这些问题，才是把博弈论从一张表带回生活和商业现场。",
+          en: "A game-theoretic conclusion is only as good as its players, actions, information, and payoffs. A one-shot static table cannot capture a relationship, regulations, mortgage risk, or years of changing circumstances. People may not be perfectly rational, and promises may not be credible. A major purchase also requires independent checks on affordability, ownership, contracts, and risk; never decide from an illustrative matrix alone.\n\nWhat game theory gives a beginner is a way to unpack “I think this is what we should do” into discussable assumptions: what do I value, what does the other person value, what would make cooperation credible, and how sensitive is the result? Asking those questions is how a payoff table becomes useful in life and business.",
         },
       },
     ],
