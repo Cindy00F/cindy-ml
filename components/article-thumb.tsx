@@ -85,6 +85,68 @@ export function ArticleThumb({
     }
   };
 
+  if (slug === "game-theory-house") {
+    return (
+      <svg
+        viewBox="0 0 520 300"
+        className={className}
+        aria-hidden={!href}
+        preserveAspectRatio="xMidYMid meet"
+        onClick={go}
+      >
+        <Frame paper>
+          <text x="36" y="48" className="fill-foreground text-[17px]">
+            两个人，四种结果
+          </text>
+          <text x="310" y="78" textAnchor="middle" className="fill-foreground/55 text-[12px]">
+            对方买
+          </text>
+          <text x="430" y="78" textAnchor="middle" className="fill-foreground/55 text-[12px]">
+            对方不买
+          </text>
+          <text x="38" y="133" className="fill-foreground/55 text-[12px]">
+            我买
+          </text>
+          <text x="26" y="213" className="fill-foreground/55 text-[12px]">
+            我不买
+          </text>
+          {[
+            { x: 250, y: 90, label: "2 , 2", color: "#2f6f64" },
+            { x: 370, y: 90, label: "−1 , 4", color: "#c45c26" },
+            { x: 250, y: 170, label: "4 , −1", color: "#c45c26" },
+            { x: 370, y: 170, label: "0 , 0", color: "#2f6f64" },
+          ].map((cell) => (
+            <g key={`${cell.x}-${cell.y}`}>
+              <rect
+                x={cell.x}
+                y={cell.y}
+                width="110"
+                height="62"
+                rx="4"
+                fill="none"
+                stroke={cell.color}
+                strokeOpacity="0.45"
+                strokeWidth="1.5"
+              />
+              <text
+                x={cell.x + 55}
+                y={cell.y + 38}
+                textAnchor="middle"
+                fill={cell.color}
+                className="text-[18px]"
+              >
+                {cell.label}
+              </text>
+            </g>
+          ))}
+          <text x="36" y="266" className="fill-foreground/40 text-[11px]">
+            示意收益：先看偏好，再看策略
+          </text>
+        </Frame>
+      </svg>
+    );
+  }
+
   if (slug === "rfm-pharmacy") {
     return (
       <svg
