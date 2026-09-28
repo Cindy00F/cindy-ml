@@ -30,36 +30,44 @@ const SHORT: Record<string, { zh: string; en: string }> = {
   "kmeans-territory": { zh: "代表辖区", en: "Territory" },
 };
 
+const PINNED_ARTICLE_SLUG = "train-test-validation";
+
 export function DashboardHome() {
   const { locale, t } = useI18n();
   const params = useSearchParams();
   const cat = (params.get("cat") ?? "all") as Category | "all";
   const [query, setQuery] = useState(() => (params.get("q") ?? "").trim());
-  const [activeId, setActiveId] = useState(articles[0]?.slug ?? null);
+  const [activeId, setActiveId] = useState(PINNED_ARTICLE_SLUG);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    return articles.filter((a) => {
-      if (cat !== "all" && a.category !== cat) return false;
-      if (!needle) return true;
-      const short = SHORT[a.slug];
-      const topic = categories.find((c) => c.id === a.category)?.label;
-      const hay = [
-        a.slug,
-        a.title.zh,
-        a.title.en,
-        a.summary.zh,
-        a.summary.en,
-        short?.zh,
-        short?.en,
-        topic?.zh,
-        topic?.en,
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-      return hay.includes(needle);
-    });
+    return articles
+      .filter((a) => {
+        if (cat !== "all" && a.category !== cat) return false;
+        if (!needle) return true;
+        const short = SHORT[a.slug];
+        const topic = categories.find((c) => c.id === a.category)?.label;
+        const hay = [
+          a.slug,
+          a.title.zh,
+          a.title.en,
+          a.summary.zh,
+          a.summary.en,
+          short?.zh,
+          short?.en,
+          topic?.zh,
+          topic?.en,
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+        return hay.includes(needle);
+      })
+      .sort((a, b) => {
+        if (a.slug === PINNED_ARTICLE_SLUG) return -1;
+        if (b.slug === PINNED_ARTICLE_SLUG) return 1;
+        return 0;
+      });
   }, [cat, query]);
 
   const ticks = useMemo(
