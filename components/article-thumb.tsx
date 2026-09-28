@@ -8,6 +8,7 @@ import { useI18n } from "@/lib/i18n";
 import { withBase } from "@/lib/site";
 
 const FIGURES: Record<string, string> = {
+  "bulk-rna-seq-pipeline": "/thumbs/bulk-rna-seq-pipeline.png",
   "neural-networks": "/thumbs/neural-networks.png",
   "equality-of-odds": "/thumbs/equality-of-odds.png",
   "logistic-regression": "/thumbs/logistic-regression.png",
@@ -184,12 +185,13 @@ export function ArticleThumb({
   }
 
   if (figure) {
+    const isBulkRnaSeq = slug === "bulk-rna-seq-pipeline";
     return (
       <img
         src={withBase(figure)}
         alt={article?.title[locale] ?? ""}
-        className={`bg-[#fcf4e8] object-cover ${className}`}
-        style={{ aspectRatio: "520 / 300" }}
+        className={`${isBulkRnaSeq ? "bg-white object-contain" : "bg-[#fcf4e8] object-cover"} ${className}`}
+        style={{ aspectRatio: isBulkRnaSeq ? "1348 / 1080" : "520 / 300" }}
         onClick={go}
       />
     );
