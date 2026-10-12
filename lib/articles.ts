@@ -29,12 +29,12 @@ export const articles: Article[] = [
     accent: "#2f6f64",
     sourcePath: "bulk-rna-seq-pipeline",
     title: {
-      zh: "不会写代码，也能看懂一套 bulk RNA-seq 分析流程",
-      en: "How to read a bulk RNA-seq workflow without being a coder",
+      zh: "一组疾病样本里，哪些基因值得继续验证？",
+      en: "Which genes in a disease study are worth validating?",
     },
     summary: {
-      zh: "把一套常见的 bulk RNA-seq 研究拆成九个模块：从数据下载、差异基因、Venn 交集，到富集、PPI、机器学习、表达验证、免疫浸润和 GSEA。\n这不是把按钮按一遍就得到结论，而是学会每一步在回答什么问题、需要什么输入、输出能支持什么决策，以及哪里最容易误读。",
-      en: "A common bulk RNA-seq study can be read as nine modules: download and preprocessing, differential genes, Venn overlap, enrichment, PPI, machine-learning feature selection, expression validation, immune infiltration, and GSEA.\nThis is not a button-clicking recipe. It is a way to understand the question, input, output, decision value, and failure mode of every step.",
+      zh: "分析流程：bulk RNA-seq 差异分析、功能富集、候选筛选与表达验证。把一套常见研究拆成九个模块：从数据下载、差异基因、Venn 交集，到富集、PPI、机器学习、免疫浸润和 GSEA。\n这不是按一遍按钮就能得到结论，而是看懂每一步在回答什么、需要什么输入、输出能支持什么决策，以及哪里最容易误读。",
+      en: "Workflow: bulk RNA-seq differential expression, enrichment, candidate prioritization, and expression validation. A common study is split into nine modules: download and preprocessing, DEGs, Venn overlap, enrichment, PPI, machine-learning feature selection, immune infiltration, and GSEA.\nThis is not a button-clicking recipe. It explains each question, input, decision value, and common failure mode.",
     },
     sections: [
       {
@@ -133,10 +133,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#2f6f64",
     sourcePath: "rfm-pharmacy",
-    title: { zh: "RFM 怎么给中国零售药店做价值分层？", en: "How does RFM rank retail pharmacies in China?" },
+    title: { zh: "药店客户这么多，下一次该先拜访谁？", en: "With so many pharmacies, whom should we visit next?" },
     summary: {
-      zh: "把每家店看成一个客户：R 是最近一次进货隔了几天，F 是一年进了几次，M 是进货金额。三个分数各打 1 到 5，用来分开核心店、潜力店、沉睡大户和边缘店。\n点一家店看 RFM 码；把日期往后推，看分层怎么变。",
-      en: "Treat each pharmacy as a customer: Recency is days since the last order, Frequency is orders per year, Monetary is purchase amount. Each gets a 1–5 score, then stores split into core, grow, sleeping, and edge.\nClick a store for its RFM code; shift the calendar and watch segments move.",
+      zh: "方法：RFM 药店分层（最近进货 Recency、进货频次 Frequency、采购金额 Monetary）。把每家店看成一个客户，三个分数各打 1 到 5，用来区分核心店、潜力店、沉睡大户和边缘店。\n点一家店看 RFM 码；把日期往后推，看分层怎么变。",
+      en: "Method: RFM pharmacy segmentation (Recency, Frequency, and Monetary value). Treat each pharmacy as a customer and score each dimension from 1 to 5 to distinguish core, growth, dormant, and edge accounts.\nClick a store for its RFM code; shift the date and watch segments change.",
     },
     sections: [
       {
@@ -181,10 +181,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#c45c26",
     sourcePath: "kmeans-territory",
-    title: { zh: "K-means 怎么给医药代表划辖区？", en: "How can K-means cut sales territories for pharma reps?" },
+    title: { zh: "代表总在绕路，怎么把辖区划得更合理？", en: "How can we redraw territories to cut rep travel?" },
     summary: {
-      zh: "把医院和药店看成地图上的点，K 是代表人数。算法把每家机构分给最近的中心，再把中心挪到该组的平均位置，重复到不再动。\n拖机构、改人数，看片区怎么裂开；也看各片点的数量并不均匀。",
-      en: "Treat hospitals and pharmacies as points, and K as the number of reps. The algorithm assigns each site to the nearest center, moves the center to the group mean, and repeats.\nDrag sites or change K and watch territories split; the counts will not stay even.",
+      zh: "模型：K-means 聚类，用机构坐标生成辖区草案；它优化的是几何距离，不是实际车程或工作量。把医院和药店看成地图上的点，K 是代表人数，算法反复分配机构并移动中心。\n拖机构、改人数，看片区怎么变化；也看各片点数并不均匀。",
+      en: "Model: K-means clustering creates a draft territory map from site coordinates; it optimizes geometric distance, not actual drive time or workload. Hospitals and pharmacies are points, K is the number of reps, and the algorithm repeatedly reassigns sites and moves centers.\nDrag sites or change K to see territories change and site counts vary.",
     },
     sections: [
       {
@@ -229,10 +229,10 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2D3142",
     sourcePath: "train-test-validation",
-    title: { zh: "模型考试公平吗？", en: "Is the model’s test fair?" },
+    title: { zh: "数据为什么要切成训练、验证和测试？", en: "Why split data into training, validation, and test sets?" },
     summary: {
-      zh: "拿小猫小狗来练：用体重和毛量分猫狗。只看训练分数会偏高，所以要另留验证集来选模型，再留测试集估一次没见过的数据。这里正确率大概 92%。\n分错的小动物可以拖过去，分界线会重新算。",
-      en: "A kitten-and-puppy task, using weight and fluff. Training accuracy runs high if you tune on it, so we hold out validation to pick a model and a test set for unseen data. Accuracy here is about 92%.\nDrag a misplaced animal and the boundary recomputes.",
+      zh: "主题：监督学习的数据切分（训练集、验证集、测试集）。拿小猫小狗来练：用体重和毛量分猫狗。只看训练分数会偏高，所以要另留验证集来选模型，再留测试集估一次没见过的数据。这里正确率大约 92%。\n分错的小动物可以拖过去，分界线会重新算。",
+      en: "Topic: data splitting for supervised learning (training, validation, and test sets). Use weight and fluff to classify kittens and puppies. Training scores can be optimistic, so validation selects the model and a held-out test set estimates performance on unseen data. Accuracy here is about 92%.\nDrag an animal across the boundary and the model updates.",
     },
     sections: [
       {
@@ -301,12 +301,12 @@ export const articles: Article[] = [
     accent: "#8a3a4a",
     sourcePath: "game-theory-house",
     title: {
-      zh: "和对象一起买房，理性的人为什么反而不买？",
-      en: "Why might rational partners both choose not to buy?",
+      zh: "两个人都想买房，为什么最后可能谁也不买？",
+      en: "If both want a home, why might neither person buy?",
     },
     summary: {
-      zh: "用“要不要和对象一起买房”这个生活问题，认识博弈论里的收益、占优策略、纳什均衡和帕累托改进。\n数字是为了看清决策结构，不是房价预测或买房建议。学会这套问法，也能看懂谈判、定价和竞争里的相互影响。",
-      en: "Use the everyday question of buying a home with a partner to understand payoffs, dominant strategies, Nash equilibrium, and Pareto improvement.\nThe numbers illustrate a decision structure; they are not a housing forecast or financial advice. The same reasoning helps analyze negotiation, pricing, and competition.",
+      zh: "理论：博弈论（收益矩阵、占优策略、纳什均衡与帕累托改进）。从“要不要和对象一起买房”这个生活问题出发，看看双方选择如何互相影响。\n数字只是解释决策结构的示意，不是房价预测或买房建议；同样的分析也能用于谈判、定价和竞争。",
+      en: "Theory: game theory (payoff matrices, dominant strategies, Nash equilibrium, and Pareto improvement). Start with the question of buying a home with a partner and see how each person’s choice affects the other.\nThe numbers are illustrative, not a housing forecast or financial advice. The same reasoning applies to negotiation, pricing, and competition.",
     },
     sections: [
       {
@@ -382,10 +382,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#c45c26",
     sourcePath: "neural-networks",
-    title: { zh: "神经网络一层层叠上去，在算什么？", en: "What is a neural net doing when it stacks layers?" },
+    title: { zh: "照片太复杂，模型怎样一步步看懂里面是什么？", en: "How can a model make sense of a complicated picture?" },
     summary: {
-      zh: "每个神经元先做加权和，再加一层非线性激活，再传给下一层。没有激活，叠再深也只是一条直线。\n改隐藏层宽度，看分界线怎么从直线折成一块一块。",
-      en: "Each neuron takes a weighted sum, then a nonlinear activation, then passes it on. Without that bend, a deep stack is still one straight map.\nChange the hidden width and watch the boundary fold into patches.",
+      zh: "模型：前馈神经网络，由多层加权计算与非线性激活组成。它逐层组合简单特征，形成更复杂的判断；如果没有非线性，叠再多层也仍像一次线性变换。\n改隐藏层宽度，看分类边界如何从直线弯成不同形状。",
+      en: "Model: a feed-forward neural network, built from layers of weighted computations and nonlinear activations. It combines simple features into more complex decisions; without nonlinearities, stacking layers still behaves like one linear transformation.\nChange the hidden-layer width and watch the classification boundary bend.",
     },
     sections: [
       {
@@ -418,10 +418,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#2f6f64",
     sourcePath: "equality-of-odds",
-    title: { zh: "准确率很高，漏报和误报对每个群体都一样吗？", en: "High accuracy — are misses and false alarms equal across groups?" },
+    title: { zh: "模型判得准，为什么有些人还是更容易被误判？", en: "If a model is accurate, why are some people still misjudged?" },
     summary: {
-      zh: "几率均等看的是：真实标签相同时，各群体被判成正的比例该接近，也就是召回率和假正例率要对齐。平均准确率会把这种差别藏起来。\n两边的阈值可以分开拖，看两条错误曲线能不能靠拢。",
-      en: "Equality of odds asks that, given the true label, groups have similar true-positive and false-positive rates. Overall accuracy can hide that gap.\nDrag each group's threshold and see if the two error curves can meet.",
+      zh: "公平指标：几率均等（Equality of Odds），在真实标签相同时比较不同群体的召回率和假正例率。整体准确率可能把误差差距藏起来。\n分别拖动两组阈值，看错误率曲线能否靠近。",
+      en: "Fairness metric: Equality of Odds compares true-positive and false-positive rates across groups at the same true label. Overall accuracy can hide gaps in error rates.\nAdjust each group’s threshold and see whether the error curves can move closer.",
     },
     sections: [
       {
@@ -454,10 +454,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#3d5a99",
     sourcePath: "logistic-regression",
-    title: { zh: "怎么把一条直线，收成 0 到 1 的概率？", en: "How does a straight line become a probability between 0 and 1?" },
+    title: { zh: "明天下雨的概率怎么算？", en: "How can we estimate the chance of rain tomorrow?" },
     summary: {
-      zh: "线性打分没有上下界，不能直接当概率。逻辑回归在外面套一层 sigmoid，输出就落在 0 和 1 之间；再用阈值（常用 0.5）收成是或不是。这里用气温猜晴雨。\n拖阈值，看分类怎么变。",
-      en: "A linear score is unbounded, so it is not a probability. Logistic regression wraps it in a sigmoid to land in (0, 1), then a threshold (often 0.5) turns that into yes or no. Here we guess rain from temperature.\nDrag the threshold and watch the labels change.",
+      zh: "模型：逻辑回归，把特征转成 0 到 1 之间的分类概率。这里用气温估计是否下雨，再通过阈值决定报“雨”还是“不雨”。\n拖动阈值，看分类结果如何变化。",
+      en: "Model: logistic regression turns features into a classification probability between 0 and 1. Here, temperature helps estimate whether it will rain; a threshold turns that score into a yes-or-no prediction.\nMove the threshold and watch the classifications change.",
     },
     sections: [
       {
@@ -490,10 +490,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#b4532a",
     sourcePath: "linear-regression",
-    title: { zh: "怎么用一条直线去拟合一串数字？", en: "How do you fit a line to a list of numbers?" },
+    title: { zh: "买房前想估个价：一条直线能帮上什么忙？", en: "Estimating a home’s price: what can a straight line tell us?" },
     summary: {
-      zh: "线性回归假设目标大约是特征的加权和。常用最小二乘：让每个点和线的竖直距离平方和最小，得到斜率和截距。\n在图上加点，斜率和截距会重新算。",
-      en: "Linear regression treats the target as a weighted sum of features. Least squares picks the slope and intercept that minimize the squared vertical gaps.\nAdd a point and those two numbers recompute.",
+      zh: "模型：线性回归，用一组特征估计连续数值。最小二乘会找到一条让预测误差平方和尽量小的线；系数描述关联，不自动证明因果。\n在图上加点，看斜率和截距如何重新计算。",
+      en: "Model: linear regression estimates a continuous value from features. Least squares finds a line that minimizes squared prediction errors; its coefficients describe associations, not automatic proof of causation.\nAdd a point and watch the slope and intercept update.",
     },
     sections: [
       {
@@ -526,10 +526,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#6b4ea1",
     sourcePath: "reinforcement-learning",
-    title: { zh: "没有对错标签，怎么靠奖励学会选？", en: "With no right-or-wrong labels, how do rewards teach a choice?" },
+    title: { zh: "推荐系统该继续尝新，还是多推用户喜欢的？", en: "Should a recommender try something new or repeat what users like?" },
     summary: {
-      zh: "强化学习没有成对的 (x, y)，每走一步只有奖励。目标是让长期回报尽量大。没试过的要去试（探索），已经赚得多的也要用（利用）。\n拉几下老虎机，看 ε 怎么在乱试和吃老本之间换。",
-      en: "Reinforcement learning has no (x, y) pairs — only a reward after each action. The aim is long-run return. You try unknown arms (explore) and also use the one that already pays (exploit).\nPull the bandits and see how ε trades those two.",
+      zh: "方法：强化学习中的多臂老虎机与 ε-greedy 策略。系统要在尝试新选项（探索）和重复已知受欢迎的选项（利用）之间权衡，争取长期回报。\n拉几次老虎机，看 ε 如何改变探索与利用的比例。",
+      en: "Method: the multi-armed bandit and ε-greedy strategy from reinforcement learning. A system balances trying new options (exploration) with repeating known favorites (exploitation) to improve long-run reward.\nPull the bandits and see how ε changes that balance.",
     },
     sections: [
       {
@@ -562,10 +562,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#8a3a4a",
     sourcePath: "roc-auc",
-    title: { zh: "为什么不能只看一个阈值上的对错？", en: "Why isn't one cutoff enough to judge a model?" },
+    title: { zh: "筛查分数线定多高，才能少漏报又少误报？", en: "Where should a screening cutoff sit to balance misses and false alarms?" },
     summary: {
-      zh: "换分数线，真正例率（召回）和假正例率会一起变。ROC 把所有阈值画成一条曲线；AUC 衡量排序好不好，并不指定该用哪条线。\n拖阈值，看工作点在曲线上移动。",
-      en: "Move the cutoff and both the true-positive rate and the false-positive rate move. A ROC curve traces every threshold; AUC scores ranking, not which cutoff to use.\nDrag the threshold and watch the operating point travel.",
+      zh: "评估工具：ROC 曲线与 AUC，用来比较分类器在不同阈值下的召回率和假正例率。AUC 衡量排序能力，但不会替你选出合适的分数线。\n拖动阈值，看工作点如何沿 ROC 曲线移动。",
+      en: "Evaluation tools: the ROC curve and AUC compare true-positive and false-positive rates across thresholds. AUC measures ranking ability, but it does not choose the right cutoff for you.\nMove the threshold and watch the operating point travel along the ROC curve.",
     },
     sections: [
       {
@@ -598,10 +598,10 @@ export const articles: Article[] = [
     minutes: 9,
     accent: "#2d6a4f",
     sourcePath: "cross-validation",
-    title: { zh: "只切一次训练和验证，分数会不会太看运气？", en: "Is one train/validation cut just luck?" },
+    title: { zh: "样本不多，怎么知道模型分数不是碰巧？", en: "With few samples, how do we know the score isn’t luck?" },
     summary: {
-      zh: "交叉验证把数据分成 K 块，轮流拿一块当验证、其余训练，再把 K 个分数平均。常见是 5 折或 10 折。一次随便切，难例扎堆就会偏。\n看色块轮换：每一折都会当一次验证集。",
-      en: "Cross-validation splits data into K blocks, holds one out each time, and averages the K scores. Five or ten folds is common. A single cut can lie if hard examples pile up.\nWatch the blocks rotate — each fold is validation once.",
+      zh: "评估方法：K 折交叉验证。把数据分成 K 份，轮流用一份验证、其余训练，再汇总分数，减少结果对单次切分的依赖。\n看色块轮换：每一折都会当一次验证集。",
+      en: "Evaluation method: K-fold cross-validation. Split data into K folds, validate on each fold in turn, and summarize the scores to reduce dependence on one lucky split.\nWatch the blocks rotate — each fold serves as validation once.",
     },
     sections: [
       {
@@ -634,10 +634,10 @@ export const articles: Article[] = [
     minutes: 10,
     accent: "#9c4a1a",
     sourcePath: "precision-recall",
-    title: { zh: "负例特别多的时候，为什么准确率会虚高？", en: "When negatives dominate, why does accuracy look too good?" },
+    title: { zh: "一千封邮件里只有几封垃圾邮件，准确率还有用吗？", en: "With few spam emails, is accuracy still useful?" },
     summary: {
-      zh: "负例占 99% 时，全猜「不是」也能到 99% 准确率。精确率问：报出来的有多少是真的。召回率问：真的里面找回了多少。癌症筛查更怕漏诊，所以更看召回。\n拖阈值，看这两项怎么此消彼长。",
-      en: "If 99% of rows are negative, always saying no scores 99% accuracy. Precision asks how many raised flags are true; recall asks how many true cases you found. A cancer screen cares more about recall.\nDrag the threshold and watch the two trade.",
+      zh: "评估指标：精确率、召回率与 F1，专门看类别不平衡时“报出来的有多少是真的”和“真正例找回了多少”。在垃圾邮件或疾病筛查里，漏报和误报的代价并不一样。\n拖动阈值，看精确率与召回率如何此消彼长。",
+      en: "Evaluation metrics: precision, recall, and F1 help assess imbalanced classification. They ask how many alerts are correct and how many true cases were found. In spam filtering or screening, false alarms and misses have different costs.\nMove the threshold and watch precision trade off against recall.",
     },
     sections: [
       {
@@ -670,10 +670,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#1f6b3a",
     sourcePath: "random-forest",
-    title: { zh: "一棵树容易记死样本，多棵一起投票会怎样？", en: "One tree memorizes. What happens when many trees vote?" },
+    title: { zh: "一棵树判断不稳，多棵树投票能更可靠吗？", en: "If one tree is unreliable, can a forest vote more reliably?" },
     summary: {
-      zh: "随机森林给每棵树不同的抽样和特征，最后少数服从多数。单棵树对数据扰动很敏感；合在一起，正好用这种差异把方差压下去。这里用路牌分类来看。\n把树加多，看多数表决的准确率怎么上来。",
-      en: "A random forest grows each tree on a different sample and feature subset, then majority-votes. One tree is brittle; together, that disagreement lowers variance. The example is road-sign classification.\nAdd trees and watch majority accuracy climb.",
+      zh: "模型：随机森林，由不同样本和特征训练出的多棵决策树共同投票。它利用树之间的差异降低预测波动；这里用路牌分类作例子。\n增加树的数量，看多数表决的准确率如何变化。",
+      en: "Model: a random forest combines votes from decision trees trained on different samples and feature subsets. Diversity between trees can reduce prediction variance; the example uses road-sign classification.\nAdd trees and watch majority-vote accuracy change.",
     },
     sections: [
       {
@@ -705,10 +705,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#4a7c2c",
     sourcePath: "decision-tree",
-    title: { zh: "决策树是怎么一刀一刀把数据切开的？", en: "How does a decision tree cut the data, one question at a time?" },
+    title: { zh: "苹果、樱桃和橡树混在一起，模型怎么一步步分开？", en: "How can a model sort apples, cherries, and oaks step by step?" },
     summary: {
-      zh: "每个节点问一个特征够不够某个值。切在哪里，通常看信息增益：哪一刀最能把标签分开。切到每片都纯，就会把噪声也记住。苹果、樱桃、橡树只是例子。\n看分割线怎么重画；切太深时边界会碎。",
-      en: "Each node asks whether a feature is below a threshold. The cut is usually the one with the largest information gain. Pure leaves memorize noise. Apples, cherries, and oaks are just the example.\nWatch the partitions redraw; too deep and they shatter.",
+      zh: "模型：决策树，用一连串“是否满足条件”的问题逐步分类。它优先选择能更好区分标签的切分；树长得太深，也可能把噪声当规律记住。\n看分割区域如何重画；切得太细时，边界会变得零碎。",
+      en: "Model: a decision tree classifies items through a sequence of yes-or-no questions. It prefers splits that separate labels, but a tree that grows too deep can memorize noise.\nWatch the regions redraw; overly fine splits make the boundary fragmented.",
     },
     sections: [
       {
@@ -741,10 +741,10 @@ export const articles: Article[] = [
     minutes: 11,
     accent: "#7a3e6d",
     sourcePath: "bias-variance",
-    title: { zh: "模型太简单或太复杂，测试误差分别会怎样？", en: "If a model is too simple or too complex, what happens to test error?" },
+    title: { zh: "模型太简单学不会、太复杂又爱记答案，怎么拿捏？", en: "How do we avoid a model that underlearns or memorizes?" },
     summary: {
-      zh: "平方误差可以拆成偏差、方差和噪声。太简单：平均瞄偏，偏差大。太复杂：换一批训练数据就跳，方差大。中间常有一个谷。打靶只是这个意思的图。\n拖复杂度，看测试误差先降再升。",
-      en: "Squared error splits into bias, variance, and noise. Too simple: the aim is off (bias). Too complex: a new sample makes the fit jump (variance). A valley often sits in the middle.\nDrag complexity and watch test error fall, then rise.",
+      zh: "理论框架：偏差—方差分解，帮助理解模型为什么会欠拟合或过拟合。简单模型可能抓不住规律，复杂模型则可能过度适应训练样本。\n拖动模型复杂度，看测试误差怎样变化。",
+      en: "Theory: the bias–variance decomposition helps explain underfitting and overfitting. A simple model may miss patterns; a complex one may adapt too closely to its training sample.\nChange model complexity and watch test error move.",
     },
     sections: [
       {
@@ -777,10 +777,10 @@ export const articles: Article[] = [
     minutes: 12,
     accent: "#1f4e79",
     sourcePath: "double-descent",
-    title: { zh: "过了刚好记满训练集的点，测试误差为什么还能再降？", en: "Past the point of a perfect training fit, why can test error fall again?" },
+    title: { zh: "训练集都背下来了，模型变得更大为什么有时反而更准？", en: "If a model memorizes training data, why can making it bigger sometimes help?" },
     summary: {
-      zh: "参数刚好够把训练误差打到零，叫插值点。这附近测试误差常鼓起来；再增加参数，更平滑的插值可能让测试误差再降。这就是双重下降。它没有说越复杂越好，只说明复杂度轴在插值点附近不平滑。\n看插值点附近那座峰。",
-      en: "The interpolation point is where training error first hits zero. Test error often peaks there; with still more parameters, a smoother interpolator can bring it down again. That is double descent — not “bigger is always better.”\nWatch the peak near interpolation.",
+      zh: "现象：双重下降。模型刚好拟合训练数据时，测试误差可能升高；继续增加模型规模后，测试误差有时又会下降。这不代表模型越大越好。\n看测试误差在插值点附近形成的峰。",
+      en: "Phenomenon: double descent. Test error may rise when a model first fits the training data perfectly, then sometimes fall again as model size grows. This does not mean bigger is always better.\nWatch the test-error peak near interpolation.",
     },
     sections: [
       {
@@ -812,10 +812,10 @@ export const articles: Article[] = [
     minutes: 13,
     accent: "#153e66",
     sourcePath: "double-descent2",
-    title: { zh: "多项式刚好穿过每个点时，为什么线最抖？", en: "When a polynomial hits every point, why is the curve the wobbliest?" },
+    title: { zh: "曲线非要穿过每个样本点，为什么预测反而会乱跳？", en: "Why can a curve that hits every sample make jumpy predictions?" },
     summary: {
-      zh: "次数加一刚好等于点数时，插值多项式往往在点之间晃得很凶。再升高次数，解不唯一，可以选系数更小、更平滑的那条，测试误差常会下来。这是双重下降的一个干净例子。\n拖多项式次数，看测试误差在插值点附近鼓包。",
-      en: "When degree + 1 equals the number of points, the interpolating polynomial often thrashes between them. Higher degree is underdetermined, so a smaller-norm, smoother fit can lower test error. A clean toy for double descent.\nDrag the degree and watch the hump near interpolation.",
+      zh: "示例模型：多项式回归，用来观察双重下降。曲线刚好穿过所有训练点时，点与点之间可能剧烈振荡；继续提高次数并选择更平滑的解，测试误差有时反而下降。\n拖动多项式次数，观察插值点附近的误差峰。",
+      en: "Example model: polynomial regression, used to illustrate double descent. A curve that passes through every training point can oscillate sharply between them; a smoother solution at higher degree may sometimes lower test error.\nChange the polynomial degree and watch the error peak near interpolation.",
     },
     sections: [
       {

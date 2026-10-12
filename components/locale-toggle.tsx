@@ -7,14 +7,13 @@ import { emitCindyPrefs } from "@/lib/client-prefs";
 import { useI18n } from "@/lib/i18n";
 
 export function LocaleToggle() {
-  const { locale, setLocale } = useI18n();
+  const { locale } = useI18n();
   const next = locale === "zh" ? "en" : "zh";
 
   return (
     <button
       type="button"
       onClick={() => {
-        setLocale(next);
         persistLocale(next);
         emitCindyPrefs({ locale: next });
         track({ name: "locale", to: next });
