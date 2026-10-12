@@ -324,6 +324,42 @@
     });
   }
 
+  function applyLocaleProgressively(locale, done) {
+    currentLocale = locale === "en" ? "en" : "zh";
+    document.documentElement.setAttribute("lang", currentLocale === "zh" ? "zh-CN" : "en");
+    applyHeadingLocales(document.body);
+
+    var textNodes = [];
+    walk(document.body, function (textNode) {
+      textNodes.push(textNode);
+    });
+
+    var index = 0;
+    function applyChunk() {
+      if (currentLocale !== locale) {
+        done();
+        return;
+      }
+
+      var started = Date.now();
+      while (index < textNodes.length && (index === 0 || Date.now() - started < 8)) {
+        var textNode = textNodes[index++];
+        var value = textNode.nodeValue;
+        if (value == null || !value.trim()) continue;
+        if (originals) {
+          if (!originals.has(textNode) || !looksChinese(value)) originals.set(textNode, value);
+          value = originals.get(textNode);
+        }
+        textNode.nodeValue = currentLocale === "zh" ? translateEnglish(value) : value;
+      }
+
+      if (index < textNodes.length) window.setTimeout(applyChunk, 0);
+      else done();
+    }
+
+    window.setTimeout(applyChunk, 0);
+  }
+
   function applyTheme(theme) {
     currentTheme = theme === "dark" ? "dark" : "light";
     document.documentElement.classList.toggle("cindy-dark", currentTheme === "dark");
@@ -402,6 +438,26 @@
     var key = currentLocale + "|" + currentTheme;
     if (!force && !localeOnly && lastApplied === key && Date.now() < coolUntil) return;
     applying = true;
+    if (opts && opts.progressiveLocale) {
+      try {
+        applyTheme(currentTheme);
+        applyLocaleProgressively(currentLocale, function () {
+          if (key !== currentLocale + "|" + currentTheme) {
+            applying = false;
+            applyAll({ force: true });
+            return;
+          }
+          lastApplied = key;
+          announceReady();
+          applying = false;
+          coolUntil = Date.now() + 80;
+        });
+      } catch (error) {
+        applying = false;
+        throw error;
+      }
+      return;
+    }
     try {
       applyTheme(currentTheme);
       if (!localeOnly) {
@@ -485,7 +541,9 @@
         clearTimeout(scheduled);
         scheduled = null;
       }
-      if (localeChanged && !themeChanged) applyAll({ localeOnly: true, force: true });
+      if (localeChanged && !themeChanged) {
+        applyAll({ localeOnly: true, force: true, progressiveLocale: true });
+      }
       else applyAll({ force: true });
     }
   });

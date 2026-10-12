@@ -127,7 +127,7 @@ function installCindyBridge(doc: Document) {
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=locale-1`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=locale-2`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
