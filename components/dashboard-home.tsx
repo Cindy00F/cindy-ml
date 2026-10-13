@@ -8,7 +8,7 @@ import { ArticleThumb } from "@/components/article-thumb";
 import { DeskDoodle } from "@/components/desk-doodle";
 import { EssayScale } from "@/components/essay-scale";
 import { track } from "@/lib/analytics";
-import { articles, categories, type Category } from "@/lib/articles";
+import { articles, categories } from "@/lib/articles";
 import { useI18n } from "@/lib/i18n";
 
 const SHORT: Record<string, { zh: string; en: string }> = {
@@ -35,9 +35,9 @@ const PINNED_ARTICLE_SLUG = "train-test-validation";
 export function DashboardHome() {
   const { locale, t } = useI18n();
   const params = useSearchParams();
-  const cat = (params.get("cat") ?? "all") as Category | "all";
+  const cat = categories.find((category) => category.id === params.get("cat"))?.id ?? "all";
   const [query, setQuery] = useState(() => (params.get("q") ?? "").trim());
-  const [activeId, setActiveId] = useState(PINNED_ARTICLE_SLUG);
+  const [activeIdState, setActiveId] = useState(PINNED_ARTICLE_SLUG);
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -69,6 +69,9 @@ export function DashboardHome() {
         return 0;
       });
   }, [cat, query]);
+  const activeId = filtered.some((article) => article.slug === activeIdState)
+    ? activeIdState
+    : (filtered[0]?.slug ?? null);
 
   const ticks = useMemo(
     () =>
@@ -88,12 +91,6 @@ export function DashboardHome() {
     }, 600);
     return () => window.clearTimeout(timer);
   }, [query]);
-
-  useEffect(() => {
-    if (!filtered.some((article) => article.slug === activeId)) {
-      setActiveId(filtered[0]?.slug ?? null);
-    }
-  }, [filtered, activeId]);
 
   useEffect(() => {
     const nodes = filtered
@@ -138,7 +135,11 @@ export function DashboardHome() {
             role="search"
             onSubmit={(event) => event.preventDefault()}
           >
+            <label htmlFor="article-search" className="sr-only">
+              {t("search")}
+            </label>
             <input
+              id="article-search"
               name="q"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
@@ -165,6 +166,7 @@ export function DashboardHome() {
               <Link
                 key={c.id}
                 href={href}
+                aria-current={cat === c.id ? "page" : undefined}
                 className={cat === c.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}
               >
                 {c.label[locale]}

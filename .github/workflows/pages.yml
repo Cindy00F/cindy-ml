@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths-ignore:
       - "data/events.csv"
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "data/events.csv"
   workflow_dispatch:
 
 permissions:
@@ -33,6 +37,7 @@ jobs:
           NEXT_PUBLIC_ANALYTICS_GITHUB_TOKEN: ${{ secrets.ANALYTICS_DISPATCH_TOKEN }}
       - run: cp out/index.html out/404.html
       - uses: peaceiris/actions-gh-pages@v4
+        if: github.event_name != 'pull_request'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./out

@@ -552,8 +552,8 @@ function EssaySection({
         {index === 0 ? (
           <p className="split-byline">{zh ? "视觉文章 · 猫、狗、逻辑回归" : "A visual essay · cats, dogs, logistic regression"}</p>
         ) : null}
-        {section.body[locale].split("\n").map((para) => (
-          <p key={para.slice(0, 48)}>{para}</p>
+        {section.body[locale].split("\n").map((para, index) => (
+          <p key={`${section.id ?? section.heading.en}-paragraph-${index}`}>{para}</p>
         ))}
         {index === 0 ? (
           <p className="split-pets-legend">
