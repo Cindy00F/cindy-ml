@@ -37,4 +37,4 @@ npm run dev
 
 ## 文章
 
-训练/验证/测试集、神经网络、几率均等、逻辑回归、线性回归、强化学习、ROC & AUC、交叉验证、精确率与召回率、随机森林、决策树、偏差–方差权衡、双重下降。
+完整目录和中英文标题见[线上文章首页](https://cindy00f.github.io/cindy-ml/dashboard#gallery)。文章覆盖模型、评估、公平、理论和应用；最近新增 bulk RNA-seq 分析、药店 RFM、K-means 辖区规划与博弈论买房决策。

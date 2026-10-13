@@ -24,7 +24,11 @@ const notoSansSC = Noto_Sans_SC({
 });
 
 export const metadata: Metadata = {
-  title: "Cindy 在学习机器学习",
+  metadataBase: new URL("https://cindy00f.github.io/cindy-ml/"),
+  title: {
+    default: "Cindy 在学习机器学习",
+    template: "%s | Cindy 在学习机器学习",
+  },
   description: "Cindy 在学习机器学习。可以点进去拖一拖的笔记，包括 RFM 药店分层和代表辖区。",
   icons: { icon: `${BASE_PATH}/favicon.svg` },
 };

@@ -80,8 +80,11 @@ export function NativeEssay({ article }: { article: Article }) {
           {article.sections.map((section) => (
             <section key={section.heading.en} id={section.id} className="scroll-mt-16">
               <h2 className="font-heading text-2xl">{section.heading[locale]}</h2>
-              {section.body[locale].split("\n").map((para) => (
-                <p key={para.slice(0, 48)} className="mt-4 text-[15px] leading-8">
+              {section.body[locale].split("\n").map((para, index) => (
+                <p
+                  key={`${section.id ?? section.heading.en}-paragraph-${index}`}
+                  className="mt-4 text-[15px] leading-8"
+                >
                   {para}
                 </p>
               ))}

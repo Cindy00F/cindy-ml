@@ -1,28 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { PetCluster } from "@/components/pet-icons";
 import { articles } from "@/lib/articles";
+import { articleThumbnails } from "@/lib/article-thumbnails";
 import { useI18n } from "@/lib/i18n";
 import { withBase } from "@/lib/site";
-
-const FIGURES: Record<string, string> = {
-  "bulk-rna-seq-pipeline": "/thumbs/bulk-rna-seq-pipeline.png",
-  "neural-networks": "/thumbs/neural-networks.png",
-  "equality-of-odds": "/thumbs/equality-of-odds.png",
-  "logistic-regression": "/thumbs/logistic-regression.png",
-  "linear-regression": "/thumbs/linear-regression.jpg",
-  "reinforcement-learning": "/thumbs/reinforcement-learning.jpg",
-  "roc-auc": "/thumbs/roc-auc.png",
-  "cross-validation": "/thumbs/cross-validation.png",
-  "precision-recall": "/thumbs/precision-recall.png",
-  "random-forest": "/thumbs/random-forest.png",
-  "decision-tree": "/thumbs/decision-tree.png",
-  "bias-variance": "/thumbs/bias-variance.png",
-  "double-descent": "/thumbs/double-descent.png",
-  "double-descent-2": "/thumbs/double-descent-2.png",
-};
 
 function Frame({
   children,
@@ -71,7 +56,7 @@ export function ArticleThumb({
   const article = articles.find((a) => a.slug === slug);
   const clipId = useId().replace(/:/g, "");
   const draggedAt = useRef(0);
-  const figure = FIGURES[slug];
+  const figure = articleThumbnails[slug];
 
   const go = (event: { preventDefault: () => void; stopPropagation: () => void }) => {
     if (Date.now() - draggedAt.current < 500) {
@@ -249,11 +234,16 @@ export function ArticleThumb({
   if (figure) {
     const isBulkRnaSeq = slug === "bulk-rna-seq-pipeline";
     return (
-      <img
+      <Image
         src={withBase(figure)}
         alt={article?.title[locale] ?? ""}
+        width={isBulkRnaSeq ? 1348 : 520}
+        height={isBulkRnaSeq ? 1080 : 300}
+        unoptimized
         className={`${isBulkRnaSeq ? "bg-white object-contain" : "bg-[#fcf4e8] object-cover"} ${className}`}
         style={{ aspectRatio: isBulkRnaSeq ? "1348 / 1080" : "520 / 300" }}
+        loading="lazy"
+        decoding="async"
         onClick={go}
       />
     );

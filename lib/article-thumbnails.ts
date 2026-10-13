@@ -1,0 +1,16 @@
+export const articleThumbnails: Record<string, string> = {
+  "bulk-rna-seq-pipeline": "/thumbs/bulk-rna-seq-pipeline.webp",
+  "neural-networks": "/thumbs/neural-networks.webp",
+  "equality-of-odds": "/thumbs/equality-of-odds.webp",
+  "logistic-regression": "/thumbs/logistic-regression.webp",
+  "linear-regression": "/thumbs/linear-regression.webp",
+  "reinforcement-learning": "/thumbs/reinforcement-learning.webp",
+  "roc-auc": "/thumbs/roc-auc.webp",
+  "cross-validation": "/thumbs/cross-validation.webp",
+  "precision-recall": "/thumbs/precision-recall.webp",
+  "random-forest": "/thumbs/random-forest.webp",
+  "decision-tree": "/thumbs/decision-tree.webp",
+  "bias-variance": "/thumbs/bias-variance.webp",
+  "double-descent": "/thumbs/double-descent.webp",
+  "double-descent-2": "/thumbs/double-descent-2.webp",
+};
