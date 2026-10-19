@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { ArrowDown, ArrowRight, Search, X } from "lucide-react";
 import { ArticleSummary } from "@/components/article-summary";
 import { ArticleThumb } from "@/components/article-thumb";
 import { DeskDoodle } from "@/components/desk-doodle";
@@ -93,6 +94,23 @@ export function DashboardHome() {
   }, [query]);
 
   useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const nextParams = new URLSearchParams(window.location.search);
+      if (cat === "all") nextParams.delete("cat");
+      else nextParams.set("cat", cat);
+      if (query.trim()) nextParams.set("q", query.trim());
+      else nextParams.delete("q");
+
+      const search = nextParams.toString();
+      const nextUrl = `${window.location.pathname}${search ? `?${search}` : ""}${window.location.hash}`;
+      if (`${window.location.pathname}${window.location.search}${window.location.hash}` !== nextUrl) {
+        window.history.replaceState(null, "", nextUrl);
+      }
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [cat, query]);
+
+  useEffect(() => {
     const nodes = filtered
       .map((article) => document.getElementById(`card-${article.slug}`))
       .filter((node): node is HTMLElement => Boolean(node));
@@ -115,46 +133,72 @@ export function DashboardHome() {
     const node = document.getElementById(`card-${id}`);
     if (!node) return;
     setActiveId(id);
-    node.scrollIntoView({ behavior: "smooth", block: "center" });
+    node.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+      block: "center",
+    });
   };
 
   return (
     <div className="relative min-[701px]:pr-[9.25rem]">
-      <section className="grid items-center gap-10 py-10 md:grid-cols-[1.2fr_0.8fr]">
+      <section className="grid items-center gap-8 border-b border-foreground/10 py-12 sm:py-16 md:grid-cols-[1.2fr_0.8fr]">
         <div>
-          <h1 className="font-heading text-4xl leading-tight sm:text-5xl">{t("welcomeBack")}</h1>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">{t("dashboardLead")}</p>
+          <p className="mb-4 text-xs font-medium uppercase tracking-[0.22em] text-muted-foreground">
+            {locale === "zh" ? "CINDY · 机器学习手记" : "CINDY · NOTES ON MACHINE LEARNING"}
+          </p>
+          <h1 className="font-heading max-w-2xl text-pretty text-4xl leading-[1.12] sm:text-6xl">
+            {t("welcomeBack")}
+          </h1>
+          <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">
+            {t("dashboardLead")}
+          </p>
+          <Link
+            href="#gallery"
+            className="mt-7 inline-flex min-h-11 items-center gap-2 bg-foreground px-5 text-sm font-medium text-background hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+          >
+            {locale === "zh" ? "从一篇开始" : "Start with a note"}
+            <ArrowDown aria-hidden="true" className="size-4" />
+          </Link>
         </div>
-        <DeskDoodle className="mx-auto max-w-xs text-foreground" />
+        <DeskDoodle className="mx-auto w-full max-w-[17rem] text-foreground/80" />
       </section>
 
-      <section id="gallery" className="scroll-mt-8">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-y py-6">
-          <h2 className="font-heading text-3xl">{t("articles")}</h2>
-          <form
-            role="search"
-            onSubmit={(event) => event.preventDefault()}
-          >
+      <section id="gallery" className="scroll-mt-20">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-foreground/10 py-7">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+              {locale === "zh" ? "选一个你正好好奇的问题" : "PICK A QUESTION YOU’RE CURIOUS ABOUT"}
+            </p>
+            <h2 className="font-heading mt-2 text-3xl">{t("articles")}</h2>
+          </div>
+          <form role="search" onSubmit={(event) => event.preventDefault()} className="relative w-full sm:w-64">
             <label htmlFor="article-search" className="sr-only">
               {t("search")}
             </label>
+            <Search aria-hidden="true" className="pointer-events-none absolute left-0 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <input
               id="article-search"
               name="q"
+              type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder={t("search")}
               autoComplete="off"
-              className="h-9 w-48 border-b border-foreground/30 bg-transparent text-sm outline-none max-[700px]:w-full max-[700px]:max-w-[11rem]"
+              className="h-11 w-full border-b border-foreground/25 bg-transparent pl-7 pr-9 text-sm outline-none placeholder:text-muted-foreground/80 focus-visible:border-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
             />
+            {query ? (
+              <button
+                type="button"
+                aria-label={locale === "zh" ? "清除搜索" : "Clear search"}
+                onClick={() => setQuery("")}
+                className="absolute right-0 top-1/2 inline-flex size-9 -translate-y-1/2 items-center justify-center text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+              >
+                <X aria-hidden="true" className="size-4" />
+              </button>
+            ) : null}
           </form>
         </div>
-        {query.trim() ? (
-          <p className="pt-4 text-xs text-muted-foreground">
-            {filtered.length} / {articles.length}
-          </p>
-        ) : null}
-        <div className="flex flex-wrap gap-5 py-6 text-xs tracking-wide">
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 py-5 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
           {categories.map((c) => {
             const href =
               c.id === "all"
@@ -162,48 +206,87 @@ export function DashboardHome() {
                   ? `/dashboard?q=${encodeURIComponent(query.trim())}`
                   : "/dashboard"
                 : `/dashboard?cat=${c.id}${query.trim() ? `&q=${encodeURIComponent(query.trim())}` : ""}`;
+            const count = c.id === "all"
+              ? articles.length
+              : articles.filter((article) => article.category === c.id).length;
+            const selected = cat === c.id;
             return (
               <Link
                 key={c.id}
                 href={href}
-                aria-current={cat === c.id ? "page" : undefined}
-                className={cat === c.id ? "text-foreground" : "text-muted-foreground hover:text-foreground"}
+                aria-current={selected ? "page" : undefined}
+                className={`inline-flex min-h-10 shrink-0 items-center gap-2 border px-3.5 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground ${
+                  selected
+                    ? "border-foreground bg-foreground text-background"
+                    : "border-foreground/15 text-muted-foreground hover:border-foreground/45 hover:text-foreground"
+                }`}
               >
                 {c.label[locale]}
+                <span className={selected ? "text-background/70" : "text-muted-foreground/70"}>{count}</span>
               </Link>
             );
           })}
         </div>
 
+        <p aria-live="polite" className="pb-3 text-xs text-muted-foreground">
+          {locale === "zh"
+            ? `显示 ${filtered.length} / ${articles.length} 篇`
+            : `Showing ${filtered.length} of ${articles.length} notes`}
+        </p>
+
         {filtered.length === 0 ? (
-          <p className="py-20 text-sm text-muted-foreground">{t("emptySearch")}</p>
+          <div className="border-y border-foreground/10 py-16 text-center">
+            <p className="text-base">{t("emptySearch")}</p>
+            {query ? (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="mt-4 inline-flex min-h-10 items-center gap-2 border-b border-foreground/40 text-sm hover:border-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+              >
+                {locale === "zh" ? "清除搜索条件" : "Clear search"}
+                <X aria-hidden="true" className="size-3.5" />
+              </button>
+            ) : null}
+          </div>
         ) : (
-          <div>
+          <div className="divide-y divide-foreground/10">
             {filtered.map((article, i) => {
               const href = `/articles/${article.slug}`;
               const playable = article.slug === "train-test-validation";
+              const isFeatured = i === 0 && cat === "all" && !query.trim();
               return (
                 <div
                   id={`card-${article.slug}`}
                   key={article.slug}
-                  className={`grid items-center gap-8 border-t py-12 md:grid-cols-2 ${
-                    i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
+                  className={`grid items-center gap-6 py-9 sm:gap-8 sm:py-12 md:grid-cols-2 ${
+                    isFeatured ? "my-2 border-l-2 border-foreground/70 bg-muted/45 px-4 sm:px-7" : ""
                   }`}
                 >
-                  <Link href={href}>
-                    <p className="text-xs text-muted-foreground">
-                      {categories.find((c) => c.id === article.category)?.label[locale]}
-                      {" · "}
-                      {article.minutes} {t("minutes")}
+                  <Link
+                    href={href}
+                    className="group min-w-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+                  >
+                    <p className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                      {isFeatured ? (
+                        <span className="border border-foreground/20 px-2 py-1 font-medium text-foreground">
+                          {locale === "zh" ? "新手推荐" : "A good place to start"}
+                        </span>
+                      ) : null}
+                      <span>{categories.find((c) => c.id === article.category)?.label[locale]}</span>
+                      <span aria-hidden="true">·</span>
+                      <span>{article.minutes} {t("minutes")}</span>
                     </p>
-                    <h3 className="font-heading mt-2 text-3xl max-[700px]:text-2xl max-[700px]:leading-tight">
+                    <h3 className="font-heading mt-3 text-pretty text-2xl leading-tight group-hover:underline group-hover:decoration-foreground/35 group-hover:underline-offset-4 sm:text-3xl">
                       {article.title[locale]}
                     </h3>
                     <ArticleSummary
                       text={article.summary[locale]}
-                      className="mt-4 text-sm leading-7 text-muted-foreground"
+                      className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground"
                     />
-                    <span className="mt-6 inline-block text-sm underline underline-offset-4">{t("diveIn")}</span>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-medium">
+                      {t("diveIn")}
+                      <ArrowRight aria-hidden="true" className="size-4" />
+                    </span>
                   </Link>
                   {playable ? (
                     <ArticleThumb
@@ -213,10 +296,15 @@ export function DashboardHome() {
                       className="h-auto w-full cursor-pointer border border-foreground/15"
                     />
                   ) : (
-                    <Link href={href}>
+                    <Link
+                      href={href}
+                      tabIndex={-1}
+                      aria-hidden="true"
+                      className="focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
+                    >
                       <ArticleThumb
                         slug={article.slug}
-                        className="h-auto w-full border border-foreground/15"
+                        className="h-auto w-full border border-foreground/10"
                       />
                     </Link>
                   )}
@@ -226,16 +314,6 @@ export function DashboardHome() {
           </div>
         )}
       </section>
-
-      {filtered.length > 0 ? (
-        <section className="mt-10 grid grid-cols-3 gap-2 border-t pt-10 sm:grid-cols-4 md:grid-cols-7">
-          {filtered.map((article) => (
-            <Link key={article.slug} href={`/articles/${article.slug}`} title={article.title[locale]}>
-              <ArticleThumb slug={article.slug} className="h-auto w-full border border-foreground/10" />
-            </Link>
-          ))}
-        </section>
-      ) : null}
 
       <EssayScale
         ticks={ticks}
