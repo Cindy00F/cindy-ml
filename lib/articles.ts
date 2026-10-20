@@ -295,75 +295,73 @@ export const articles: Article[] = [
     ],
   },
   {
-    slug: "promo-bakery-incrementality",
+    slug: "tea-retail-journey",
     category: "applied",
-    minutes: 8,
-    accent: "#a55c40",
-    sourcePath: "promo-bakery-incrementality",
+    minutes: 6,
+    accent: "#70816e",
+    sourcePath: "tea-retail-journey",
     title: {
-      zh: "促销排起长队，生意真的变好了吗？",
-      en: "Did the queue mean the promotion sold more?",
+      zh: "顾客喝完一杯，为什么愿意带走一盒茶？",
+      en: "After one cup, why would a customer take tea home?",
     },
     summary: {
-      zh: "营销实验：跟着面包店老板阿禾复盘一场周末促销。活动周销量涨了，不一定全是促销带来的；隔壁没做活动的店，能帮我们看见天气和时间带来的变化。\n用一段可播放的故事动画，弄懂对照组、增量和被提前搬来的生意。",
-      en: "Marketing measurement: follow bakery owner Ahe as she reviews a weekend promotion. Sales rose—but not all of that increase came from the offer. A nearby store without the promotion helps reveal what weather and timing changed.\nPlay a short story animation to understand comparison stores, incremental lift, and sales pulled forward.",
+      zh: "一家精品茶饮零售店，不只卖一杯现制茶：店里还有品饮体验、茶叶和茶礼。真正的零售问题是，顾客在店里喜欢的那一口，怎样变成适合带回家的选择，而不是被硬推一盒茶。\n跟着一位虚构顾客走进茶空间，拆解“空间＋茶饮＋零售”如何连起来，以及该看什么指标判断这条路有没有走通。人物和情节为教学创作，不代表任何特定品牌的真实顾客或经营数据。",
+      en: "A specialty tea retailer offers more than a made-to-order drink: there may also be tastings, packaged teas, and gifts. The retail challenge is turning a flavor someone enjoys in-store into a take-home choice that fits—not pushing a box they do not want.\nFollow an illustrative customer through a tea shop to see how “space + tea drinks + retail” can connect, and what to measure to learn whether it works. The character and events are fictional, not any brand’s customer or sales data.",
     },
     sections: [
       {
-        id: "promo-queue",
+        id: "tea-arrival",
         heading: {
-          zh: "那天店门口排起了队，阿禾却没有马上庆祝",
-          en: "A line formed outside. Ahe did not celebrate just yet",
+          zh: "周五下班，她原本只想找地方喝杯茶",
+          en: "After work on Friday, she only wants a cup of tea",
         },
         body: {
-          zh: "阿禾在河岸边开了一家面包店。一个周末，她做了“第二只半价”：活动当天卖出 160 份，比平时的一周基准 100 份多了 60。收银台前排起队，店员说从没这么忙过。\n\n可阿禾想起隔壁街角店也卖得不错。那家店没有打折；而且天气刚好转凉，附近居民开始买热面包。她的问题不是“今天热不热闹”，而是：如果没有促销，河岸店本来会卖多少？只有超过这个反事实的部分，才可能算活动带来的增量。",
-          en: "Ahe owns a bakery by the river. One weekend she runs “half off the second loaf.” Riverside sells 160 loaves—60 above its usual weekly baseline of 100. There is a queue at the till; the staff say they have never been this busy.\n\nBut Ahe remembers that Corner Street, a nearby store, also had a good week. It did not discount, and the weather turned cold just as locals started buying warm bread. Her question is not “Was it busy?” but “How many would Riverside have sold without the offer?” Only sales above that counterfactual might be incremental.",
+          zh: "林林和朋友逛完商场，想找个舒服的地方坐一会儿，顺便喝杯茶。她走进一家茶空间，先点了一杯茶饮；朋友则翻看茶单和柜上的茶礼。两个人都进了同一家店，来店理由却不一样。\n\n这就是茶零售和单纯卖饮料的差别：顾客可能为一杯茶而来，也可能想认识一种茶、买份礼物，或者只是享受一段空间体验。店里如果只记“今天卖了多少杯”，就容易漏掉顾客真正想完成的事情。",
+          en: "Lin and a friend have finished shopping and want somewhere comfortable to sit and have tea. She orders a made-to-order drink at a specialty tea shop; her friend browses the tea menu and gift sets. Same store, different reasons for coming in.\n\nThat is the difference between tea retail and simply selling drinks. Someone may come for a cup, to discover a tea, to find a gift, or just to enjoy the space. If the store only counts drinks sold, it can miss what the customer actually came to do.",
         },
       },
       {
-        id: "promo-control",
+        id: "tea-experience",
         heading: {
-          zh: "找一家没参加活动的店，给热闹找个参照",
-          en: "Find a store without the offer to give the rush a reference",
+          zh: "一杯茶是体验入口，不是推销礼盒的借口",
+          en: "A cup is an entry to the experience, not an excuse to upsell",
         },
         body: {
-          zh: "阿禾选了规模和客群相近的街角店作比较。活动前，河岸店一周卖 100 份，街角店卖 90 份，两店本来就差 10 份。活动周，街角店也涨到 100 份，提示天气、节日或全城客流等共同因素大约带来了 10 份增长。\n\n如果两店原有差距大致稳定，河岸店在“没有促销”的情况下，活动周可能也会从 100 涨到约 110。实际卖了 160，粗略估计的活动增量便是 50，而不是表面上的 60。对照店不是完美替身，但比拿自己的上周直接当答案更有参照。",
-          en: "Ahe picks Corner Street, a store with similar size and customers. Before the offer, Riverside sells 100 loaves a week and Corner Street 90—a standing gap of 10. During the promotion, Corner Street also rises to 100, suggesting common factors such as weather or a local event added about 10.\n\nIf the usual gap stays roughly stable, Riverside might have grown from 100 to around 110 even without its offer. It actually sells 160, so the rough incremental lift is 50, not the headline 60. A comparison store is no perfect stand-in, but it is better context than treating last week as the whole answer.",
-        },
-        formula: "Δoffer ≈ (160 − 100) − (100 − 90) = 50",
-      },
-      {
-        id: "promo-calendar",
-        heading: {
-          zh: "日历往后翻一页：有些顾客只是提前买了",
-          en: "Turn the calendar: some customers may have bought early",
-        },
-        body: {
-          zh: "活动结束后，河岸店下一周只卖了 80 份；街角店仍卖 100 份。按两店原先约 10 份的差距估算，河岸店没有促销时大约会卖 110 份。也就是说，活动周约多出的 50 份，可能有 30 份只是把下一周的购买提前了。\n\n把活动周和下一周合起来看，估计净增约 20 份，而不是 50 或 60。这个结果仍依赖假设：如果两家店的趋势不同、客人跨店购买、促销改变了之后的需求，估计都会偏。动画里的数字是教学示例，不是实测结果。",
-          en: "After the offer, Riverside sells only 80 loaves the next week; Corner Street remains at 100. Using the usual gap of about 10, Riverside might have sold around 110 without a promotion. So of the roughly 50 extra loaves during the offer, perhaps 30 were simply next week’s purchases moved earlier.\n\nAcross the offer week and the following week, the estimated net lift is about 20—not 50 or 60. This still depends on assumptions: different store trends, shoppers crossing between stores, or lingering effects could all bias the estimate. The animation uses teaching numbers, not measured results.",
-        },
-        formula: "(+50) + (−30) = +20",
-      },
-      {
-        id: "promo-profit",
-        heading: {
-          zh: "销量多了，不等于利润多了",
-          en: "More units sold do not automatically mean more profit",
-        },
-        body: {
-          zh: "最后，阿禾把账本也摊开：第二只半价少收了多少毛利？额外备货有没有报损？店员加班花了多少？老顾客本来会买全价面包，如今是不是都等折扣？真正该比较的是增量贡献，扣掉折扣、额外人工、浪费和履约成本，而不是只看收银条多了几行。\n\n如果活动目标是拉新，还要跟踪新客后来有没有回来；如果目标是清库存，就看报损是否下降。目标不同，成功指标也不同。一场活动可以热闹、增量不大，却仍有清库存价值；也可能销量涨了，利润反而变少。",
-          en: "Finally Ahe opens the ledger. How much margin did “half off the second loaf” give away? Was extra stock wasted? What did extra staff hours cost? Did regulars who would have paid full price simply wait for a deal? The useful comparison is incremental contribution after discount, labor, waste, and fulfillment costs—not just a longer receipt.\n\nIf the goal is acquisition, track whether new customers return. If it is inventory clearance, measure waste avoided. Different goals need different success measures. A promotion can be busy with little lift and still help clear stock—or sell more while reducing profit.",
+          zh: "林林喝了一口，觉得伯爵茶的香气很特别，问店员：“有没有适合带回家慢慢喝的？”店员没有马上递上最贵的礼盒，而是先问她是自己喝还是送人、平时喜欢浓一点还是清爽一点。\n\n这个小问题把“体验”接到了“零售”：店内茶饮让顾客先尝到风味，茶叶和茶礼则提供带回家的选择。店员的对话是教学情境，不代表任何特定门店的真实销售话术。",
+          en: "Lin takes a sip, likes the Earl Grey aroma, and asks, “Is there something I can take home and brew?” The staff member does not immediately reach for the most expensive gift set. Instead, they ask whether it is for her or a gift, and whether she prefers a stronger or lighter cup.\n\nThat small question connects the experience to retail: a made-to-order drink lets someone taste a flavor; packaged tea and gifts offer a way to take it home. The conversation here is illustrative, not a claim about any specific store’s sales script.",
         },
       },
       {
-        id: "promo-playbook",
+        id: "tea-choice",
         heading: {
-          zh: "下次做活动前，先把“怎么知道有效”写下来",
-          en: "Before the next promotion, decide how you will know it worked",
+          zh: "先问用途，再推荐产品：让选择和生活接上",
+          en: "Ask the occasion first; connect the product to real life",
         },
         body: {
-          zh: "给真实活动做评估，可以按这个顺序：先写清目标和指标（增量销量、增量毛利、新客复购或库存损耗）；活动前挑选相似门店并检查它们过去几周的趋势；有条件时随机分配活动门店和对照门店；统一活动与观察窗口，至少看活动后一个周期；记录价格、缺货、节假日、天气和其他同期营销。\n\n复盘时同时呈现原始变化、对照后的估计和不确定性；不要把一次简单前后对比包装成“促销造成了增长”。如果决策金额大，就延长试点或扩大门店样本，并让财务和运营一起核算增量利润。好的营销复盘不是证明活动成功，而是让下一次投入更有把握。",
-          en: "For a real campaign, decide the plan first: write down the objective and measure (incremental units, contribution, repeat visits, or inventory waste); select comparable stores and inspect their pre-period trends; randomize treatment and comparison stores when feasible; use consistent windows and observe at least one post-period; record price, stockouts, holidays, weather, and other campaigns.\n\nReport the raw change, comparison-adjusted estimate, and uncertainty together. Do not dress up a simple before-and-after as proof that the promotion caused growth. For a high-stakes decision, extend the pilot or add stores, and have finance and operations check incremental profit. A good campaign review does not prove the promotion was a success—it makes the next investment a better-informed choice.",
+          zh: "林林说是自己喝，想要方便、平时放办公室也合适的。店员便从适合日常冲泡的茶品里介绍，而不是继续讲一套与她需求无关的收藏礼盒。她最后带走一份茶，也知道回家怎么泡。\n\n好体验不是让每个进店的人都多买，而是帮不同目的的人找到合适的下一步：想坐一会儿，就把店内体验做好；想带回家，就让茶品易选、易泡；来挑礼物，就把风味、规格和送礼场景说清楚。成交可以发生，但不该靠让顾客不好意思拒绝。",
+          en: "Lin says it is for herself. She wants something convenient that she can keep at the office. The staff member introduces a tea suited to everyday brewing, rather than a collectible gift set unrelated to her needs. She leaves with tea and knows how to brew it at home.\n\nA good experience does not mean getting every visitor to spend more. It helps each person find a fitting next step: make the in-store visit worthwhile, make take-home tea easy to choose and brew, and explain flavor and format clearly for gift buyers. A sale may follow, but it should not depend on making someone feel awkward about saying no.",
+        },
+      },
+      {
+        id: "tea-measure",
+        heading: {
+          zh: "带走一盒是成交；愿意再来，才说明体验留下了东西",
+          en: "One box is a sale; a return visit says more about the experience",
+        },
+        body: {
+          zh: "如果店里想知道这条体验链是否有效，不能只看进店人数，也不能把一次礼盒成交直接当作复购。可以分开看：有多少人体验了茶饮，有多少人在适合自己的情况下选购茶品，零售毛利是否健康；在顾客自愿留下联系方式后，再观察后续是否复购。\n\n这些指标回答的是不同问题。试饮到购买的转化帮助改进产品介绍；复购帮助判断茶品是否真的融入日常；毛利则提醒团队，忙碌和销售额不等于可持续经营。不能把教学故事中的林林或任何虚构数字当成真实业绩。",
+          en: "To learn whether this experience path works, a store should not look only at footfall or treat one gift-set sale as proof of loyalty. Separate the questions: how many people tried a tea drink, how many chose a packaged tea that suited them, whether retail margin is healthy, and—only when customers willingly opt in—whether they return to buy again.\n\nEach measure answers something different. Trial-to-purchase conversion can improve product explanation; repeat purchase tests whether the tea fits into daily life; margin reminds the team that a busy store and high sales are not automatically sustainable. Lin and any numbers in this teaching story are not actual results.",
+        },
+      },
+      {
+        id: "tea-playbook",
+        heading: {
+          zh: "把“空间＋茶饮＋零售”做成一条自然的顾客旅程",
+          en: "Make “space + tea drinks + retail” one natural customer journey",
+        },
+        body: {
+          zh: "把这件事落地，可以从四步开始：先区分顾客是来喝茶、了解茶品还是挑礼物；让店内菜单和货架产品讲同一种风味语言；员工先问场景，再给少量清楚的选择和冲泡建议；最后按门店与时间段复盘试饮转化、零售毛利和自愿会员的复购，而不是只追求客单价。\n\n故事里的品牌、顾客和购买经过都是虚构演示，不代表任何特定公司的实际经营数据。好的零售不是把每个进店的人变成一张大单，而是让喜欢的那杯茶，有机会成为顾客愿意带回生活里的茶。",
+          en: "A practical version can start with four steps: distinguish visitors who came for a drink, to explore tea, or to find a gift; make the menu and packaged products tell a consistent flavor story; have staff ask about the occasion before offering a few clear options and brewing advice; then review trial conversion, retail margin, and opt-in repeat purchase by store and time period instead of chasing basket size alone.\n\nThe brand, customer, and purchase journey in this article are fictional teaching examples, not any company’s actual operating data. Good retail does not turn every visitor into a bigger order; it gives a tea someone enjoyed a chance to become part of their life at home.",
         },
       },
     ],

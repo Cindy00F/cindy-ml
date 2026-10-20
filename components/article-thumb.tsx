@@ -133,7 +133,7 @@ export function ArticleThumb({
     );
   }
 
-  if (slug === "promo-bakery-incrementality") {
+  if (slug === "tea-retail-journey") {
     const zh = locale === "zh";
     return (
       <svg
@@ -145,49 +145,28 @@ export function ArticleThumb({
       >
         <Frame paper>
           <text x="36" y="48" className="fill-foreground/50 text-[11px] tracking-[3px]">
-            {zh ? "一间面包店 · 两家分店 · 三个星期" : "ONE BAKERY · TWO STORES · THREE WEEKS"}
+            {zh ? "精品茶零售 · 空间 + 茶饮 + 零售" : "SPECIALTY TEA · SPACE + DRINKS + RETAIL"}
           </text>
           <text x="36" y="78" className="fill-foreground text-[18px]">
-            {zh ? "促销排起长队，生意真的变好了吗？" : "Did the queue mean the promotion worked?"}
+            {zh ? "一杯茶，怎样连接一盒茶？" : "How does one cup lead to tea at home?"}
           </text>
-          <path d="M58 221h405" className="stroke-foreground/20" strokeWidth="1.5" />
-          {[100, 160, 80].map((value, index) => (
-            <g key={index}>
-              <rect
-                x={154 + index * 105}
-                y={221 - value * 0.62}
-                width="30"
-                height={value * 0.62}
-                rx="5"
-                fill="#c36e4c"
-              />
-              <rect
-                x={190 + index * 105}
-                y={221 - [90, 100, 100][index] * 0.62}
-                width="30"
-                height={[90, 100, 100][index] * 0.62}
-                rx="5"
-                fill="#66877a"
-              />
-              <text
-                x={187 + index * 105}
-                y="244"
-                textAnchor="middle"
-                className="fill-foreground/55 text-[10px]"
-              >
-                {(zh ? ["上周", "活动周", "下一周"] : ["Before", "Offer week", "After"])[index]}
-              </text>
-            </g>
-          ))}
-          <path
-            d="M165 166c45-19 66-25 98-37 35-13 70 31 103 47"
-            fill="none"
-            stroke="#a55c40"
-            strokeWidth="2"
-            strokeDasharray="5 5"
-          />
-          <text x="36" y="273" className="fill-foreground/45 text-[11px]">
-            {zh ? "销量高峰，还是被提前搬来的生意？" : "A real lift—or sales borrowed from next week?"}
+          <rect x="38" y="108" width="126" height="112" rx="12" fill="#dce5d7" />
+          <text x="101" y="148" textAnchor="middle" className="fill-foreground/55 text-[11px]">
+            {zh ? "店内体验" : "IN STORE"}
+          </text>
+          <text x="101" y="184" textAnchor="middle" className="fill-foreground text-[19px]">
+            {zh ? "一杯茶" : "A CUP"}
+          </text>
+          <path d="M180 164h44m-9-9 9 9-9 9" fill="none" stroke="#70816e" strokeWidth="2" />
+          <rect x="240" y="108" width="242" height="112" rx="12" fill="#f1e5d9" />
+          <text x="361" y="148" textAnchor="middle" className="fill-foreground/55 text-[11px]">
+            {zh ? "带回家的零售" : "TAKE-HOME RETAIL"}
+          </text>
+          <text x="361" y="184" textAnchor="middle" className="fill-foreground text-[19px]">
+            {zh ? "一盒喜欢的茶" : "A BOX OF TEA"}
+          </text>
+          <text x="36" y="263" className="fill-foreground/45 text-[11px]">
+            {zh ? "体验、适配、复购，而非硬推" : "Experience, fit, return — never a hard sell"}
           </text>
         </Frame>
       </svg>
