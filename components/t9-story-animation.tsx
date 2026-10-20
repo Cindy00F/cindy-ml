@@ -5,81 +5,75 @@ import { useI18n } from "@/lib/i18n";
 
 const COPY = {
   zh: {
-    eyebrow: "九键输入 · 日常按键场景",
-    title: "按下 926，候选「要、药、摇」谁排前面？",
+    eyebrow: "T9 茶零售 · 从一杯到一盒",
+    title: "顾客喝完一杯，为什么愿意带走一盒茶？",
     play: "播放故事",
     pause: "暂停播放",
     replay: "从头再看",
     steps: [
       {
-        label: "只按一次",
-        caption: "你想输入拼音 yao。九键上，Y 在 9，A 在 2，O 在 6；每个字母按一次，得到 926。",
+        label: "她只想坐下来喝杯茶",
+        caption: "周五下班，林林和朋友走进 T9。她想喝杯茶、坐一会儿；朋友开始看茶单和茶礼。同一家店，来店理由并不一样。",
       },
       {
-        label: "一串数字，不止一个词",
-        caption: "926 能拼出 yao，却不能单独决定是“要”“药”还是“摇”。输入法先把可能的拼音和词找出来。",
+        label: "喜欢的味道，怎么带回家？",
+        caption: "林林喜欢伯爵茶的香气。故事里的店员先问她自己喝还是送人，再按日常冲泡的需要介绍茶品，而不是直接推最贵的礼盒。",
       },
       {
-        label: "上下文给出线索，你来确认",
-        caption: "前面已经输入“买”，候选词就可以优先展示常见搭配。它给你选项，不替你决定；点“药”完成输入。",
+        label: "一杯体验，接上一盒茶",
+        caption: "林林带走了适合自己的茶。一次成交不是复购保证；门店还要看体验转化、零售毛利，以及顾客自愿加入后是否愿意再来。",
       },
     ],
-    keyLabel: "九键字母",
-    candidates: "候选",
-    phrase: "买",
-    phoneCandidates: ["要", "药", "摇"],
-    candidatesList: ["要", "药", "摇"],
-    explanation: "按键 → 拼音候选 → 结合上下文排序 → 人来确认",
-    note: "这是中文九键拼音输入的简化示意。不同输入法的映射、词库和候选排序会不同。",
+    menuTitle: "今天想怎么喝？",
+    drink: "店内茶饮",
+    retail: "带回家的茶",
+    teaName: "金色伯爵茶拿铁",
+    options: ["自己喝", "送朋友"],
+    products: ["日常茶品", "茶礼盒"],
+    journey: "到店体验 → 选到合适的茶 → 自愿再来",
+    note: "人物和购买情节为教学创作，不代表 T9 的真实顾客或经营数据。",
+    progress: "故事进度",
+    message: "门店体验 · 顾客选择",
   },
   en: {
-    eyebrow: "NINE-KEY TYPING · AN EVERYDAY MESSAGE",
-    title: "Tap 926: which of 要, 药, and 摇 appears first?",
+    eyebrow: "T9 TEA RETAIL · FROM A CUP TO A BOX",
+    title: "After one cup, why would a customer take tea home?",
     play: "Play story",
     pause: "Pause",
     replay: "Replay",
     steps: [
       {
-        label: "One tap per letter",
-        caption: "To type pinyin yao, tap the keys holding Y, A, and O: 9, 2, 6. One tap per letter gives 926.",
+        label: "She only wants a place to sit and have tea",
+        caption: "After work on Friday, Lin and a friend walk into T9. She wants a cup and a seat; her friend starts browsing teas and gifts. Same store, different reasons for visiting.",
       },
       {
-        label: "One sequence, several possibilities",
-        caption: "926 can spell yao, but it does not uniquely mean one word. The input method looks up plausible pinyin and words.",
+        label: "How can a flavor she likes travel home?",
+        caption: "Lin likes the Earl Grey aroma. In this illustrative scene, the staff member asks whether it is for her or a gift, then suggests an everyday tea instead of pushing the priciest set.",
       },
       {
-        label: "Context helps; you confirm",
-        caption: "After “buy,” the candidate list can prioritize familiar phrases. It offers options, not certainty. Choose the word you mean.",
+        label: "Connect one cup to tea at home",
+        caption: "Lin takes home a tea that suits her. One sale does not guarantee loyalty; the store still needs to learn from trial conversion, retail margin, and opt-in repeat visits.",
       },
     ],
-    keyLabel: "Letters on each key",
-    candidates: "Candidates",
-    phrase: "buy ",
-    phoneCandidates: ["want", "medicine", "sway"],
-    candidatesList: ["要 · want", "药 · medicine", "摇 · sway"],
-    explanation: "Key taps → pinyin candidates → context ranking → your choice",
-    note: "A simplified Chinese nine-key Pinyin example. Mappings, dictionaries, and ranking vary by input method.",
+    menuTitle: "How would you like your tea?",
+    drink: "ENJOY IN STORE",
+    retail: "TAKE TEA HOME",
+    teaName: "Earl Grey tea latte",
+    options: ["For myself", "As a gift"],
+    products: ["Everyday tea", "Tea gift set"],
+    journey: "Visit → Find a tea that fits → Choose to return",
+    note: "The customer and purchase journey are fictional teaching examples, not T9 customer or sales data.",
+    progress: "Story progress",
+    message: "IN-STORE EXPERIENCE · CUSTOMER CHOICE",
   },
 } as const;
-
-const KEYS = [
-  { digit: "1", letters: ".,?!" },
-  { digit: "2", letters: "ABC" },
-  { digit: "3", letters: "DEF" },
-  { digit: "4", letters: "GHI" },
-  { digit: "5", letters: "JKL" },
-  { digit: "6", letters: "MNO" },
-  { digit: "7", letters: "PQRS" },
-  { digit: "8", letters: "TUV" },
-  { digit: "9", letters: "WXYZ" },
-] as const;
 
 export function T9StoryAnimation() {
   const { locale } = useI18n();
   const copy = COPY[locale];
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [selectedCandidate, setSelectedCandidate] = useState<number | null>(null);
+  const [occasion, setOccasion] = useState(0);
 
   useEffect(() => {
     if (!playing) return;
@@ -89,7 +83,7 @@ export function T9StoryAnimation() {
         return;
       }
       setStep((current) => current + 1);
-    }, 2600);
+    }, 3200);
     return () => window.clearTimeout(timer);
   }, [copy.steps.length, playing, step]);
 
@@ -103,10 +97,8 @@ export function T9StoryAnimation() {
       setPlaying(false);
       return;
     }
-    setStep((current) =>
-      current >= copy.steps.length - 1 ? 0 : current === 0 ? 1 : current + 1,
-    );
-    setSelectedCandidate(null);
+    setStep((current) => (current >= copy.steps.length - 1 ? 0 : current + 1));
+    setOccasion(0);
     setPlaying(true);
   };
 
@@ -125,63 +117,52 @@ export function T9StoryAnimation() {
         <div className="mx-auto w-full max-w-[280px] rounded-[2rem] border-[5px] border-[#59645e] bg-[#e1e6dd] p-3 shadow-lg dark:border-[#79867e] dark:bg-[#303a35]">
           <div className="rounded-xl border border-[#52675c]/20 bg-[#f8f8ee] p-3 dark:bg-[#26312b]">
             <p className="text-[10px] tracking-wide text-[#68766b] dark:text-[#c1cbbd]">
-              {locale === "zh" ? "短信 · 新消息" : "MESSAGE · NEW"}
+              {copy.message}
             </p>
-            <p className="mt-3 min-h-8 font-mono text-lg tracking-[0.16em] text-[#24382e] dark:text-[#edf0e2]">
-              {step === 0 ? (
-                <>
-                  <span className="animate-pulse motion-reduce:animate-none">▍</span>
-                </>
-              ) : step === 1 ? (
-                "926"
-              ) : (
-                <>
-                  {copy.phrase}
-                  <span className="ml-1 rounded bg-[#d8e2d2] px-1.5 py-0.5 text-base dark:bg-[#425547]">
-                    {copy.phoneCandidates[selectedCandidate ?? 1]}
-                  </span>
-                </>
-              )}
+            <p className="mt-2 font-heading text-xl tracking-wide text-[#24382e] dark:text-[#edf0e2]">
+              T9
             </p>
-          </div>
-          <div className="mt-3 flex items-center justify-between px-1 text-[10px] text-[#68766b] dark:text-[#c1cbbd]">
-            <span>{copy.keyLabel}</span>
-            <span className="font-mono tracking-widest">
-              {locale === "zh" ? "九键" : "9-KEY"}
-            </span>
-          </div>
-          <div className="mt-2 grid grid-cols-3 gap-1.5">
-            {KEYS.map((key) => {
-              const active = step === 0 && ["9", "2", "6"].includes(key.digit);
-              return (
+            <div className="mt-3 grid grid-cols-2 gap-2">
+              {[copy.drink, copy.retail].map((item, index) => (
                 <div
-                  key={key.digit}
-                  className={`flex h-11 items-center justify-center gap-1 rounded-lg border border-[#68766b]/15 bg-[#f7f7ed] font-mono text-sm shadow-sm transition-colors duration-500 dark:bg-[#3b463f] ${
-                    active ? "bg-[#d8e2d2] text-[#8a5438] dark:bg-[#536453]" : ""
+                  key={item}
+                  className={`rounded-lg border px-2 py-2.5 text-center text-[10px] leading-4 transition-colors ${
+                    (step === 0 ? index === 0 : index === 1)
+                      ? "border-[#70816e]/40 bg-[#dce5d7] text-[#354738] dark:bg-[#425547] dark:text-white"
+                      : "border-foreground/10 text-foreground/60"
                   }`}
                 >
-                  <span className="font-semibold">{key.digit}</span>
-                  <span className="text-[9px] tracking-wider opacity-60">{key.letters}</span>
+                  <span className="block text-base" aria-hidden="true">
+                    {index === 0 ? "♨" : "▤"}
+                  </span>
+                  {item}
                 </div>
-              );
-            })}
-          </div>
-          {step === 0 ? (
-            <div className="mt-3 flex justify-center gap-3" aria-label="926">
-              {["9", "2", "6"].map((digit, index) => (
-                <span
-                  key={digit}
-                  className={`flex size-7 items-center justify-center rounded-full border text-xs font-semibold transition-all duration-500 ${
-                    index === 0
-                      ? "border-[#a15f43] bg-[#a15f43] text-white"
-                      : "border-[#8c9a8e]/40 text-[#68766b] dark:text-[#c1cbbd]"
-                  }`}
-                >
-                  {digit}
-                </span>
               ))}
             </div>
-          ) : null}
+            {step === 0 ? (
+              <div className="mt-3 rounded-lg bg-[#efe3d7] px-3 py-2 text-center dark:bg-[#45392e]">
+                <span className="text-[10px] text-[#8d684d]">
+                  {locale === "zh" ? "一杯慢慢喝的茶" : "A cup to enjoy here"}
+                </span>
+              </div>
+            ) : step === 1 ? (
+              <div className="mt-3 rounded-lg bg-[#efe3d7] px-3 py-2 text-center dark:bg-[#45392e]">
+                <p className="text-[10px] text-[#8d684d]">{copy.teaName}</p>
+                <p className="mt-1 text-[10px] text-[#68766b] dark:text-[#c1cbbd]">
+                  {locale === "zh" ? "喜欢这个香气？" : "Like this aroma?"}
+                </p>
+              </div>
+            ) : (
+              <div className="mt-3 rounded-lg bg-[#efe3d7] px-3 py-2 text-center dark:bg-[#45392e]">
+                <p className="text-[10px] text-[#8d684d]">
+                  {copy.options[occasion]}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-[#354738] dark:text-[#edf0e2]">
+                  {copy.products[occasion]}
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex min-h-[13rem] flex-col justify-center">
@@ -194,22 +175,22 @@ export function T9StoryAnimation() {
           {step >= 1 ? (
             <div className="mt-5">
               <p className="mb-2 text-[10px] tracking-wide text-muted-foreground">
-                {copy.candidates}
+                {copy.menuTitle}
               </p>
               <div className="flex flex-wrap gap-2">
-                {copy.candidatesList.map((candidate, index) => (
+                {copy.options.map((option, index) => (
                   <button
-                    key={candidate}
+                    key={option}
                     type="button"
-                    onClick={() => setSelectedCandidate(index)}
-                    aria-pressed={step === 2 && (selectedCandidate ?? 1) === index}
+                    onClick={() => setOccasion(index)}
+                    aria-pressed={step === 2 && occasion === index}
                     className={`rounded-full border px-3 py-1.5 text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9b6748] ${
-                      (selectedCandidate ?? 1) === index && step === 2
+                      occasion === index && step === 2
                         ? "border-[#70816e] bg-[#dce5d7] text-[#354738] dark:bg-[#425547] dark:text-white"
                         : "border-foreground/15 hover:bg-foreground/5"
                     }`}
                   >
-                    {candidate}
+                    {option}
                   </button>
                 ))}
               </div>
@@ -220,10 +201,10 @@ export function T9StoryAnimation() {
 
       <div className="px-5 pb-5 sm:px-7 sm:pb-7">
         <p className="rounded-lg bg-foreground/[0.04] px-3 py-2 text-center text-[11px] tracking-wide text-muted-foreground">
-          {copy.explanation}
+          {copy.journey}
         </p>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-foreground/10 pt-4">
-          <div className="flex gap-1.5" aria-label={locale === "zh" ? "故事进度" : "Story progress"}>
+          <div className="flex gap-1.5" aria-label={copy.progress}>
             {copy.steps.map((scene, index) => (
               <button
                 key={scene.label}

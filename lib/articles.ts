@@ -301,67 +301,67 @@ export const articles: Article[] = [
     accent: "#70816e",
     sourcePath: "t9-predictive-text",
     title: {
-      zh: "按下 926，候选「要、药、摇」谁排前面？",
-      en: "Tap 926: which of 要, 药, and 摇 appears first?",
+      zh: "顾客喝完一杯，为什么愿意带走一盒茶？",
+      en: "After one cup, why would a customer take tea home?",
     },
     summary: {
-      zh: "下班路上，你想给家人发一句“顺便买药”。在九键上按下 926，屏幕却可能出现「要、药、摇」——按键给了输入法线索，没有替你决定意思。\n跟着一个日常输入场景，看九键如何把字母映射到数字、用词频和上下文排列候选，以及最后为什么仍由你确认。",
-      en: "On your way home, you want to text “pick up medicine.” On a nine-key Pinyin keyboard, 926 can lead to 要, 药, or 摇. The taps give the input method clues; they do not reveal your intent.\nFollow one everyday message to see how keys map to letters, how dictionaries and context rank candidates, and why you still make the final choice.",
+      zh: "T9 Tea 不只卖一杯现制茶饮：官网也展示下午茶体验、茶叶与茶礼。真正的零售问题是，顾客在店里喜欢的那一口，怎样变成适合带回家的选择，而不是被硬推一盒茶。\n跟着一位虚构顾客走进 T9 的体验场景，拆解“空间＋茶饮＋零售”如何连起来，以及该看什么指标判断这条路有没有走通。人物和情节为教学创作，不代表 T9 的真实顾客或经营数据。",
+      en: "T9 Tea offers more than a made-to-order drink: its website also presents afternoon tea, packaged teas, and gift sets. The retail challenge is turning a taste someone enjoys in-store into a take-home choice that fits—not pushing a box they do not want.\nFollow an illustrative customer through a T9-inspired visit to see how “space + tea drinks + retail” can connect, and what to measure to learn whether it works. The character and events are fictional, not T9 customer or sales data.",
     },
     sections: [
       {
-        id: "t9-scene",
+        id: "t9-arrival",
         heading: {
-          zh: "赶路时发消息：想打「买药」，拇指先碰上九键",
-          en: "Typing on the move: your thumb reaches the nine-key pad",
+          zh: "周五下班，她原本只想找地方喝杯茶",
+          en: "After work on Friday, she only wants a cup of tea",
         },
         body: {
-          zh: "你刚下班，边走边给家人发消息：“我顺路买药，晚点到。”手指点开九键输入法，准备输入拼音 yao。没有完整键盘上的字母，只有数字和一簇簇字母：每次按键，输入法都要从有限的线索里找可能的拼音和汉字。\n\n这不是机器突然懂了你的生活，而是一个很小、很具体的预测问题：哪些候选值得先摆在你面前？",
-          en: "You are heading home and texting: “I’ll pick up medicine on the way.” You open a nine-key Pinyin keyboard and start typing yao. Instead of a full alphabet, each number stands for a group of letters. With every tap, the input method has to find plausible syllables and words from incomplete clues.\n\nIt has not suddenly understood your life. It is solving a small, practical prediction problem: which candidates should appear first?",
+          zh: "林林和朋友逛完商场，想找个舒服的地方坐一会儿，顺便喝杯茶。她走进 T9，先点了一杯茶饮；朋友则翻看茶单和柜上的茶礼。两个人都进了同一家店，来店理由却不一样。\n\n这就是茶零售和单纯卖饮料的差别：顾客可能为一杯茶而来，也可能想认识一种茶、买份礼物，或者只是享受一段空间体验。店里如果只记“今天卖了多少杯”，就容易漏掉顾客真正想完成的事情。",
+          en: "Lin and a friend have finished shopping and want somewhere comfortable to sit and have tea. She orders a made-to-order drink at T9; her friend browses the tea menu and gift sets. Same store, different reasons for coming in.\n\nThat is the difference between tea retail and simply selling drinks. Someone may come for a cup, to discover a tea, to find a gift, or just to enjoy the space. If the store only counts drinks sold, it can miss what the customer actually came to do.",
         },
       },
       {
-        id: "t9-mapping",
+        id: "t9-experience",
         heading: {
-          zh: "Y、A、O 各自在哪一键？答案是 9、2、6",
-          en: "Where are Y, A, and O? On keys 9, 2, and 6",
+          zh: "一杯茶是体验入口，不是推销礼盒的借口",
+          en: "A cup is an entry to the experience, not an excuse to upsell",
         },
         body: {
-          zh: "在常见九键拼音布局里，9 键有 WXYZ，2 键有 ABC，6 键有 MNO。拼音 yao 的三个字母 Y、A、O，分别落在 9、2、6；你每个键按一次，屏幕上就留下 926。\n\n但 926 不是汉字，也没有声调。它只是把可能的字母组合缩小了一些；同一串数字仍可能对应不止一个拼音、词语或汉字。不同输入法的映射和词库也可能不同。",
-          en: "On a common nine-key Pinyin layout, key 9 holds WXYZ, key 2 ABC, and key 6 MNO. The letters Y, A, and O in yao sit on 9, 2, and 6. One tap per letter leaves you with 926.\n\nBut 926 is not a Chinese character, and it carries no tone. It narrows the possible letter combinations; it does not point to just one syllable, word, or character. Layouts and dictionaries can also vary by input method.",
+          zh: "林林喝了一口，觉得伯爵茶的香气很特别，问店员：“有没有适合带回家慢慢喝的？”店员没有马上递上最贵的礼盒，而是先问她是自己喝还是送人、平时喜欢浓一点还是清爽一点。\n\n这个小问题把“体验”接到了“零售”：店内茶饮让顾客先尝到风味，茶叶和茶礼则提供带回家的选择。T9 官网展示了茶饮、下午茶和茶礼等不同产品入口；但这段对话是教学情境，不是在声称 T9 门店一定按这个话术销售。",
+          en: "Lin takes a sip, likes the Earl Grey aroma, and asks, “Is there something I can take home and brew?” The staff member does not immediately reach for the most expensive gift set. Instead, they ask whether it is for her or a gift, and whether she prefers a stronger or lighter cup.\n\nThat small question connects the experience to retail: a made-to-order drink lets someone taste a flavor; packaged tea and gifts offer a way to take it home. T9’s website presents drinks, afternoon tea, and tea gifts as different product experiences. The conversation here is illustrative, not a claim about T9’s actual sales script.",
         },
       },
       {
-        id: "t9-context",
+        id: "t9-choice",
         heading: {
-          zh: "刚打了「买」，候选顺序就有了生活线索",
-          en: "After “买,” the previous character becomes a useful clue",
+          zh: "先问用途，再推荐产品：让选择和生活接上",
+          en: "Ask the occasion first; connect the product to real life",
         },
         body: {
-          zh: "假设你已经输入了「买」，现在按下 926。输入法可以把「要」「药」「摇」等候选拿出来，再参考「买药」这样的常见搭配，调整它们的显示顺序。于是「药」可能更靠前，让你少翻几次候选。\n\n这里的「可能」很重要：词频、你的个人习惯、前文内容和具体产品的排序策略都会影响结果。它只是提高某个候选排在前面的机会，不保证每个人都看到同一个顺序。",
-          en: "Suppose you have already entered 买 (“buy”) and now tap 926. The input method can surface candidates such as 要, 药, and 摇, then use a familiar phrase like 买药 (“buy medicine”) to adjust their order. 药 may move closer to the front, saving you a few taps.\n\n“May” matters. Word frequency, your personal habits, the preceding text, and each product’s ranking strategy can all affect the result. Context makes a candidate more likely to appear first; it does not guarantee the same ordering for everyone.",
+          zh: "林林说是自己喝，想要方便、平时放办公室也合适的。店员便从适合日常冲泡的茶品里介绍，而不是继续讲一套与她需求无关的收藏礼盒。她最后带走一份茶，也知道回家怎么泡。\n\n好体验不是让每个进店的人都多买，而是帮不同目的的人找到合适的下一步：想坐一会儿，就把店内体验做好；想带回家，就让茶品易选、易泡；来挑礼物，就把风味、规格和送礼场景说清楚。成交可以发生，但不该靠让顾客不好意思拒绝。",
+          en: "Lin says it is for herself. She wants something convenient that she can keep at the office. The staff member introduces a tea suited to everyday brewing, rather than a collectible gift set unrelated to her needs. She leaves with tea and knows how to brew it at home.\n\nA good experience does not mean getting every visitor to spend more. It helps each person find a fitting next step: make the in-store visit worthwhile, make take-home tea easy to choose and brew, and explain flavor and format clearly for gift buyers. A sale may follow, but it should not depend on making someone feel awkward about saying no.",
         },
       },
       {
-        id: "t9-confirm",
+        id: "t9-measure",
         heading: {
-          zh: "最后还是你点「药」：预测不等于替你做决定",
-          en: "You still tap 药: a prediction is not a decision",
+          zh: "带走一盒是成交；愿意再来，才说明体验留下了东西",
+          en: "One box is a sale; a return visit says more about the experience",
         },
         body: {
-          zh: "候选出现后，你看到「药」并点一下，消息才变成「买药」。这一步看起来不起眼，却划清了边界：输入法负责把可能性排好，是否符合你的意思，由你确认。\n\n九键让输入更省按键，也把判断交给了候选排序。排序错了，可能只是多翻一页；但在联系人、地址或重要信息里，一个看似合理的错字也可能带来麻烦。所以好用的输入法不只是“猜得准”，还要让候选清楚、纠正顺手、确认权留在用户手里。",
-          en: "When the candidates appear, you see 药 and tap it. Only then does your message read 买药. That small action marks an important boundary: the input method organizes possibilities; you confirm what you actually mean.\n\nNine-key typing saves taps, but it also makes ranking matter. A wrong guess may only cost another swipe—or, in a contact, address, or important message, a plausible-looking typo can cause real confusion. A good input method is not just about guessing well; candidates should be clear, corrections easy, and the final choice yours.",
+          zh: "如果店里想知道这条体验链是否有效，不能只看进店人数，也不能把一次礼盒成交直接当作复购。可以分开看：有多少人体验了茶饮，有多少人在适合自己的情况下选购茶品，零售毛利是否健康；在顾客自愿留下联系方式后，再观察后续是否复购。\n\n这些指标回答的是不同问题。试饮到购买的转化帮助改进产品介绍；复购帮助判断茶品是否真的融入日常；毛利则提醒团队，忙碌和销售额不等于可持续经营。不能把教学故事中的林林或任何虚构数字当成 T9 的真实业绩。",
+          en: "To learn whether this experience path works, a store should not look only at footfall or treat one gift-set sale as proof of loyalty. Separate the questions: how many people tried a tea drink, how many chose a packaged tea that suited them, whether retail margin is healthy, and—only when customers willingly opt in—whether they return to buy again.\n\nEach measure answers something different. Trial-to-purchase conversion can improve product explanation; repeat purchase tests whether the tea fits into daily life; margin reminds the team that a busy store and high sales are not automatically sustainable. Lin and any numbers in this teaching story are not T9’s actual results.",
         },
       },
       {
-        id: "t9-takeaway",
+        id: "t9-playbook",
         heading: {
-          zh: "它没有读心：只是把下一步做得更省力",
-          en: "It is not mind-reading. It is making the next step easier",
+          zh: "把“空间＋茶饮＋零售”做成一条自然的顾客旅程",
+          en: "Make “space + tea drinks + retail” one natural customer journey",
         },
         body: {
-          zh: "回头看这条消息，输入法做了三件事：把 9、2、6 映射成可能的字母组合；用词库找出可能的拼音和汉字；再结合「买」把更常见的搭配排前面。你最后点选，系统才知道这次要的是「药」。\n\n这不是读心。这里展示的是中文九键拼音的简化示意，不代表所有输入法都采用同一套 T9 规则。今天的输入产品还可能使用更复杂的语言模型和个性化信息；底层方法会变，边界仍值得记住：给建议，讲清选择，让人能改。",
-          en: "Looking back at the message, the input method did three things: mapped 9, 2, and 6 to possible letter groups; used a dictionary to find plausible Pinyin and characters; then used 买 to put a familiar phrase closer to the front. You tapped the candidate, and only then did the system know you wanted 药 this time.\n\nThat is not mind-reading. This is a simplified example of Chinese nine-key Pinyin, not a claim that every keyboard uses the same T9 implementation. Modern products may also use more complex language models and personalization. The methods change; the boundary is still worth keeping: suggest clearly, make choices visible, and let people correct them.",
+          zh: "把这件事落地，可以从四步开始：先区分顾客是来喝茶、了解茶品还是挑礼物；让店内菜单和货架产品讲同一种风味语言；员工先问场景，再给少量清楚的选择和冲泡建议；最后按门店与时间段复盘试饮转化、零售毛利和自愿会员的复购，而不是只追求客单价。\n\nT9 官网把自己描述为探索全球好茶的品牌，官网还列有茶饮、下午茶、茶礼和门店信息；FoodTalks 对其模式的概括是“空间＋茶饮＋零售”。故事里的顾客和购买经过是虚构演示，不代表 T9 实际经营数据。好的零售不是把每个进店的人变成一张大单，而是让喜欢的那杯茶，有机会成为顾客愿意带回生活里的茶。",
+          en: "A practical version can start with four steps: distinguish visitors who came for a drink, to explore tea, or to find a gift; make the menu and packaged products tell a consistent flavor story; have staff ask about the occasion before offering a few clear options and brewing advice; then review trial conversion, retail margin, and opt-in repeat purchase by store and time period instead of chasing basket size alone.\n\nT9’s website describes a mission of exploring tea from around the world and lists drinks, afternoon tea, tea gifts, and store information. FoodTalks describes its model as “space + tea drinks + retail.” The customer and purchase journey in this article are fictional teaching examples, not T9 operating data. Good retail does not turn every visitor into a bigger order; it gives a tea someone enjoyed a chance to become part of their life at home.",
         },
       },
     ],

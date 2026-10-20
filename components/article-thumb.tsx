@@ -145,28 +145,28 @@ export function ArticleThumb({
       >
         <Frame paper>
           <text x="36" y="48" className="fill-foreground/50 text-[11px] tracking-[3px]">
-            {zh ? "中文九键拼音 · 日常输入场景" : "NINE-KEY PINYIN · AN EVERYDAY MESSAGE"}
+            {zh ? "T9 茶零售 · 空间 + 茶饮 + 零售" : "T9 TEA · SPACE + DRINKS + RETAIL"}
           </text>
           <text x="36" y="78" className="fill-foreground text-[18px]">
-            {zh ? "926 不止一个「yao」" : "926 can point to more than one word"}
+            {zh ? "一杯茶，怎样连接一盒茶？" : "How does one cup lead to tea at home?"}
           </text>
-          <rect x="38" y="108" width="198" height="112" rx="12" fill="#dce5d7" />
-          <text x="137" y="160" textAnchor="middle" className="fill-foreground font-mono text-[28px]">
-            9 · 2 · 6
+          <rect x="38" y="108" width="126" height="112" rx="12" fill="#dce5d7" />
+          <text x="101" y="148" textAnchor="middle" className="fill-foreground/55 text-[11px]">
+            {zh ? "店内体验" : "IN STORE"}
           </text>
-          <text x="137" y="188" textAnchor="middle" className="fill-foreground/55 text-[12px]">
-            WXYZ · ABC · MNO
+          <text x="101" y="184" textAnchor="middle" className="fill-foreground text-[19px]">
+            {zh ? "一杯茶" : "A CUP"}
           </text>
-          <path d="M256 162h40m-9-9 9 9-9 9" fill="none" stroke="#70816e" strokeWidth="2" />
-          <rect x="318" y="108" width="164" height="112" rx="12" fill="#f1e5d9" />
-          <text x="400" y="151" textAnchor="middle" className="fill-foreground/70 text-[17px]">
-            {zh ? "候选" : "CANDIDATES"}
+          <path d="M180 164h44m-9-9 9 9-9 9" fill="none" stroke="#70816e" strokeWidth="2" />
+          <rect x="240" y="108" width="242" height="112" rx="12" fill="#f1e5d9" />
+          <text x="361" y="148" textAnchor="middle" className="fill-foreground/55 text-[11px]">
+            {zh ? "带回家的零售" : "TAKE-HOME RETAIL"}
           </text>
-          <text x="400" y="185" textAnchor="middle" className="fill-foreground text-[23px]">
-            要　药　摇
+          <text x="361" y="184" textAnchor="middle" className="fill-foreground text-[19px]">
+            {zh ? "一盒喜欢的茶" : "A BOX OF TEA"}
           </text>
           <text x="36" y="263" className="fill-foreground/45 text-[11px]">
-            {zh ? "输入法给线索，你来确认" : "The keyboard suggests. You decide."}
+            {zh ? "体验、适配、复购，而非硬推" : "Experience, fit, return — never a hard sell"}
           </text>
         </Frame>
       </svg>
