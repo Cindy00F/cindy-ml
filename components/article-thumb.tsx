@@ -71,6 +71,7 @@ export function ArticleThumb({
   };
 
   if (slug === "game-theory-house") {
+    const zh = locale === "zh";
     return (
       <svg
         viewBox="0 0 520 300"
@@ -81,24 +82,24 @@ export function ArticleThumb({
       >
         <Frame paper>
           <text x="36" y="48" className="fill-foreground text-[17px]">
-            两个人，四种结果
+            {zh ? "KA ??????????" : "KA launch: who invests first?"}
           </text>
           <text x="310" y="78" textAnchor="middle" className="fill-foreground/55 text-[12px]">
-            对方买
+            {zh ? "KA ??" : "KA commits"}
           </text>
           <text x="430" y="78" textAnchor="middle" className="fill-foreground/55 text-[12px]">
-            对方不买
+            {zh ? "KA ??" : "KA waits"}
           </text>
           <text x="38" y="133" className="fill-foreground/55 text-[12px]">
-            我买
+            {zh ? "?????" : "Supplier invests"}
           </text>
           <text x="26" y="213" className="fill-foreground/55 text-[12px]">
-            我不买
+            {zh ? "?????" : "Supplier waits"}
           </text>
           {[
-            { x: 250, y: 90, label: "2 , 2", color: "#2f6f64" },
-            { x: 370, y: 90, label: "−1 , 4", color: "#c45c26" },
-            { x: 250, y: 170, label: "4 , −1", color: "#c45c26" },
+            { x: 250, y: 90, label: "4 , 4", color: "#2f6f64" },
+            { x: 370, y: 90, label: "?1 , 2", color: "#c45c26" },
+            { x: 250, y: 170, label: "2 , ?1", color: "#c45c26" },
             { x: 370, y: 170, label: "0 , 0", color: "#2f6f64" },
           ].map((cell) => (
             <g key={`${cell.x}-${cell.y}`}>
@@ -125,7 +126,7 @@ export function ArticleThumb({
             </g>
           ))}
           <text x="36" y="266" className="fill-foreground/40 text-[11px]">
-            示意收益：先看偏好，再看策略
+            {zh ? "???????????????" : "Illustrative payoffs: commit together, invest in stages"}
           </text>
         </Frame>
       </svg>
@@ -143,10 +144,10 @@ export function ArticleThumb({
       >
         <Frame paper>
           <text x="36" y="58" className="fill-foreground text-[18px]">
-            RFM
+            {locale === "zh" ? "???? 12 ???" : "12 calls left this month"}
           </text>
           <text x="36" y="82" className="fill-foreground/50 text-[11px]">
-            城南康宁 545 · 核心
+            {locale === "zh" ? "RFM ?????????" : "Turn order history into account actions"}
           </text>
           {[
             { x: 36, h: 120 },
@@ -171,22 +172,31 @@ export function ArticleThumb({
           <text x="142" y="248" className="fill-foreground/45 text-[11px]">
             M
           </text>
-          {[
-            [240, 70],
-            [300, 110],
-            [360, 90],
-            [420, 150],
-            [280, 180],
-            [390, 200],
-          ].map(([x, y], i) => (
-            <rect
-              key={`${x}-${y}`}
-              x={x}
-              y={y}
-              width="48"
-              height="22"
-              className={i % 2 ? "fill-foreground/25" : "fill-foreground/55"}
-            />
+          <text x="228" y="112" className="fill-foreground/45 text-[11px]">
+            {locale === "zh" ? "??? ? ???" : "Core ? protect stock"}
+          </text>
+          <text x="228" y="158" className="fill-foreground/45 text-[11px]">
+            {locale === "zh" ? "??? ? ???" : "Dormant ? diagnose"}
+          </text>
+          <text x="228" y="204" className="fill-foreground/45 text-[11px]">
+            {locale === "zh" ? "??? ? ???" : "Growth ? earn repeat"}
+          </text>
+          {[0, 1, 2].map((row) => (
+            <g key={row}>
+              <rect
+                x="228"
+                y={122 + row * 46}
+                width={row === 1 ? "92" : "150"}
+                height="4"
+                className={row === 1 ? "fill-[#8a3a4a]/60" : "fill-[#2f6f64]/60"}
+              />
+              <circle
+                cx={row === 1 ? "326" : "384"}
+                cy={124 + row * 46}
+                r="5"
+                fill={row === 1 ? "#8a3a4a" : "#2f6f64"}
+              />
+            </g>
           ))}
         </Frame>
       </svg>
@@ -203,6 +213,11 @@ export function ArticleThumb({
         onClick={go}
       >
         <Frame paper>
+          <text x="36" y="48" className="fill-foreground/55 text-[12px]">
+            {locale === "zh"
+              ? "????? 6 ??????????"
+              : "Six calls a day, key accounts still uncovered?"}
+          </text>
           {[
             { x: 90, y: 80, c: "#c45c26" },
             { x: 130, y: 120, c: "#c45c26" },
