@@ -4,28 +4,28 @@ import { useI18n } from "@/lib/i18n";
 
 const COPY = {
   zh: {
-    title: "??????????????????",
+    title: "新品进场，为什么双方都在等对方先动？",
     panels: [
       {
-        title: "??????",
-        bubbleA: "???????????",
-        bubbleB: "????????????",
-        caption: "?????????KA ????????????",
+        title: "各自先算风险",
+        bubbleA: "资源先给，门店谁承诺？",
+        bubbleB: "先排档期，供货跟得上吗？",
+        caption: "供应方怕投入落空，KA 怕先占资源却等不到支持。",
       },
       {
-        title: "??????",
-        bubbleA: "????????",
-        bubbleB: "????????",
-        caption: "????????????????????????",
+        title: "于是项目卡住",
+        bubbleA: "等门店计划确认。",
+        bubbleB: "等支持方案落地。",
+        caption: "双方都在防风险，结果却是档期流失、试点没有启动。",
       },
       {
-        title: "?????????",
-        bubbleA: "?????????",
-        bubbleB: "????????",
-        caption: "??????????????????????????",
+        title: "把试点做成双向承诺",
+        bubbleA: "先定门店和复盘点。",
+        bubbleB: "资源分阶段到位。",
+        caption: "双方责任、日期和止损条件说清，再按结果决定是否扩大。",
       },
     ],
-    note: "???????????????????????????????",
+    note: "真实合作须核实市场、供货、合同与合规条件；漫画不构成销量预测。",
   },
   en: {
     title: "Why is each side waiting for the other to move?",
@@ -46,7 +46,7 @@ const COPY = {
         title: "Make the pilot mutual",
         bubbleA: "Set stores and review gates.",
         bubbleB: "Stage the support.",
-        caption: "Agree owners, dates, and stop rules?then scale only on evidence.",
+        caption: "Agree owners, dates, and stop rules—then scale only on evidence.",
       },
     ],
     note: "Check market, supply, contract, and compliance conditions; this is not a sales forecast.",
@@ -120,7 +120,7 @@ export function GameTheoryComic() {
         {copy.panels.map((panel, index) => (
           <div key={panel.title} className="rounded-lg border border-foreground/10 bg-background/80 p-3">
             <p className="text-xs font-semibold text-muted-foreground">
-              0{index + 1} ? {panel.title}
+              0{index + 1} · {panel.title}
             </p>
             <StakeholderSketch step={index} locale={locale} />
             <p className="mt-1 text-xs leading-5 text-muted-foreground">{panel.caption}</p>
