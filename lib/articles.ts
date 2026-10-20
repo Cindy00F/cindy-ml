@@ -295,75 +295,73 @@ export const articles: Article[] = [
     ],
   },
   {
-    slug: "promo-bakery-incrementality",
+    slug: "t9-predictive-text",
     category: "applied",
-    minutes: 8,
-    accent: "#a55c40",
-    sourcePath: "promo-bakery-incrementality",
+    minutes: 6,
+    accent: "#70816e",
+    sourcePath: "t9-predictive-text",
     title: {
-      zh: "促销排起长队，生意真的变好了吗？",
-      en: "Did the queue mean the promotion sold more?",
+      zh: "按下 926，候选「要、药、摇」谁排前面？",
+      en: "Tap 926: which of 要, 药, and 摇 appears first?",
     },
     summary: {
-      zh: "营销实验：跟着面包店老板阿禾复盘一场周末促销。活动周销量涨了，不一定全是促销带来的；隔壁没做活动的店，能帮我们看见天气和时间带来的变化。\n用一段可播放的故事动画，弄懂对照组、增量和被提前搬来的生意。",
-      en: "Marketing measurement: follow bakery owner Ahe as she reviews a weekend promotion. Sales rose—but not all of that increase came from the offer. A nearby store without the promotion helps reveal what weather and timing changed.\nPlay a short story animation to understand comparison stores, incremental lift, and sales pulled forward.",
+      zh: "下班路上，你想给家人发一句“顺便买药”。在九键上按下 926，屏幕却可能出现「要、药、摇」——按键给了输入法线索，没有替你决定意思。\n跟着一个日常输入场景，看九键如何把字母映射到数字、用词频和上下文排列候选，以及最后为什么仍由你确认。",
+      en: "On your way home, you want to text “pick up medicine.” On a nine-key Pinyin keyboard, 926 can lead to 要, 药, or 摇. The taps give the input method clues; they do not reveal your intent.\nFollow one everyday message to see how keys map to letters, how dictionaries and context rank candidates, and why you still make the final choice.",
     },
     sections: [
       {
-        id: "promo-queue",
+        id: "t9-scene",
         heading: {
-          zh: "那天店门口排起了队，阿禾却没有马上庆祝",
-          en: "A line formed outside. Ahe did not celebrate just yet",
+          zh: "赶路时发消息：想打「买药」，拇指先碰上九键",
+          en: "Typing on the move: your thumb reaches the nine-key pad",
         },
         body: {
-          zh: "阿禾在河岸边开了一家面包店。一个周末，她做了“第二只半价”：活动当天卖出 160 份，比平时的一周基准 100 份多了 60。收银台前排起队，店员说从没这么忙过。\n\n可阿禾想起隔壁街角店也卖得不错。那家店没有打折；而且天气刚好转凉，附近居民开始买热面包。她的问题不是“今天热不热闹”，而是：如果没有促销，河岸店本来会卖多少？只有超过这个反事实的部分，才可能算活动带来的增量。",
-          en: "Ahe owns a bakery by the river. One weekend she runs “half off the second loaf.” Riverside sells 160 loaves—60 above its usual weekly baseline of 100. There is a queue at the till; the staff say they have never been this busy.\n\nBut Ahe remembers that Corner Street, a nearby store, also had a good week. It did not discount, and the weather turned cold just as locals started buying warm bread. Her question is not “Was it busy?” but “How many would Riverside have sold without the offer?” Only sales above that counterfactual might be incremental.",
+          zh: "你刚下班，边走边给家人发消息：“我顺路买药，晚点到。”手指点开九键输入法，准备输入拼音 yao。没有完整键盘上的字母，只有数字和一簇簇字母：每次按键，输入法都要从有限的线索里找可能的拼音和汉字。\n\n这不是机器突然懂了你的生活，而是一个很小、很具体的预测问题：哪些候选值得先摆在你面前？",
+          en: "You are heading home and texting: “I’ll pick up medicine on the way.” You open a nine-key Pinyin keyboard and start typing yao. Instead of a full alphabet, each number stands for a group of letters. With every tap, the input method has to find plausible syllables and words from incomplete clues.\n\nIt has not suddenly understood your life. It is solving a small, practical prediction problem: which candidates should appear first?",
         },
       },
       {
-        id: "promo-control",
+        id: "t9-mapping",
         heading: {
-          zh: "找一家没参加活动的店，给热闹找个参照",
-          en: "Find a store without the offer to give the rush a reference",
+          zh: "Y、A、O 各自在哪一键？答案是 9、2、6",
+          en: "Where are Y, A, and O? On keys 9, 2, and 6",
         },
         body: {
-          zh: "阿禾选了规模和客群相近的街角店作比较。活动前，河岸店一周卖 100 份，街角店卖 90 份，两店本来就差 10 份。活动周，街角店也涨到 100 份，提示天气、节日或全城客流等共同因素大约带来了 10 份增长。\n\n如果两店原有差距大致稳定，河岸店在“没有促销”的情况下，活动周可能也会从 100 涨到约 110。实际卖了 160，粗略估计的活动增量便是 50，而不是表面上的 60。对照店不是完美替身，但比拿自己的上周直接当答案更有参照。",
-          en: "Ahe picks Corner Street, a store with similar size and customers. Before the offer, Riverside sells 100 loaves a week and Corner Street 90—a standing gap of 10. During the promotion, Corner Street also rises to 100, suggesting common factors such as weather or a local event added about 10.\n\nIf the usual gap stays roughly stable, Riverside might have grown from 100 to around 110 even without its offer. It actually sells 160, so the rough incremental lift is 50, not the headline 60. A comparison store is no perfect stand-in, but it is better context than treating last week as the whole answer.",
-        },
-        formula: "Δoffer ≈ (160 − 100) − (100 − 90) = 50",
-      },
-      {
-        id: "promo-calendar",
-        heading: {
-          zh: "日历往后翻一页：有些顾客只是提前买了",
-          en: "Turn the calendar: some customers may have bought early",
-        },
-        body: {
-          zh: "活动结束后，河岸店下一周只卖了 80 份；街角店仍卖 100 份。按两店原先约 10 份的差距估算，河岸店没有促销时大约会卖 110 份。也就是说，活动周约多出的 50 份，可能有 30 份只是把下一周的购买提前了。\n\n把活动周和下一周合起来看，估计净增约 20 份，而不是 50 或 60。这个结果仍依赖假设：如果两家店的趋势不同、客人跨店购买、促销改变了之后的需求，估计都会偏。动画里的数字是教学示例，不是实测结果。",
-          en: "After the offer, Riverside sells only 80 loaves the next week; Corner Street remains at 100. Using the usual gap of about 10, Riverside might have sold around 110 without a promotion. So of the roughly 50 extra loaves during the offer, perhaps 30 were simply next week’s purchases moved earlier.\n\nAcross the offer week and the following week, the estimated net lift is about 20—not 50 or 60. This still depends on assumptions: different store trends, shoppers crossing between stores, or lingering effects could all bias the estimate. The animation uses teaching numbers, not measured results.",
-        },
-        formula: "(+50) + (−30) = +20",
-      },
-      {
-        id: "promo-profit",
-        heading: {
-          zh: "销量多了，不等于利润多了",
-          en: "More units sold do not automatically mean more profit",
-        },
-        body: {
-          zh: "最后，阿禾把账本也摊开：第二只半价少收了多少毛利？额外备货有没有报损？店员加班花了多少？老顾客本来会买全价面包，如今是不是都等折扣？真正该比较的是增量贡献，扣掉折扣、额外人工、浪费和履约成本，而不是只看收银条多了几行。\n\n如果活动目标是拉新，还要跟踪新客后来有没有回来；如果目标是清库存，就看报损是否下降。目标不同，成功指标也不同。一场活动可以热闹、增量不大，却仍有清库存价值；也可能销量涨了，利润反而变少。",
-          en: "Finally Ahe opens the ledger. How much margin did “half off the second loaf” give away? Was extra stock wasted? What did extra staff hours cost? Did regulars who would have paid full price simply wait for a deal? The useful comparison is incremental contribution after discount, labor, waste, and fulfillment costs—not just a longer receipt.\n\nIf the goal is acquisition, track whether new customers return. If it is inventory clearance, measure waste avoided. Different goals need different success measures. A promotion can be busy with little lift and still help clear stock—or sell more while reducing profit.",
+          zh: "在常见九键拼音布局里，9 键有 WXYZ，2 键有 ABC，6 键有 MNO。拼音 yao 的三个字母 Y、A、O，分别落在 9、2、6；你每个键按一次，屏幕上就留下 926。\n\n但 926 不是汉字，也没有声调。它只是把可能的字母组合缩小了一些；同一串数字仍可能对应不止一个拼音、词语或汉字。不同输入法的映射和词库也可能不同。",
+          en: "On a common nine-key Pinyin layout, key 9 holds WXYZ, key 2 ABC, and key 6 MNO. The letters Y, A, and O in yao sit on 9, 2, and 6. One tap per letter leaves you with 926.\n\nBut 926 is not a Chinese character, and it carries no tone. It narrows the possible letter combinations; it does not point to just one syllable, word, or character. Layouts and dictionaries can also vary by input method.",
         },
       },
       {
-        id: "promo-playbook",
+        id: "t9-context",
         heading: {
-          zh: "下次做活动前，先把“怎么知道有效”写下来",
-          en: "Before the next promotion, decide how you will know it worked",
+          zh: "刚打了「买」，候选顺序就有了生活线索",
+          en: "After “买,” the previous character becomes a useful clue",
         },
         body: {
-          zh: "给真实活动做评估，可以按这个顺序：先写清目标和指标（增量销量、增量毛利、新客复购或库存损耗）；活动前挑选相似门店并检查它们过去几周的趋势；有条件时随机分配活动门店和对照门店；统一活动与观察窗口，至少看活动后一个周期；记录价格、缺货、节假日、天气和其他同期营销。\n\n复盘时同时呈现原始变化、对照后的估计和不确定性；不要把一次简单前后对比包装成“促销造成了增长”。如果决策金额大，就延长试点或扩大门店样本，并让财务和运营一起核算增量利润。好的营销复盘不是证明活动成功，而是让下一次投入更有把握。",
-          en: "For a real campaign, decide the plan first: write down the objective and measure (incremental units, contribution, repeat visits, or inventory waste); select comparable stores and inspect their pre-period trends; randomize treatment and comparison stores when feasible; use consistent windows and observe at least one post-period; record price, stockouts, holidays, weather, and other campaigns.\n\nReport the raw change, comparison-adjusted estimate, and uncertainty together. Do not dress up a simple before-and-after as proof that the promotion caused growth. For a high-stakes decision, extend the pilot or add stores, and have finance and operations check incremental profit. A good campaign review does not prove the promotion was a success—it makes the next investment a better-informed choice.",
+          zh: "假设你已经输入了「买」，现在按下 926。输入法可以把「要」「药」「摇」等候选拿出来，再参考「买药」这样的常见搭配，调整它们的显示顺序。于是「药」可能更靠前，让你少翻几次候选。\n\n这里的「可能」很重要：词频、你的个人习惯、前文内容和具体产品的排序策略都会影响结果。它只是提高某个候选排在前面的机会，不保证每个人都看到同一个顺序。",
+          en: "Suppose you have already entered 买 (“buy”) and now tap 926. The input method can surface candidates such as 要, 药, and 摇, then use a familiar phrase like 买药 (“buy medicine”) to adjust their order. 药 may move closer to the front, saving you a few taps.\n\n“May” matters. Word frequency, your personal habits, the preceding text, and each product’s ranking strategy can all affect the result. Context makes a candidate more likely to appear first; it does not guarantee the same ordering for everyone.",
+        },
+      },
+      {
+        id: "t9-confirm",
+        heading: {
+          zh: "最后还是你点「药」：预测不等于替你做决定",
+          en: "You still tap 药: a prediction is not a decision",
+        },
+        body: {
+          zh: "候选出现后，你看到「药」并点一下，消息才变成「买药」。这一步看起来不起眼，却划清了边界：输入法负责把可能性排好，是否符合你的意思，由你确认。\n\n九键让输入更省按键，也把判断交给了候选排序。排序错了，可能只是多翻一页；但在联系人、地址或重要信息里，一个看似合理的错字也可能带来麻烦。所以好用的输入法不只是“猜得准”，还要让候选清楚、纠正顺手、确认权留在用户手里。",
+          en: "When the candidates appear, you see 药 and tap it. Only then does your message read 买药. That small action marks an important boundary: the input method organizes possibilities; you confirm what you actually mean.\n\nNine-key typing saves taps, but it also makes ranking matter. A wrong guess may only cost another swipe—or, in a contact, address, or important message, a plausible-looking typo can cause real confusion. A good input method is not just about guessing well; candidates should be clear, corrections easy, and the final choice yours.",
+        },
+      },
+      {
+        id: "t9-takeaway",
+        heading: {
+          zh: "它没有读心：只是把下一步做得更省力",
+          en: "It is not mind-reading. It is making the next step easier",
+        },
+        body: {
+          zh: "回头看这条消息，输入法做了三件事：把 9、2、6 映射成可能的字母组合；用词库找出可能的拼音和汉字；再结合「买」把更常见的搭配排前面。你最后点选，系统才知道这次要的是「药」。\n\n这不是读心。这里展示的是中文九键拼音的简化示意，不代表所有输入法都采用同一套 T9 规则。今天的输入产品还可能使用更复杂的语言模型和个性化信息；底层方法会变，边界仍值得记住：给建议，讲清选择，让人能改。",
+          en: "Looking back at the message, the input method did three things: mapped 9, 2, and 6 to possible letter groups; used a dictionary to find plausible Pinyin and characters; then used 买 to put a familiar phrase closer to the front. You tapped the candidate, and only then did the system know you wanted 药 this time.\n\nThat is not mind-reading. This is a simplified example of Chinese nine-key Pinyin, not a claim that every keyboard uses the same T9 implementation. Modern products may also use more complex language models and personalization. The methods change; the boundary is still worth keeping: suggest clearly, make choices visible, and let people correct them.",
         },
       },
     ],
