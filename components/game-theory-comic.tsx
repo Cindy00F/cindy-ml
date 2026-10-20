@@ -4,56 +4,56 @@ import { useI18n } from "@/lib/i18n";
 
 const COPY = {
   zh: {
-    title: "买房这局，怎么走到这一步？",
+    title: "??????????????????",
     panels: [
       {
-        title: "先各自算账",
-        bubbleA: "月供会不会太重？",
-        bubbleB: "产权和风险呢？",
-        caption: "两个人都在考虑自己的成本。",
+        title: "??????",
+        bubbleA: "???????????",
+        bubbleB: "????????????",
+        caption: "?????????KA ????????????",
       },
       {
-        title: "于是都先等等",
-        bubbleA: "你不买，我也不买。",
-        bubbleB: "那就先不买吧。",
-        caption: "按示意收益表，结果是 (0, 0)：稳定，但不是双方更好的结果。",
+        title: "??????",
+        bubbleA: "????????",
+        bubbleB: "????????",
+        caption: "????????????????????????",
       },
       {
-        title: "把合作条件谈清",
-        bubbleA: "预算、产权先说好。",
-        bubbleB: "风险和责任写下来。",
-        caption: "可信的约定，才可能让双方走向 (2, 2)。",
+        title: "?????????",
+        bubbleA: "?????????",
+        bubbleB: "????????",
+        caption: "??????????????????????????",
       },
     ],
-    note: "分数仅用于解释模型，不代表真实买房收益。",
+    note: "???????????????????????????????",
   },
   en: {
-    title: "How does this housing game play out?",
+    title: "Why is each side waiting for the other to move?",
     panels: [
       {
-        title: "Count the costs",
-        bubbleA: "Can we afford it?",
-        bubbleB: "Who owns it?",
-        caption: "Each person weighs their own costs.",
+        title: "Each side weighs its risk",
+        bubbleA: "Who commits to stores first?",
+        bubbleB: "Will supply be ready?",
+        caption: "The supplier fears wasted spend; the KA fears committing without support.",
       },
       {
-        title: "So both wait",
-        bubbleA: "If you don't buy, I won't.",
-        bubbleB: "Let's wait, then.",
-        caption: "The illustrative outcome is (0, 0): stable, but not best for both.",
+        title: "So the launch stalls",
+        bubbleA: "Waiting on the store plan.",
+        bubbleB: "Waiting on support.",
+        caption: "Both reduce risk, but the launch window passes and no pilot starts.",
       },
       {
-        title: "Make cooperation credible",
-        bubbleA: "Agree on a budget?",
-        bubbleB: "Write down ownership.",
-        caption: "A credible agreement can make (2, 2) attainable.",
+        title: "Make the pilot mutual",
+        bubbleA: "Set stores and review gates.",
+        bubbleB: "Stage the support.",
+        caption: "Agree owners, dates, and stop rules?then scale only on evidence.",
       },
     ],
-    note: "Payoffs are illustrative, not real housing values.",
+    note: "Check market, supply, contract, and compliance conditions; this is not a sales forecast.",
   },
 } as const;
 
-function CoupleSketch({ step, locale }: { step: number; locale: "zh" | "en" }) {
+function StakeholderSketch({ step, locale }: { step: number; locale: "zh" | "en" }) {
   const left = step === 1 ? "#c45c26" : "#2f6f64";
   const right = step === 1 ? "#2f6f64" : "#c45c26";
   const panel = COPY[locale].panels[step];
@@ -63,8 +63,9 @@ function CoupleSketch({ step, locale }: { step: number; locale: "zh" | "en" }) {
       <path d="M18 137h264" className="stroke-foreground/15" strokeWidth="2" />
       {step === 2 ? (
         <g className="fill-none stroke-foreground/30" strokeWidth="3">
-          <path d="M105 62v-18h90v18M116 44V28h68v16" />
-          <path d="M124 62v-9h16v9m20 0v-9h16v9" />
+          <path d="M103 72h94m-86 0V43h78v29M125 72V54h16v18m18 0V54h16v18" />
+          <path d="m117 35 26-15 27 15" />
+          <path d="M92 80h116" strokeDasharray="4 5" />
         </g>
       ) : null}
       <g stroke={left} strokeWidth="4" strokeLinecap="round" fill="none">
@@ -119,9 +120,9 @@ export function GameTheoryComic() {
         {copy.panels.map((panel, index) => (
           <div key={panel.title} className="rounded-lg border border-foreground/10 bg-background/80 p-3">
             <p className="text-xs font-semibold text-muted-foreground">
-              0{index + 1} · {panel.title}
+              0{index + 1} ? {panel.title}
             </p>
-            <CoupleSketch step={index} locale={locale} />
+            <StakeholderSketch step={index} locale={locale} />
             <p className="mt-1 text-xs leading-5 text-muted-foreground">{panel.caption}</p>
           </div>
         ))}
