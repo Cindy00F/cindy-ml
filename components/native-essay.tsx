@@ -8,7 +8,7 @@ import { ArticleSummary } from "@/components/article-summary";
 import { EssayNeighbors } from "@/components/essay-neighbors";
 import { EssayScale } from "@/components/essay-scale";
 import { GameTheoryComic } from "@/components/game-theory-comic";
-import { PromoStoryAnimation } from "@/components/promo-story-animation";
+import { TeaRetailStoryAnimation } from "@/components/tea-retail-story-animation";
 import { MarkReadButton } from "@/components/mark-read-button";
 import { track } from "@/lib/analytics";
 import type { Article } from "@/lib/articles";
@@ -77,7 +77,7 @@ export function NativeEssay({ article }: { article: Article }) {
           className="mt-5 text-base leading-8 text-muted-foreground"
         />
         {article.slug === "game-theory-house" ? <GameTheoryComic /> : null}
-        {article.slug === "promo-bakery-incrementality" ? <PromoStoryAnimation /> : null}
+        {article.slug === "tea-retail-journey" ? <TeaRetailStoryAnimation /> : null}
         <div className="mt-8 space-y-12">
           {article.sections.map((section) => (
             <section key={section.heading.en} id={section.id} className="scroll-mt-16">
