@@ -82,24 +82,24 @@ export function ArticleThumb({
       >
         <Frame paper>
           <text x="36" y="48" className="fill-foreground text-[17px]">
-            {zh ? "KA ??????????" : "KA launch: who invests first?"}
+            {zh ? "KA 新品合作：谁先投入？" : "KA launch: who invests first?"}
           </text>
           <text x="310" y="78" textAnchor="middle" className="fill-foreground/55 text-[12px]">
-            {zh ? "KA ??" : "KA commits"}
+            {zh ? "KA 承诺" : "KA commits"}
           </text>
           <text x="430" y="78" textAnchor="middle" className="fill-foreground/55 text-[12px]">
-            {zh ? "KA ??" : "KA waits"}
+            {zh ? "KA 等待" : "KA waits"}
           </text>
           <text x="38" y="133" className="fill-foreground/55 text-[12px]">
-            {zh ? "?????" : "Supplier invests"}
+            {zh ? "供应方投入" : "Supplier invests"}
           </text>
           <text x="26" y="213" className="fill-foreground/55 text-[12px]">
-            {zh ? "?????" : "Supplier waits"}
+            {zh ? "供应方等待" : "Supplier waits"}
           </text>
           {[
             { x: 250, y: 90, label: "4 , 4", color: "#2f6f64" },
-            { x: 370, y: 90, label: "?1 , 2", color: "#c45c26" },
-            { x: 250, y: 170, label: "2 , ?1", color: "#c45c26" },
+            { x: 370, y: 90, label: "−1 , 2", color: "#c45c26" },
+            { x: 250, y: 170, label: "2 , −1", color: "#c45c26" },
             { x: 370, y: 170, label: "0 , 0", color: "#2f6f64" },
           ].map((cell) => (
             <g key={`${cell.x}-${cell.y}`}>
@@ -126,7 +126,7 @@ export function ArticleThumb({
             </g>
           ))}
           <text x="36" y="266" className="fill-foreground/40 text-[11px]">
-            {zh ? "???????????????" : "Illustrative payoffs: commit together, invest in stages"}
+            {zh ? "示意评分：双方承诺，分阶段投入" : "Illustrative payoffs: commit together, invest in stages"}
           </text>
         </Frame>
       </svg>
@@ -144,10 +144,10 @@ export function ArticleThumb({
       >
         <Frame paper>
           <text x="36" y="58" className="fill-foreground text-[18px]">
-            {locale === "zh" ? "???? 12 ???" : "12 calls left this month"}
+            {locale === "zh" ? "月末只剩 12 次拜访" : "12 calls left this month"}
           </text>
           <text x="36" y="82" className="fill-foreground/50 text-[11px]">
-            {locale === "zh" ? "RFM ?????????" : "Turn order history into account actions"}
+            {locale === "zh" ? "RFM 把订单变成客户动作" : "Turn order history into account actions"}
           </text>
           {[
             { x: 36, h: 120 },
@@ -173,13 +173,13 @@ export function ArticleThumb({
             M
           </text>
           <text x="228" y="112" className="fill-foreground/45 text-[11px]">
-            {locale === "zh" ? "??? ? ???" : "Core ? protect stock"}
+            {locale === "zh" ? "核心店 · 稳库存" : "Core · protect stock"}
           </text>
           <text x="228" y="158" className="fill-foreground/45 text-[11px]">
-            {locale === "zh" ? "??? ? ???" : "Dormant ? diagnose"}
+            {locale === "zh" ? "沉睡店 · 查原因" : "Dormant · diagnose"}
           </text>
           <text x="228" y="204" className="fill-foreground/45 text-[11px]">
-            {locale === "zh" ? "??? ? ???" : "Growth ? earn repeat"}
+            {locale === "zh" ? "潜力店 · 促复购" : "Growth · earn repeat"}
           </text>
           {[0, 1, 2].map((row) => (
             <g key={row}>
@@ -215,7 +215,7 @@ export function ArticleThumb({
         <Frame paper>
           <text x="36" y="48" className="fill-foreground/55 text-[12px]">
             {locale === "zh"
-              ? "????? 6 ??????????"
+              ? "代表每天跑 6 家，重点客户还空着？"
               : "Six calls a day, key accounts still uncovered?"}
           </text>
           {[
