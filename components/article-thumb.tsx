@@ -133,6 +133,67 @@ export function ArticleThumb({
     );
   }
 
+  if (slug === "promo-bakery-incrementality") {
+    const zh = locale === "zh";
+    return (
+      <svg
+        viewBox="0 0 520 300"
+        className={className}
+        aria-hidden={!href}
+        preserveAspectRatio="xMidYMid meet"
+        onClick={go}
+      >
+        <Frame paper>
+          <text x="36" y="48" className="fill-foreground/50 text-[11px] tracking-[3px]">
+            {zh ? "一间面包店 · 两家分店 · 三个星期" : "ONE BAKERY · TWO STORES · THREE WEEKS"}
+          </text>
+          <text x="36" y="78" className="fill-foreground text-[18px]">
+            {zh ? "促销排起长队，生意真的变好了吗？" : "Did the queue mean the promotion worked?"}
+          </text>
+          <path d="M58 221h405" className="stroke-foreground/20" strokeWidth="1.5" />
+          {[100, 160, 80].map((value, index) => (
+            <g key={index}>
+              <rect
+                x={154 + index * 105}
+                y={221 - value * 0.62}
+                width="30"
+                height={value * 0.62}
+                rx="5"
+                fill="#c36e4c"
+              />
+              <rect
+                x={190 + index * 105}
+                y={221 - [90, 100, 100][index] * 0.62}
+                width="30"
+                height={[90, 100, 100][index] * 0.62}
+                rx="5"
+                fill="#66877a"
+              />
+              <text
+                x={187 + index * 105}
+                y="244"
+                textAnchor="middle"
+                className="fill-foreground/55 text-[10px]"
+              >
+                {(zh ? ["上周", "活动周", "下一周"] : ["Before", "Offer week", "After"])[index]}
+              </text>
+            </g>
+          ))}
+          <path
+            d="M165 166c45-19 66-25 98-37 35-13 70 31 103 47"
+            fill="none"
+            stroke="#a55c40"
+            strokeWidth="2"
+            strokeDasharray="5 5"
+          />
+          <text x="36" y="273" className="fill-foreground/45 text-[11px]">
+            {zh ? "销量高峰，还是被提前搬来的生意？" : "A real lift—or sales borrowed from next week?"}
+          </text>
+        </Frame>
+      </svg>
+    );
+  }
+
   if (slug === "rfm-pharmacy") {
     return (
       <svg
