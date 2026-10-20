@@ -1,0 +1,4 @@
+:HL["/cindy-ml/_next/static/chunks/18vh_h_q4il3z.css","style"]
+:HL["/cindy-ml/_next/static/chunks/3z3nd48lr53d2.css","style"]
+:HL["/cindy-ml/_next/static/chunks/1pinj7oszgd30.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"fB8x5uh1vd1Uwvi6hUSs3"}
