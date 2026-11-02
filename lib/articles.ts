@@ -808,6 +808,66 @@ export const articles: Article[] = [
     ],
   },
   {
+    slug: "bubble-sort-penguins",
+    category: "theory",
+    minutes: 7,
+    accent: "#52758c",
+    sourcePath: "bubble-sort-penguins",
+    title: {
+      zh: "八只企鹅怎么排好队？一眼看懂冒泡排序",
+      en: "How do eight penguins line up? Bubble sort, one pass at a time",
+    },
+    summary: {
+      zh: "算法：冒泡排序，每次只比较相邻两个数；如果顺序反了就交换。每一轮都会把当前最大的数送到队尾。\n按下一步或自动播放；再换成“几乎排好”的队列，看看一整轮没有交换时怎样提前结束。",
+      en: "Algorithm: bubble sort compares neighboring values and swaps a pair when it is out of order. Each pass moves the largest unsorted value to the end.\nStep through the penguins or play automatically. Try the nearly sorted line to see how a pass with no swaps stops the algorithm early.",
+    },
+    sections: [
+      {
+        heading: {
+          zh: "企鹅只和紧挨着的伙伴比",
+          en: "Each penguin compares only with a neighbor",
+        },
+        body: {
+          zh: "想象八只企鹅胸前各挂着一个号码：7、4、2、1、8、3、6、5。它们要从小到大排队，但每次只能看相邻的两只：左边号码更大，就交换；否则保持原位。没有谁一眼看完整支队伍，队伍靠一次次小判断慢慢变整齐。",
+          en: "Imagine eight penguins wearing number badges: 7, 4, 2, 1, 8, 3, 6, 5. They need to line up from smallest to largest, but each can compare only with the penguin next door. If the left number is larger, they swap; otherwise they stay put. No one scans the whole line—the order emerges from many tiny decisions.",
+        },
+      },
+      {
+        heading: {
+          zh: "一轮走完，最大的数到了队尾",
+          en: "After one pass, the largest number reaches the end",
+        },
+        body: {
+          zh: "从队首开始比较。7 和 4 交换，接着 7 和 2 交换，再接着 7 和 1 交换……这一轮里，较大的号码不断向右移动。走到队尾时，尚未排好的部分里最大的数已经确定位置；下一轮不必再碰它。点一下“下一步”，看看每次交换怎样把 8 只企鹅排好。",
+          en: "Start at the front. 7 swaps with 4, then 7 swaps with 2, then with 1… Larger numbers keep moving to the right. By the end of the pass, the largest number in the unsorted section is in its final place, so the next pass can leave it alone. Step through the animation and watch all eight penguins find their places.",
+        },
+        playground: true,
+      },
+      {
+        heading: {
+          zh: "没再交换，就可以收工",
+          en: "If nothing swaps, the line is done",
+        },
+        body: {
+          zh: "如果一整轮比较下来一次交换都没有，说明每一对相邻数字都已经按顺序排列，不必再跑后面的轮次。这个优化让已经排好或接近排好的队伍更早结束。最坏和平均时间复杂度仍是 O(n²)，额外空间是 O(1)；元素相等时不交换（只在左边大于右边时交换），还能保持相同元素原有的先后次序。",
+          en: "If a complete pass makes no swaps, every neighboring pair is already in order, so there is no need for another pass. This lets an already-sorted or nearly sorted line finish early. Worst- and average-case time are still O(n²), with O(1) extra space. Swapping only when the left value is greater also keeps equal items in their original order.",
+        },
+      },
+      {
+        heading: {
+          zh: "看懂它，也要知道什么时候换工具",
+          en: "Understand it—and know when to use another tool",
+        },
+        body: {
+          zh: "冒泡排序适合用来理解“局部交换怎样带来全局有序”，也适合数据很少、代码要尽量直白的练习。但数据一多，比较次数会迅速增加，实际程序通常会选更高效的排序算法。它不是因为名字可爱就适合所有任务；先看数据规模，再选工具。",
+          en: "Bubble sort is useful for seeing how local swaps create a globally ordered list, and for exercises with tiny inputs where simplicity matters. But its comparison count grows quickly, so real programs usually choose a more efficient sorting algorithm for larger data. A cute name does not make it right for every job—check the data size before choosing.",
+        },
+        formula:
+          "for each pass: compare neighbors; swap if left > right\nstop early if a pass makes no swaps",
+      },
+    ],
+  },
+  {
     slug: "bias-variance",
     category: "theory",
     minutes: 11,

@@ -5,9 +5,11 @@ import { useI18n } from "@/lib/i18n";
 export function PlaygroundFrame({
   title,
   children,
+  hint,
 }: {
   title: string;
   children: React.ReactNode;
+  hint?: string;
 }) {
   const { t } = useI18n();
   return (
@@ -16,7 +18,7 @@ export function PlaygroundFrame({
         {title}
       </figcaption>
       <div>{children}</div>
-      <p className="mt-4 text-xs text-muted-foreground">{t("playgroundHint")}</p>
+      <p className="mt-4 text-xs text-muted-foreground">{hint ?? t("playgroundHint")}</p>
     </figure>
   );
 }
