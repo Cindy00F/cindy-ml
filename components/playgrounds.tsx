@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { BubbleSortPlayground } from "@/components/bubble-sort-playground";
 import { PlaygroundFrame } from "@/components/playground-frame";
 import { KmeansPlayground } from "@/components/kmeans-playground";
 import { PetClassifier } from "@/components/pet-classifier";
@@ -1055,6 +1056,7 @@ const registry: Record<string, () => React.ReactNode> = {
   "equality-of-odds": () => <FairnessPlayground />,
   "rfm-pharmacy": () => <RfmPlayground />,
   "kmeans-territory": () => <KmeansPlayground />,
+  "bubble-sort-penguins": () => <BubbleSortPlayground />,
 };
 
 export function ArticlePlayground({ slug }: { slug: string }) {

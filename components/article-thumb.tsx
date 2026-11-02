@@ -173,6 +173,66 @@ export function ArticleThumb({
     );
   }
 
+  if (slug === "bubble-sort-penguins") {
+    const zh = locale === "zh";
+    const values = [7, 4, 2, 1, 8, 3, 6, 5];
+    return (
+      <svg
+        viewBox="0 0 520 300"
+        className={className}
+        aria-hidden={!href}
+        preserveAspectRatio="xMidYMid meet"
+        onClick={go}
+      >
+        <Frame paper>
+          <text x="36" y="48" className="fill-foreground/50 text-[11px] tracking-[3px]">
+            {zh ? "算法入门 · 冒泡排序" : "ALGORITHM BASICS · BUBBLE SORT"}
+          </text>
+          <text x="36" y="80" className="fill-foreground text-[19px]">
+            {zh ? "企鹅排队，一轮比一轮整齐" : "Penguins line up, one pass at a time"}
+          </text>
+          {values.map((value, index) => {
+            const x = 53 + index * 58;
+            const isPair = index < 2;
+            return (
+              <g key={value}>
+                <ellipse
+                  cx={x}
+                  cy="174"
+                  rx="20"
+                  ry="25"
+                  fill="#263449"
+                  opacity="0.95"
+                />
+                <circle cx={x} cy="140" r="17" fill="#263449" />
+                <ellipse cx={x} cy="180" rx="13" ry="17" fill="#f5f1e9" />
+                <ellipse cx={x} cy="144" rx="11" ry="9" fill="#f5f1e9" />
+                <circle cx={x - 4} cy="142" r="1.5" fill="#18212e" />
+                <circle cx={x + 4} cy="142" r="1.5" fill="#18212e" />
+                <path d={`M${x - 3} 147h6l-3 4z`} fill="#e69b44" />
+                <path
+                  d={`M${x - 17} 159q17 7 34 0v6q-17 7-34 0z`}
+                  fill={isPair ? "#c45c26" : "#52758c"}
+                />
+                <text
+                  x={x}
+                  y="185"
+                  textAnchor="middle"
+                  className="fill-[#263449] font-mono text-[12px] font-bold"
+                >
+                  {value}
+                </text>
+              </g>
+            );
+          })}
+          <text x="36" y="258" className="fill-foreground/45 text-[12px]">
+            {zh ? "只比邻居；每轮把最大的送到队尾" : "Compare neighbors; send the largest to the end"}
+          </text>
+        </Frame>
+      </svg>
+    );
+  }
+
   if (slug === "rfm-pharmacy") {
     return (
       <svg
