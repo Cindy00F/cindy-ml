@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowDown, ArrowRight, Search, X } from "lucide-react";
 import { ArticleSummary } from "@/components/article-summary";
 import { ArticleThumb } from "@/components/article-thumb";
+import { CuriosityGhost } from "@/components/curiosity-ghost";
 import { DeskDoodle } from "@/components/desk-doodle";
 import { EssayScale } from "@/components/essay-scale";
 import { track } from "@/lib/analytics";
@@ -321,6 +322,7 @@ export function DashboardHome() {
         onSelect={jump}
         className="!fixed top-12 bottom-0 bg-gradient-to-l from-background from-70% to-transparent"
       />
+      <CuriosityGhost />
     </div>
   );
 }
