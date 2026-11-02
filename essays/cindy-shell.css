@@ -1,0 +1,188 @@
+/* Cindy shell: hide original top nav; keep scrolly working inside the iframe. */
+:root {
+  --cindy-cream: #fcf4e8;
+}
+
+html {
+  box-sizing: border-box;
+  height: auto !important;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+  scrollbar-width: none;
+}
+
+body {
+  height: auto !important;
+  min-height: 100%;
+  overflow-y: visible !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+html {
+  scroll-behavior: auto !important;
+}
+
+body > header,
+header {
+  display: none !important;
+}
+
+#intro__date,
+#intro-date,
+.authors,
+h3#intro__date {
+  display: none !important;
+}
+
+h2.logo {
+  font-family: var(--font-outfit), var(--font-noto-sans-sc), "PingFang SC", sans-serif !important;
+  letter-spacing: 0.08em !important;
+}
+
+a[href*="mlu-explain"],
+a[href*="github.com/aws-samples"],
+a[href*="aws-mlu-explain"] {
+  display: none !important;
+}
+
+#toc {
+  /* Keep in layout for the original scrolly script; just take it off screen. */
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  display: flex !important;
+}
+
+@media (min-width: 701px) {
+  /* Hidden original header; pin the sticky figure to the iframe top. */
+  figure {
+    top: 0 !important;
+  }
+
+  #intro-mobile {
+    display: none !important;
+  }
+
+  #scrolly {
+    display: flex !important;
+    flex-direction: row-reverse !important;
+  }
+
+  #scrolly > * {
+    flex: 1;
+  }
+
+  article > section[data-index] {
+    min-height: 100vh;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    height: auto !important;
+    box-sizing: border-box;
+    padding-top: 18vh;
+    padding-bottom: 28vh;
+  }
+}
+
+/* Phone: leave the published stacked scrolly alone. No overlay, no forced heights. */
+@media (max-width: 700px) {
+  html {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    font-size: 16px !important;
+  }
+
+  footer,
+  .footer,
+  #footer {
+    display: none !important;
+  }
+}
+
+html.cindy-dark,
+html.cindy-dark body,
+body.cindy-dark {
+  background-color: #1b1814 !important;
+  color: #f3ead8 !important;
+  --cindy-cream: #1b1814;
+}
+
+html.cindy-dark #scrolly,
+html.cindy-dark figure,
+html.cindy-dark article,
+html.cindy-dark p,
+html.cindy-dark h1,
+html.cindy-dark h2,
+html.cindy-dark h3,
+html.cindy-dark h4,
+html.cindy-dark li,
+html.cindy-dark span,
+html.cindy-dark label {
+  color: #f3ead8 !important;
+}
+
+html.cindy-dark .button {
+  color: #f3ead8 !important;
+  border-color: rgba(243, 234, 216, 0.55) !important;
+  background: transparent !important;
+}
+
+html.cindy-dark .button.active,
+html.cindy-dark button.active {
+  background: #f3ead8 !important;
+  color: #1b1814 !important;
+}
+
+html.cindy-dark svg text,
+html.cindy-dark .axes-text {
+  fill: #f3ead8 !important;
+}
+
+/* Cluster labels sit on cream cards in light mode; dark mode needs dark cards. */
+html.cindy-dark .bubble-rect,
+html.cindy-dark #hull-g > rect {
+  fill: #2c261e !important;
+}
+
+html.cindy-dark .bubble-label,
+html.cindy-dark #hull-text {
+  fill: #f3ead8 !important;
+}
+
+html.cindy-dark .bubble-rect[stroke="#2D3142"],
+html.cindy-dark .bubble-rect[stroke="#2d3142"],
+html.cindy-dark #hull-g > rect[stroke="black"],
+html.cindy-dark #hull-g > rect[stroke="#000"],
+html.cindy-dark #hull-g > rect[stroke="#000000"] {
+  stroke: #d4c4a8 !important;
+}
+
+html.cindy-dark svg line,
+html.cindy-dark svg .domain,
+html.cindy-dark svg .tick line,
+html.cindy-dark #hull-path,
+html.cindy-dark #line-decision-boundary,
+html.cindy-dark #line-x-dimension {
+  stroke: #e6d9c4 !important;
+}
+
+html.cindy-dark table#data-table,
+html.cindy-dark table#data-table th,
+html.cindy-dark table#data-table td {
+  color: #f3ead8 !important;
+  border-color: rgba(243, 234, 216, 0.35) !important;
+}
+
+html.cindy-dark .animal-head {
+  fill: #efe4d2 !important;
+}
+
