@@ -33,6 +33,11 @@ header {
   display: none !important;
 }
 
+object[data*="robot"],
+img[src*="mlu_robot"] {
+  display: none !important;
+}
+
 #intro__date,
 #intro-date,
 .authors,
@@ -185,4 +190,3 @@ html.cindy-dark table#data-table td {
 html.cindy-dark .animal-head {
   fill: #efe4d2 !important;
 }
-
