@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type PointerEvent } from "react";
 import { RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useI18n } from "@/lib/i18n";
@@ -15,6 +15,12 @@ type Spark = {
   left: number;
   top: number;
   rotation: number;
+  delay: number;
+};
+
+const LINES = {
+  zh: ["刚捡到一个灵感！", "嘿，你看这个！", "等等，我找到啦！", "再陪我玩一下？"],
+  en: ["A tiny spark of inspiration!", "Hey, look what I found!", "Wait, got one!", "One more round?"],
 };
 
 function randomItem<T>(items: readonly T[]) {
@@ -29,6 +35,7 @@ function makeSparks(): Spark[] {
     left: 5 + Math.random() * 85,
     top: 8 + Math.random() * 68,
     rotation: Math.round(Math.random() * 36 - 18),
+    delay: Math.round(Math.random() * 180),
   }));
 }
 
@@ -41,13 +48,24 @@ export function CuriosityGhost() {
   const [hovered, setHovered] = useState(false);
   const [open, setOpen] = useState(false);
   const [mood, setMood] = useState(0);
+  const [line, setLine] = useState(LINES.zh[0]);
+  const [gaze, setGaze] = useState({ x: 0, y: 0 });
 
   const play = () => {
     const nextSparks = makeSparks();
     setSparks(nextSparks);
     setCollected(randomItem(nextSparks).symbol);
     setGhostColor(randomItem(COLORS));
+    setLine(randomItem(zh ? LINES.zh : LINES.en));
     setMood((current) => current + 1);
+  };
+
+  const followPointer = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+    setGaze({ x: Math.max(-1, Math.min(1, x)) * 1.5, y: Math.max(-1, Math.min(1, y)) * 1.5 });
   };
 
   return (
@@ -57,22 +75,27 @@ export function CuriosityGhost() {
         setHovered(true);
         play();
       }}
-      onPointerLeave={() => setHovered(false)}
+      onPointerMove={followPointer}
+      onPointerLeave={() => {
+        setHovered(false);
+        setGaze({ x: 0, y: 0 });
+      }}
     >
       {hovered || open ? (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -top-[4.75rem] -left-28 h-[4.5rem] w-48"
+          className="pointer-events-none absolute -top-[5.25rem] -left-28 h-[4.5rem] w-48"
         >
           {sparks.map((spark) => (
             <span
-              key={spark.id}
-              className="motion-safe:animate-bounce absolute inline-flex min-h-7 min-w-7 items-center justify-center rounded-md px-1.5 font-mono text-sm font-bold text-white shadow-md"
+              key={`${mood}-${spark.id}`}
+              className="curiosity-ghost-spark absolute inline-flex min-h-7 min-w-7 items-center justify-center rounded-md px-1.5 font-mono text-sm font-bold text-white shadow-md"
               style={{
                 left: `${spark.left}%`,
                 top: `${spark.top}%`,
                 backgroundColor: spark.color,
-                transform: `rotate(${spark.rotation}deg)`,
+                rotate: `${spark.rotation}deg`,
+                animationDelay: `${spark.delay}ms`,
               }}
             >
               {spark.symbol}
@@ -81,15 +104,22 @@ export function CuriosityGhost() {
         </div>
       ) : null}
 
+      {hovered || open ? (
+        <p
+          aria-hidden="true"
+          className="curiosity-ghost-line pointer-events-none absolute -top-12 right-10 max-w-48 rounded-2xl rounded-br-sm bg-background px-3 py-2 text-xs font-medium shadow-lg"
+        >
+          {line}
+        </p>
+      ) : null}
+
       {open ? (
         <div
           id="curiosity-ghost-note"
           role="status"
           className="absolute right-0 bottom-[4.5rem] w-64 rounded-2xl border border-foreground/10 bg-background/95 p-4 text-sm shadow-xl backdrop-blur"
         >
-          <p className="font-medium">
-            {zh ? `小幽灵捡到了 ${collected}` : `The little ghost found ${collected}`}
-          </p>
+          <p className="font-medium">{zh ? `它捡到了 ${collected}` : `It found ${collected}`}</p>
           <p className="mt-1 text-xs leading-5 text-muted-foreground">
             {zh ? "再点一下，看看这次遇到什么。" : "Tap again to see what turns up next."}
           </p>
@@ -97,10 +127,10 @@ export function CuriosityGhost() {
             type="button"
             size="sm"
             variant="ghost"
-            className="mt-2 -ml-2"
+            className="group mt-2 -ml-2"
             onClick={play}
           >
-            <RefreshCw aria-hidden="true" />
+            <RefreshCw aria-hidden="true" className="transition-transform group-hover:rotate-180" />
             {zh ? "再捡一个" : "Find another"}
           </Button>
         </div>
@@ -112,7 +142,10 @@ export function CuriosityGhost() {
         aria-expanded={open}
         aria-controls="curiosity-ghost-note"
         title={zh ? "和小幽灵玩一玩" : "Play with the little ghost"}
-        onFocus={() => setHovered(true)}
+        onFocus={() => {
+          setHovered(true);
+          play();
+        }}
         onBlur={() => setHovered(false)}
         onClick={() => {
           play();
@@ -121,31 +154,20 @@ export function CuriosityGhost() {
         className="group relative inline-flex size-14 items-center justify-center rounded-full border border-foreground/10 bg-background/90 shadow-lg backdrop-blur transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-foreground"
       >
         <svg
+          key={mood}
           viewBox="0 0 64 64"
           aria-hidden="true"
-          className="size-11 transition-transform duration-300 group-hover:-rotate-6 motion-reduce:transition-none"
+          className={`size-11 ${hovered || open ? "curiosity-ghost-excited" : "curiosity-ghost-idle"}`}
         >
           <path
             d="M32 7c-12.4 0-22 9.5-22 22v20.2c0 3 3.5 4.5 5.7 2.4l5.2-5 5.2 5c2.2 2.1 5.7.6 5.7-2.4v-2.1l5.2 5c2.2 2.1 5.7.6 5.7-2.4v-3.1l5.6 4.1c2.2 1.6 5.3 0 5.3-2.8V29C53.6 16.8 44.2 7 32 7Z"
             fill={ghostColor}
             className="transition-colors duration-300"
           />
-          {mood % 3 === 1 ? (
-            <>
-              <path d="M22 28h7" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
-              <circle cx="40" cy="28" r="2" fill="#fff" />
-            </>
-          ) : mood % 3 === 2 ? (
-            <>
-              <circle cx="24" cy="28" r="2" fill="#fff" />
-              <path d="M36 28h7" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
-            </>
-          ) : (
-            <>
-              <circle cx="24" cy="28" r="2" fill="#fff" />
-              <circle cx="40" cy="28" r="2" fill="#fff" />
-            </>
-          )}
+          <g transform={`translate(${gaze.x} ${gaze.y})`}>
+            <circle cx="24" cy="28" r="2" fill="#fff" />
+            <circle cx="40" cy="28" r="2" fill="#fff" />
+          </g>
           <path
             d={mood % 2 === 0 ? "M27 37q5 5 10 0" : "M27 38q5-4 10 0"}
             fill="none"
