@@ -28,6 +28,8 @@ const HIDE_CHROME = `
   body { height: auto !important; min-height: 100%; overflow-y: visible !important; }
   html::-webkit-scrollbar, body::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
   body > header, header, #intro__date, #intro-date { display: none !important; }
+  object[data*="robot"],
+  img[src*="mlu_robot"] { display: none !important; }
   #toc {
     position: absolute !important;
     left: -9999px !important;
@@ -123,11 +125,11 @@ function installCindyBridge(doc: Document) {
   if (doc.querySelector("script[src*='cindy-bridge.js']")) return;
   const host = doc.body ?? doc.documentElement;
   const i18n = doc.createElement("script");
-  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=polish-1`;
+  i18n.src = `${BASE_PATH}/essays/cindy-i18n.js?v=byline-2`;
   i18n.id = "cindy-i18n";
   i18n.async = false;
   const script = doc.createElement("script");
-  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=locale-2`;
+  script.src = `${BASE_PATH}/essays/cindy-bridge.js?v=locale-3`;
   script.id = "cindy-bridge";
   script.async = false;
   host.appendChild(i18n);
@@ -141,7 +143,7 @@ function hideOriginalChrome(doc: Document) {
     style.textContent = HIDE_CHROME;
     doc.head?.appendChild(style);
   }
-  const shellHref = `${BASE_PATH}/essays/cindy-shell.css?v=mobile-fix-1`;
+  const shellHref = `${BASE_PATH}/essays/cindy-shell.css?v=mobile-fix-2`;
   const existingShell = doc.querySelector<HTMLLinkElement>(`link[href*="cindy-shell.css"]`);
   if (existingShell) {
     existingShell.href = shellHref;

@@ -67,7 +67,7 @@
     Validation: "验证",
     Test: "测试",
     "logistic regression": "逻辑回归",
-    "By Jared Wilber & Brent Werness.": "",
+    "By Jared Wilber & Brent Werness.": "Cindy 整理与改写。",
     "In most supervised machine learning tasks, best practice recommends to split your data into three independent sets: a":
       "学监督模型的时候，我常把数据先分成三份，各做各的：",
     "To demo the reasons for splitting data in this manner, we will pretend that we have a dataset made of pets of the following two types:":
@@ -360,6 +360,17 @@
     window.setTimeout(applyChunk, 0);
   }
 
+  function authorCredit() {
+    return currentLocale === "zh" ? "Cindy 整理与改写。" : "Adapted and translated by Cindy.";
+  }
+
+  function refreshAnnotations() {
+    if (!document.querySelector("svg.rough-annotation")) return;
+    window.requestAnimationFrame(function () {
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+
   function applyTheme(theme) {
     currentTheme = theme === "dark" ? "dark" : "light";
     document.documentElement.classList.toggle("cindy-dark", currentTheme === "dark");
@@ -371,35 +382,27 @@
     for (var d = 0; d < dates.length; d++) dates[d].style.display = "none";
     var logos = document.querySelectorAll("h2.logo, #intro-icon h2");
     for (var L = 0; L < logos.length; L++) logos[L].textContent = "Cindy";
+    removeOriginalLogos();
 
     walk(document.body, function (textNode) {
       var value = textNode.nodeValue || "";
-      if (!/Jared\s+Wilber|Brent\s+Werness|Erin\s+Bugbee/i.test(value)) return;
-      textNode.nodeValue = value
-        .replace(/By\s+Jared\s+Wilber\s*(&|and|、|,)?\s*(Brent\s+Werness|Erin\s+Bugbee)?\.?/gi, "")
-        .replace(/Erin\s+Bugbee\s*(&|and|、|,)?\s*Jared\s+Wilber\.?/gi, "")
-        .replace(/Jared\s+Wilber/gi, "")
-        .replace(/Brent\s+Werness/gi, "")
-        .replace(/Erin\s+Bugbee/gi, "")
-        .replace(/^[、，,.\s]+|[、，,.\s]+$/g, "");
-      if (String(textNode.nodeValue || "").trim()) return;
-      var node = textNode.nextSibling;
-      var hidden = 0;
-      while (node && hidden < 6) {
-        var next = node.nextSibling;
-        if (node.nodeType === 3 && !String(node.nodeValue || "").trim()) {
-          node = next;
-          continue;
-        }
-        if (node.nodeName === "BR") {
-          node.style.display = "none";
-          hidden += 1;
-          node = next;
-          continue;
-        }
-        break;
-      }
+      var compact = value.replace(/\s+/g, " ").trim();
+      if (!/^By\s+Jared\s+Wilber\s*(?:&|and)\s*Brent\s+Werness\.?$/i.test(compact)) return;
+      textNode.nodeValue = authorCredit();
     });
+  }
+
+  function removeOriginalLogos() {
+    var logos = document.querySelectorAll(
+      'object[data*="robot"], img[src*="mlu_robot"], link[rel~="icon"][href*="robot"], link[rel~="icon"][href*="mlu"]',
+    );
+    for (var i = 0; i < logos.length; i++) {
+      var logo = logos[i];
+      var icon = logo.closest && logo.closest(".icon");
+      if (icon) icon.remove();
+      else if (logo.matches("link[rel~='icon']")) logo.href = siteBase() + "/favicon.svg";
+      else logo.remove();
+    }
   }
 
   function retargetPromo() {
@@ -447,6 +450,8 @@
             applyAll({ force: true });
             return;
           }
+          hideAuthorByline();
+          refreshAnnotations();
           lastApplied = key;
           announceReady();
           applying = false;
@@ -469,6 +474,7 @@
         hideAuthorByline();
         fitChartLabels();
       }
+      refreshAnnotations();
       lastApplied = key;
       announceReady();
     } finally {
