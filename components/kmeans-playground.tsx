@@ -43,6 +43,27 @@ function dist2(a: { x: number; y: number }, b: { x: number; y: number }) {
   return dx * dx + dy * dy;
 }
 
+function roadDistance(a: { x: number; y: number }, b: { x: number; y: number }) {
+  const sameBank = (a.x < 50) === (b.x < 50);
+  if (sameBank) return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  return Math.abs(a.x - 50) + Math.abs(a.y - 50) + Math.abs(b.x - 50) + Math.abs(b.y - 50) + 12;
+}
+
+function assignByRoad(sites: Site[], centers: { x: number; y: number }[]) {
+  return sites.map((site) => {
+    let nearest = 0;
+    let best = Infinity;
+    centers.forEach((center, i) => {
+      const distance = roadDistance(site, center);
+      if (distance < best) {
+        best = distance;
+        nearest = i;
+      }
+    });
+    return nearest;
+  });
+}
+
 function runKmeans(points: Site[], k: number, seed: number) {
   const picks: { x: number; y: number }[] = [];
   const first = points[seed % points.length];
@@ -95,10 +116,18 @@ export function KmeansPlayground() {
   const [seed, setSeed] = useState(1);
   const [sites, setSites] = useState(SITES);
   const [drag, setDrag] = useState<string | null>(null);
+  const [riverOn, setRiverOn] = useState(false);
 
   const model = useMemo(() => runKmeans(sites, k, seed), [sites, k, seed]);
-  const maxSize = Math.max(...model.sizes);
-  const minSize = Math.min(...model.sizes);
+  const roadAssign = useMemo(() => assignByRoad(sites, model.centers), [sites, model.centers]);
+  const assignments = riverOn ? roadAssign : model.assign;
+  const sizes = model.centers.map((_, i) => assignments.filter((idx) => idx === i).length);
+  const maxSize = Math.max(...sizes);
+  const minSize = Math.min(...sizes);
+  const changedSites = sites.filter((_, i) => roadAssign[i] !== model.assign[i]).length;
+  const routedSiteIndex = riverOn
+    ? sites.findIndex((site, i) => roadAssign[i] !== model.assign[i])
+    : -1;
 
   const move = (id: string, clientX: number, clientY: number, svg: SVGSVGElement) => {
     const box = svg.getBoundingClientRect();
@@ -123,7 +152,39 @@ export function KmeansPlayground() {
           <text x="6" y="8" className="fill-foreground/40 text-[3.2px]">
             {zh ? "江北 / 老城 / 大学城 / 开发区" : "north / old town / campus / zone"}
           </text>
-          {sites.map((site, i) => (
+            {riverOn ? (
+              <g aria-hidden="true">
+                <path
+                  d="M50 -2 C43 13 57 25 49 40 C42 54 57 68 49 82 C44 91 52 97 50 102"
+                  fill="none"
+                  stroke="#79b8d2"
+                  strokeWidth="8"
+                  opacity="0.72"
+                />
+                <path
+                  d="M50 41 L50 59"
+                  fill="none"
+                  stroke="#9c704b"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                />
+                <text x="52.5" y="52" className="fill-foreground text-[2.4px]">
+                  {zh ? "桥" : "bridge"}
+                </text>
+              </g>
+            ) : null}
+            {routedSiteIndex >= 0 ? (
+              <path
+                d={`M${sites[routedSiteIndex].x} ${sites[routedSiteIndex].y} L50 50 L${model.centers[roadAssign[routedSiteIndex]].x} ${model.centers[roadAssign[routedSiteIndex]].y}`}
+                fill="none"
+                stroke="#b7479a"
+                strokeWidth="0.7"
+                strokeDasharray="2 1.5"
+                opacity="0.85"
+                pointerEvents="none"
+              />
+            ) : null}
+            {sites.map((site, i) => (
             <g
               key={site.id}
               onPointerDown={(event) => {
@@ -136,7 +197,7 @@ export function KmeansPlayground() {
                 cx={site.x}
                 cy={site.y}
                 r={site.kind === "hospital" ? 2.4 : 1.7}
-                fill={COLORS[model.assign[i] % COLORS.length]}
+                fill={COLORS[assignments[i] % COLORS.length]}
                 className="stroke-background"
                 strokeWidth="0.4"
               />
@@ -168,6 +229,55 @@ export function KmeansPlayground() {
               ? `K-means 按直线距离把点分给最近的中心，再把中心挪到该组的平均位置，重复到稳定。方块是代表驻点，圆点是医院或药店。`
               : `K-means assigns each site to the nearest center, then moves the center to the mean, and repeats. Squares are reps; circles are sites.`}
           </p>
+          <div className="mt-4 flex gap-3 border border-foreground/10 bg-muted/40 p-3">
+            <svg
+              viewBox="0 0 64 64"
+              aria-hidden="true"
+              className="curiosity-ghost-idle mt-0.5 size-9 shrink-0"
+            >
+              <path
+                d="M32 7c-12.4 0-22 9.5-22 22v20.2c0 3 3.5 4.5 5.7 2.4l5.2-5 5.2 5c2.2 2.1 5.7.6 5.7-2.4v-2.1l5.2 5c2.2 2.1 5.7.6 5.7-2.4v-3.1l5.6 4.1c2.2 1.6 5.3 0 5.3-2.8V29C53.6 16.8 44.2 7 32 7Z"
+                fill="#9b6bdb"
+              />
+              <circle cx="24" cy="28" r="2" fill="white" />
+              <circle cx="40" cy="28" r="2" fill="white" />
+              <path d="M27 37q5 5 10 0" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <div className="min-w-0">
+              <p className="text-xs font-medium">
+                {riverOn
+                  ? zh
+                    ? `幽灵：隔岸 ${changedSites} 家换了负责人。还要只看直线吗？`
+                    : `Ghost: ${changedSites} across-river accounts changed reps. Still trusting the straight line?`
+                  : zh
+                    ? "幽灵：地图上最近的那家，真要第一个去吗？"
+                    : "Ghost: should the closest pin really be your first call?"}
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="mt-2 h-8"
+                aria-pressed={riverOn}
+                onClick={() => setRiverOn((current) => !current)}
+              >
+                {riverOn
+                  ? zh
+                    ? "收起河流，回到直线"
+                    : "Hide river, use straight lines"
+                  : zh
+                    ? "加上河和桥"
+                    : "Add the river and bridge"}
+              </Button>
+            </div>
+          </div>
+          {riverOn ? (
+            <p role="status" className="mt-2 text-xs leading-5 text-muted-foreground">
+              {zh
+                ? "紫色虚线是经桥的示意路线。这里只重算客户归属，中心仍是 K-means 按直线算出的草图；真实排班还要接入路网时间。"
+                : "The purple dash is an illustrative bridge route. Only account ownership is rechecked; centers remain the straight-line K-means sketch. Real schedules need road-network travel times."}
+            </p>
+          ) : null}
           <label className="mt-4 grid gap-1.5 text-xs">
             <div className="flex justify-between">
               <span>{zh ? "代表人数 K" : "Number of reps K"}</span>
@@ -185,7 +295,7 @@ export function KmeansPlayground() {
             {zh ? "换一组初始中心" : "Reseed centers"}
           </Button>
           <ul className="mt-4 space-y-1 text-xs">
-            {model.sizes.map((size, i) => (
+            {sizes.map((size, i) => (
               <li key={i} className="flex items-center justify-between">
                 <span style={{ color: COLORS[i] }}>
                   {zh ? `代表 ${i + 1}` : `Rep ${i + 1}`}
